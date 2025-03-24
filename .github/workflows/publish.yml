@@ -25,9 +25,6 @@ jobs:
           latexmk -pdf -interaction=nonstopmode -output-directory=output "$source"
           mv "output/${source%.tex}.pdf" "$destination"
         done < sources.txt
-
-    - name: Install Ghostscript
-      run: sudo apt-get install -y ghostscript
       
     - name: Bump version and push tag
       id: tag_version
