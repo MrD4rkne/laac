@@ -12,6 +12,7 @@ jobs:
     env:
       LATEX: /usr/bin/latexmk
       SOURCES: sources.txt
+      OUTPUT_DIR: output
 
     steps:
     - name: Checkout repository
@@ -21,9 +22,11 @@ jobs:
 
     - name: Compile LaTeX documents
       run: |
+        mkdir -p ${{ env.OUTPUT_DIR }}
+
         while IFS=' ' read -r source destination; do
-          latexmk -pdf -interaction=nonstopmode -output-directory=output "$source"
-          mv "output/${source%.tex}.pdf" "$destination"
+          latexmk -pdf -interaction=nonstopmode -output-directory=${{ env.OUTPUT_DIR }} "$source"
+          mv "${{ env.OUTPUT_DIR }}/${source%.tex}.pdf" "${{ env.OUTPUT_DIR }}/$destination"
         done < sources.txt
       
     - name: Bump version and push tag
@@ -43,12 +46,12 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload PDF to Release
+    - name: Upload PDFs to Release
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: combined.pdf
-        asset_name: combined.pdf
+        asset_path: ${{ env.OUTPUT_DIR }}
+        asset_name: '*.pdf'
         asset_content_type: application/pdf
