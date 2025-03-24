@@ -24,8 +24,8 @@ jobs:
       
       with:
         root_file: |
-          ./pwd1/solution.tex
-          ./pwd2/solution.tex
+          ./pwd1/pwd1.tex
+          ./pwd2/pwd2.tex
       
     - name: Bump version and push tag
       id: tag_version
