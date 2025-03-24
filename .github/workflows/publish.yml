@@ -3,7 +3,7 @@ name: Publish PDFs
 on:
   push:
     branches:
-      - master
+      - test
   workflow_dispatch:
 
 jobs:
