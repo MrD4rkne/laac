@@ -12,7 +12,7 @@ jobs:
     env:
       LATEX: /usr/bin/latexmk
       SOURCES: sources.txt
-      OUTPUT_DIR: output
+      OUTPUT_DIR: .
 
     steps:
     - name: Checkout repository
@@ -20,29 +20,10 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Cache LaTeX packages
-      id: cache
-      uses: actions/cache@v3
+    - uses: xu-cheng/latex-action@v3
       with:
-        path: /usr/local/texlive
-        key: ${{ runner.os }}-texlive-${{ hashFiles('**/*.tex') }}
-        restore-keys: |
-          ${{ runner.os }}-texlive-
-
-    - name: Install LaTeX and latexmk
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: sudo apt-get update && sudo apt-get install -y texlive-full latexmk
-
-    - name: Compile LaTeX documents
-      run: |
-        mkdir -p ${{ env.OUTPUT_DIR }}
-
-        while IFS=' ' read -r source destination; do
-          echo "Compiling $source to $destination"
-
-          latexmk -pdf -interaction=nonstopmode -output-directory=${{ env.OUTPUT_DIR }} "$source"
-          mv "${{ env.OUTPUT_DIR }}/${source%.tex}.pdf" "${{ env.OUTPUT_DIR }}/$destination"
-        done < ${{ env.SOURCES }}
+        root_file: |
+          pwd1/solution1.tex
       
     - name: Bump version and push tag
       id: tag_version

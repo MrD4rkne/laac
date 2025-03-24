@@ -1,1 +1,0 @@
-pwd1/solution.tex pwd1.pdf
