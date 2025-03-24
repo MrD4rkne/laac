@@ -46,10 +46,11 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload PDFs to Release
-      run: |
-        for file in ${{ env.OUTPUT_DIR }}/*.pdf; do
-          gh release upload ${{ steps.create_release.outputs.upload_url }} "$file" --clobber
-        done
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ${{ env.OUTPUT_DIR }}/*.pdf
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+        overwrite: true
+        file_glob: true
