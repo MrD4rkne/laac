@@ -20,7 +20,9 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: xu-cheng/latex-action@v3
+    - name: Compile LaTeX
+      uses: xu-cheng/latex-action@v3
+      
       with:
         root_file: |
           ./pwd1/solution.tex
