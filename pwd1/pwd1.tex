@@ -43,18 +43,20 @@ W całej pracy przyjmujemy, że pracujemy na językach nad alfabetem (skończony
 
 \subsection{Zdefiniumy przekształcenie:}
 
-
 \(F: \mathcal{A} \to \mathcal{A}\), które dla automatu \(\left(\Sigma, Q, I, F, \sigma\right)\) zwraca automat \(\left(\Sigma, Q, I, F, \sigma'\right)\), gdzie
 
 \begin{align*}
 \sigma' = \sigma \cup \bigcup_{l \in \Sigma} \left\{ \left< p, l, q \right> \mid \exists_{\epsilon \neq a \in \Sigma}{\left< p, a, q \right> \in \sigma} \right\}
 \end{align*}
 
-Inaczej, po prostu każdą niepusta krawędź będzie akceptować dowolną literę. Zauważmy, że powstały automat jest skończony, bo dokładamy conajwyżej \(\abs{\Sigma} \cdot \abs{Q}^2\) krawędzi. Zatem rozpoznaje on język regularny.
+Inaczej, po prostu każda niepusta krawędź będzie akceptować dowolną literę. 
+
+Zauważmy, że powstały automat jest skończony, bo dokładamy conajwyżej \(\abs{\Sigma} \cdot \abs{Q}^2\) krawędzi. Zatem rozpoznaje on język regularny.
 
 \begin{lemma}
     \(w \in L(F(A)) \iff \exists_{v \in L(A)} \abs{w}=\abs{v}\)
 \end{lemma}
+\begin{proof}
 
 `\(\rightarrow\)` \\
 Niech \(w \in L(F(A))\). Wtedy istnieje ścieżka w \(F(A)\) akceptująca \(w\). Zauważmy, że \(\forall_{\left< p, a, q \right>}\) z tego biegu \( \exists_{b \neq \epsilon} \left< p, b, q \right> \in \sigma\). Zatem moglibyśmy zamienić litery z aktualnej ścieżki na litery na odpowiadających krawędziach z \(A\) i otrzymalibyśmy bieg akceptujący słowo \(v\). Nie zmieniła się liczba przejść, a każda zamiana z litery \(\neq \epsilon\) była też na literę \(\neq \epsilon\). Stąd \(\abs{v}=\abs{w}.\) \(\blacksquare\)
@@ -62,14 +64,13 @@ Niech \(w \in L(F(A))\). Wtedy istnieje ścieżka w \(F(A)\) akceptująca \(w\).
 `\(\leftarrow\)` \\
 Niech \(v \in L(A)\). Skoro \(F\) jedynie dodało przejścia między stanami, to \(v \in L(F(A))\), bo \(\sigma \subseteq \sigma'\). \(\blacksquare\)
 
+\end{proof}
+
 \subsection{Rozważmy założenia języka:}
 
 \begin{align*}
     \exists_{ a_i \in L(K), \ b_i \in L(L)} { a_i = b_i = c_i }\iff c_i \in L(K) \cap L(L)
 \end{align*}
-
-Jako, że \(K\) i \(L\) są językami regularnymi, to \(L(K) \cap L(L)\) jest językiem regularnym, bo jest przekrojem języków regularnych.
-
 
 \begin{align*}
 \exists_{ a_i \in L(K), \ b_i \in L(L)} { c_i \in \left\{ a_i, b_i \right\} \land \abs{a_i}=\abs{b_i}=\abs{c_i} }
@@ -90,11 +91,10 @@ Jako, że \(K\) i \(L\) są językami regularnymi, to \(L(K) \cap L(L)\) jest j�
     c_i \in \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right)
 \end{align*}
 
-Powstały język jest językiem regularnym, bo powstał z operacji na językach regularnych, które zachowują regularność.
-
 \subsection{Teza}
 
 Niech \( E := \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right) \) oraz \( G := L(K) \cap L(L) \).
+Oba języki są regularne, bo powstały poprzez operacje zachowujące regularność na językach regularnych.
 
 \begin{theorem}
     \begin{align*}
