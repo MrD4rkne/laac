@@ -39,7 +39,7 @@
 \maketitle
 
 \begin{remark}
-W całej pracy przyjmujemy, że pracujemy na językach nad alfabetem (skończonym) \(\Sigma\), tz. w \( \Sigma^* \). \(\mathcal{A}\) to klasa automatów rozpoznających te języki.
+W całej pracy przyjmujemy, że pracujemy na językach nad skończonym alfabetem \(\Sigma\), tz. w \( \Sigma^* \). \(\mathcal{A}\) to klasa automatów rozpoznających te języki.
 \end{remark}
 
 \section{}
@@ -47,7 +47,7 @@ W całej pracy przyjmujemy, że pracujemy na językach nad alfabetem (skończony
 \subsection{Zdefiniumy przekształcenie:}
 
 \begin{definition}
-\(f: \mathcal{A} \to \mathcal{A}\), które dla automatu \(\left(\Sigma, Q, I, f, \sigma\right)\) zwraca automat \(\left(\Sigma, Q, I, f, \sigma'\right)\), gdzie:
+\(f: \mathcal{A} \to \mathcal{A}\), które dla skończonego automatu \(\left(\Sigma, Q, I, f, \sigma\right)\) zwraca automat \(\left(\Sigma, Q, I, f, \sigma'\right)\), gdzie:
 \begin{align*}
 \sigma' = \sigma \cup \bigcup_{l \in \Sigma} \left\{ \left< p, l, q \right> \mid \exists_{\epsilon \neq a \in \Sigma}{\left< p, a, q \right> \in \sigma} \right\}
 \end{align*}
@@ -66,7 +66,7 @@ Zauważmy, że \(\forall_{\left< p, a, q \right> \in \sigma'} \exists_{b \neq \e
 Zatem moglibyśmy zamienić litery z aktualnej ścieżki na litery na odpowiadających krawędziach z \(A\)
 i otrzymalibyśmy bieg akceptujący słowo \(v\).
 Formalnie, istnieje \(h: \sigma \to \sigma'\) takie,
-że \( \forall_{\left< p, a, q \right> \in \sigma \land a \neq \epsilon} {h(p, a, q) = (p, b, q) \land \left< p, b, q \right> \in \sigma' \land b \neq \epsilon }\).
+że \( \forall_{\left< p, a, q \right> \in \sigma \land a \neq \epsilon} {h(p, a, q) = (p, b, q) \in \sigma' \land b \neq \epsilon }\).
 Zatem \(A\) akceptuje \(v\) i \(\abs{w} = \abs{v}\).
 \end{proof}
 
