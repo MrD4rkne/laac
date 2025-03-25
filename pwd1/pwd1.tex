@@ -47,7 +47,7 @@ W całej pracy przyjmujemy, że pracujemy na językach nad alfabetem (skończony
 \subsection{Zdefiniumy przekształcenie:}
 
 \begin{definition}
-\(F: \mathcal{A} \to \mathcal{A}\), które dla automatu \(\left(\Sigma, Q, I, F, \sigma\right)\) zwraca automat \(\left(\Sigma, Q, I, F, \sigma'\right)\), gdzie:
+\(f: \mathcal{A} \to \mathcal{A}\), które dla automatu \(\left(\Sigma, Q, I, f, \sigma\right)\) zwraca automat \(\left(\Sigma, Q, I, f, \sigma'\right)\), gdzie:
 \begin{align*}
 \sigma' = \sigma \cup \bigcup_{l \in \Sigma} \left\{ \left< p, l, q \right> \mid \exists_{\epsilon \neq a \in \Sigma}{\left< p, a, q \right> \in \sigma} \right\}
 \end{align*}
@@ -57,42 +57,42 @@ Inaczej, po prostu każda niepusta krawędź będzie akceptować dowolną liter�
 Zauważmy, że powstały automat jest skończony, bo dokładamy conajwyżej \(\abs{\Sigma} \cdot \abs{Q}^2\) krawędzi. Zatem rozpoznaje on język regularny.
 
 \begin{lemma}
-    \(w \in L(F(A)) \iff \exists_{v \in L(A)} \abs{w}=\abs{v}\)
+    \(w \in L(f(A)) \iff \exists_{v \in L(A)} \abs{w}=\abs{v}\)
 \end{lemma}
 \begin{proof}
 `\(\rightarrow\)` \\
-Niech \(w \in L(F(A))\). Wtedy istnieje ścieżka w \(F(A)\) akceptująca \(w\).
-Zauważmy, że \(\forall_{\left< p, a, q \right>}\) z tego biegu \( \exists_{b \neq \epsilon} \left< p, b, q \right> \in \sigma\).
+Niech \(w \in L(f(A))\). Wtedy w \(f(A)\) istnieje bieg akceptujący \(w\).
+Zauważmy, że \(\forall_{\left< p, a, q \right> \in \sigma'} \exists_{b \neq \epsilon} \left< p, b, q \right> \in \sigma\).
 Zatem moglibyśmy zamienić litery z aktualnej ścieżki na litery na odpowiadających krawędziach z \(A\)
-i otrzymalibyśmy bieg akceptujący słowo \(v\). Nie zmieniła się liczba przejść,
-a każda zamiana z litery \(\neq \epsilon\) była też na literę \(\neq \epsilon\). Stąd \(\abs{v}=\abs{w}\).
+i otrzymalibyśmy bieg akceptujący słowo \(v\).
+Formalnie, istnieje \(h: \sigma \to \sigma'\) takie,
+że \( \forall_{\left< p, a, q \right> \in \sigma \land a \neq \epsilon} {h(p, a, q) = (p, b, q) \land \left< p, b, q \right> \in \sigma' \land b \neq \epsilon }\).
+Zatem \(A\) akceptuje \(v\) i \(\abs{w} = \abs{v}\).
 \end{proof}
 
 \begin{proof}
 `\(\leftarrow\)` \\
-Niech \(v \in L(A)\). Skoro \(F\) jedynie dodało przejścia między stanami, to \(v \in L(F(A))\),
+Niech \(v \in L(A)\). Skoro \(f\) jedynie dodało przejścia między stanami, to \(v \in L(f(A))\),
 bo \(\sigma \subseteq \sigma'\).
 \end{proof}
 
 \subsection{Rozważmy założenia języka:}
 
-\begin{align*}
-    \exists_{ a_i \in L(K), \ b_i \in L(L)} { a_i = b_i = c_i }\iff c_i \in L(K) \cap L(L)
-\end{align*}
-
-\begin{align*}
-\exists_{ a_i \in L(K), \ b_i \in L(L)} { c_i \in \left\{ a_i, b_i \right\} \land \abs{a_i}=\abs{b_i}=\abs{c_i} }
-\iff
-\left( c_i \in L(K) \land \exists_{ b_i \in L(L) }{ \abs{c_i} = \abs{b_i} } \right) \lor \left( c_i \in L(L) \land \exists_{ a_i \in L(K) }{ \abs{c_i} = \abs{a_i} } \right)
-\\ \iff
-\left( c_i \in L(K) \land c_i \in L(F(L)) \right) \lor \left( c_i \in L(L) \land c_i \in L(F(K)) \right)
-\iff
-c_i \in \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right)
-\end{align*}
+\begin{itemize}
+    \item \( \exists_{ a_i \in L(K), \ b_i \in L(L)} { a_i = b_i = c_i }\iff c_i \in L(K) \cap L(L) \)
+    \item \( \exists_{ a_i \in L(K), \ b_i \in L(L)} { c_i \in \left\{ a_i, b_i \right\} \land \abs{a_i}=\abs{b_i}=\abs{c_i} }
+    \iff
+    \left( c_i \in L(K) \land \exists_{ b_i \in L(L) }{ \abs{c_i} = \abs{b_i} } \right) \lor \left( c_i \in L(L) \land \exists_{ a_i \in L(K) }{ \abs{c_i} = \abs{a_i} } \right)
+    \\ \iff
+    \left( c_i \in L(K) \land c_i \in L(f(L)) \right) \lor \left( c_i \in L(L) \land c_i \in L(f(K)) \right)
+    \iff
+    c_i \in \left( L(K) \cap L(f(L)) \cup L(L) \cap L(f(K)) \right)
+    \)
+\end{itemize}
 
 \subsection{Teza}
 
-Niech \( E := \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right) \) oraz \( G := L(K) \cap L(L) \).
+Niech \( E := \left( L(K) \cap L(f(L)) \cup L(L) \cap L(f(K)) \right) \) oraz \( G := L(K) \cap L(L) \).
 Oba języki są regularne, bo powstały poprzez operacje zachowujące regularność na językach regularnych.
 
 \begin{lemma}
@@ -121,7 +121,7 @@ Rozważmy \(c_i\), gdzie \(i < n\):
 
 \begin{itemize}
     \item \(c_{2i+1} \in G\). \(c_{2i+1} \in L(K) \cap L(L) \iff c_{2i+1} \in L(K) \land c_{2i+1} \in L(L)\). Zatem istnieją \(a_{2i+1} \in L(K), b_{2i+1} \in L(L)\), że \(c_{2i+1} = a_{2i+1} = b_{2i+1} \implies \abs{c_{2i+1}} = \abs{a_{2i+1}} = \abs{b_{2i+1}}\).
-    \item \(c_{2i} \in E\). \(c_{2i} \in \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right) \iff c_{2i} \in L(K) \cap L(F(L)) \lor c_{2i} \in L(L) \cap L(F(K)) \iff \exists_{a_i \in L(K), b_i \in L(L)} c_{2i} \in \left\{ a_{2i}, b_{2i} \right\}\).
+    \item \(c_{2i} \in E\). \(c_{2i} \in \left( L(K) \cap L(f(L)) \cup L(L) \cap L(f(K)) \right) \iff c_{2i} \in L(K) \cap L(f(L)) \lor c_{2i} \in L(L) \cap L(f(K)) \iff \exists_{a_i \in L(K), b_i \in L(L)} c_{2i} \in \left\{ a_{2i}, b_{2i} \right\}\).
 \end{itemize}
 
 Jeśli \(c_n = \epsilon\), to możemy pominąć ostatnią literę i rozumowanie działa. W przeciwnym razie \(c_n \in G\), więc działa rozumowanie dla \(c_{2n+1}\).
