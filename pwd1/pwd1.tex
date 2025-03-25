@@ -110,13 +110,27 @@ Skoro \(c_{2i+1} \in \left\{ a_{2i+1}, b_{2i+1} \right\}\), to \(c_{2i+1} \in E\
 
 Zatem \(w\) ma strukturę \(G \cdot E \cdot G \ldots \cdot \left( E + \epsilon \right)\).
 
-Zatem \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\).
+Zatem \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\). 
+\(\blacksquare\)
+
 
 `\( \leftarrow \)`
 
-Niech \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\). Zatem \(w\) ma strukturę \(G \cdot E \cdot G \ldots \cdot \left( E + \epsilon \right)\). 
+Niech \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\). Zatem \(w\) ma strukturę \(G \cdot E \cdot G \cdot \ldots \cdot \left( E + \epsilon \right)\). 
 Stąd istnieją \(c_1 \in G, c_2 \in E, c_3 \in G, \ldots c_n \in E \cup \left\{ \epsilon \right\}\), że \(w = c_1 \cdot \ldots \cdot c_n\).
 
 
+Rozważmy \(c_i\), że \(i < n\):
+
+\(c_{2i+1} \in G\). \(c_{2i+1} \in L(K) \cap L(L) \iff c_{2i+1} \in L(K) \land c_{2i+1} \in L(L)\).
+Zatem istnieją \(a_{2i+1} \in L(K), b_{2i+1} \in L(L)\), że \(c_{2i+1} = a_{2i+1} = b_{2i+1} \implies \abs{c_{2i+1}} = \abs{a_{2i+1}} = \abs{b_{2i+1}} \).
+
+\(c_{2i} \in E\). \(c_{2i} \in \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right)
+\iff c_{2i} \in L(K) \cap L(F(L)) \lor c_{2i} \in L(L) \cap L(F(K))
+\iff \exists_{ a_i \in L(K), \ b_i \in L(L)}  c_{2i} \in \left\{ a_{2i}, b_{2i} \right\}
+\)
+
+Jeśli \(c_n = \epsilon\), to możemy pominąć ostatnią literę i rozumowanie działa.
+Wpp. \(c_n \in G\), więc działa rozumowanie dla \(c_{2n+1}\).
 
 \end{document}
