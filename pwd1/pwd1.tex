@@ -35,4 +35,30 @@
 
 \maketitle
 
+W całej pracy przyjmujemy, że pracujemy na językach nad alfabetem (skończonym) \(\Sigma\), tz. w \( \Sigma^* \).
+
+\(\mathcal{A}\) to klasa automatów rozpoznających te języki.
+
+\section{a}
+
+Zdefiniumy \(F: \mathcal{A} \to \mathcal{A}\) taki,
+że dla automatu \(\left(\Sigma, Q, I, F, \sigma\right)\) zwraca on automat \(\left(\Sigma, Q, I, F, \sigma'\right)\), gdzie
+
+\begin{align*}
+\sigma' = \sigma \cup \bigcup_{l \in \Sigma} \left\{ \left< p, l, q \right> \mid \exists_{\epsilon \neq a \in \Sigma}{\left< p, a, q \right> \in \sigma} \right\}
+\end{align*}
+
+Inaczej, po prostu każdą niepusta krawędź będzie akceptować dowolną literę.
+
+\begin{lemma}
+    \(w \in L(F(A)) \iff \exists_{v \in L(A)} \abs{w}=\abs{v}\)
+\end{lemma}
+
+`\(\rightarrow\)` \\
+Niech \(w \in L(F(A))\). Wtedy istnieje ścieżka w \(F(A)\) akceptująca \(w\). Zauważmy, że \(\forall_{\left< p, a, q \right>}\) z tego biegu \( \exists_{b \neq \epsilon} \left< p, b, q \right> \in \sigma\). Zatem moglibyśmy zamienić litery z aktualnej ścieżki na litery na odpowiadających krawędziach z \(A\) i otrzymalibyśmy bieg akceptujący słowo \(v\). Nie zmieniła się liczba przejść, a każda zamiana z litery \(\neq \epsilon\) była też na literę \(\neq \epsilon\). Stąd \(\abs{v}=\abs{w}.\) \(\blacksquare\)
+
+`\(\leftarrow\)` \\
+Niech \(v \in L(A)\). Skoro \(F\) jedynie dodało przejścia między stanami, to \(v \in L(F(A))\), bo \(\sigma \subseteq \sigma'\). \(\blacksquare\)
+
+
 \end{document}
