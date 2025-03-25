@@ -62,7 +62,7 @@ Niech \(w \in L(F(A))\). Wtedy istnieje ścieżka w \(F(A)\) akceptująca \(w\).
 `\(\leftarrow\)` \\
 Niech \(v \in L(A)\). Skoro \(F\) jedynie dodało przejścia między stanami, to \(v \in L(F(A))\), bo \(\sigma \subseteq \sigma'\). \(\blacksquare\)
 
-\subsection{Rozważmy założenia języka \(K \# L\):}
+\subsection{Rozważmy założenia języka:}
 
 \begin{align*}
     \exists_{ a_i \in L(K), \ b_i \in L(L)} { a_i = b_i = c_i }\iff c_i \in L(K) \cap L(L)
@@ -100,22 +100,22 @@ Niech \( E := \left( L(K) \cap L(F(L)) \cup L(L) \cap L(F(K)) \right) \land G :=
     w \in L(K \# L) \iff w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)
 \end{align*}
 
-`\( \rightarrow \)` \\
+`\( \rightarrow \)`
 
-Niech \(w \in L(K \# L)\). Z definicji istnieją \(a_1, ..\ldots , a_n \in L(K), b_1, \ldots b_n \in L(L), c_1, \ldots c_n\), że \(w = c_1 \cdot \ldots \cdot c_n\) i \(\ldots\) \\
+Niech \(w \in L(K \# L)\). Z definicji istnieją \(a_1, \ldots , a_n \in L(K), b_1, \ldots b_n \in L(L), c_1, \ldots c_n\), że \(w = c_1 \cdot \ldots \cdot c_n\) i \(\ldots\)
 
-Zauważmy, że skoro \(a_{2i}=b_{2i}=c_{2i}\), to \(c_{2i} \in L(K) \cap L(L)\). Zatem \(c_{2i} \in G\). \\
+Zauważmy, że skoro \(a_{2i}=b_{2i}=c_{2i}\), to \(c_{2i} \in L(K) \cap L(L)\). Zatem \(c_{2i} \in G\).
 
-Skoro \(c_{2i+1} \in \left\{ a_{2i+1}, b_{2i+1} \right\}\), to \(c_{2i+1} \in E\). \\
+Skoro \(c_{2i+1} \in \left\{ a_{2i+1}, b_{2i+1} \right\}\), to \(c_{2i+1} \in E\).
 
 Zatem \(w\) ma strukturę \(G \cdot E \cdot G \ldots \cdot \left( E + \epsilon \right)\).
 
-Zatem \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\). \\
+Zatem \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\).
 
-`\( \leftarrow \)` \\
+`\( \leftarrow \)`
 
 Niech \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\). Zatem \(w\) ma strukturę \(G \cdot E \cdot G \ldots \cdot \left( E + \epsilon \right)\). 
-Stąd istnieją \(c_1 \in G, c_2 \in E, c_3 \in G, \ldots c_n \in E \cup \left\{ \epsilon \right\}\), że \(w = c_1 \cdot \ldots \cdot c_n\). \\
+Stąd istnieją \(c_1 \in G, c_2 \in E, c_3 \in G, \ldots c_n \in E \cup \left\{ \epsilon \right\}\), że \(w = c_1 \cdot \ldots \cdot c_n\).
 
 
 
