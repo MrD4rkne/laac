@@ -71,6 +71,10 @@ będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Zakładamy, że \(
     \(\mathcal{F}(\delta, q) = \left\{ \delta(q, a): a \in \Sigma \right\}\).
 \end{itemize}
 
+Inaczej mówiąc, automat \(M\) symuluje jednocześnie przejścia w \(M_1\) i \(M_2\).
+Przechodzimy między stanami na pozycji parzystej / nieparzystej (czyli parzystość litery po której dotarliśmy do danego stanu).
+Z pozycji nieparzystej przechodzimy w obu automatach po krawędzi ze wskazaną literą (są deterministyczne, więc jest dokładnie jedna taka krawędź).
+Z pozycji parzystej w jednym automacie przechodzimy po krawędzi z literą, a w drugim po dowolnej (co wprowadza niedeterminizm).
 \end{definition}
 
 \subsection{Dowód}
