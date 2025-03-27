@@ -34,6 +34,9 @@
 % Redefine section numbering to use letters
 \renewcommand{\thesection}{\Alph{section}}
 
+% Define a command for singleton sets
+\newcommand{\singleton}[1]{\left\{ #1 \right\}}
+
 \begin{document}
 
 \maketitle
@@ -44,97 +47,19 @@
 
 \section{}
 
-\subsection{Zdefiniumy przekształcenie:}
+\subsection{Automat rozpoznający K \# L}
 
-\begin{definition}
-    \(f: \mathcal{A} \to \mathcal{A}\), które dla skończonego automatu \(\left(\Sigma, Q, I, f, \sigma\right)\) zwraca automat \(\left(\Sigma, Q, I, f, \sigma'\right)\), gdzie:
-    \begin{align*}
-        \sigma' = \sigma \cup \bigcup_{l \in \Sigma} \left\{ \left< p, l, q \right> \mid \exists_{\epsilon \neq a \in \Sigma}{\left< p, a, q \right> \in \sigma} \right\}
-    \end{align*}
-\end{definition}
-Inaczej, po prostu każda niepusta krawędź będzie akceptować dowolną literę.
-
-Zauważmy, że powstały automat jest skończony, bo dokładamy conajwyżej
-\(\abs{\Sigma} \cdot \abs{Q}^2\) krawędzi. Zatem rozpoznaje on język regularny.
-
-\begin{lemma}
-    \(w \in L(f(A)) \iff \exists_{v \in L(A)} \abs{w}=\abs{v}\)
-\end{lemma}
-\begin{proof}
-    `\(\rightarrow\)` \\
-    Niech \(w \in L(f(A))\). Wtedy w \(f(A)\) istnieje bieg akceptujący \(w\).
-    Zauważmy, że \(\forall_{\left< p, a, q \right> \in \sigma'} \exists_{b \neq \epsilon} \left< p, b, q \right> \in \sigma\).
-    Zatem moglibyśmy zamienić litery z aktualnej ścieżki na litery na odpowiadających krawędziach z \(A\)
-    i otrzymalibyśmy bieg akceptujący słowo \(v\).
-    Formalnie, istnieje \(h: \sigma \to \sigma'\) takie,
-    że \( \forall_{\left< p, a, q \right> \in \sigma \land a \neq \epsilon} {h(p, a, q) = (p, b, q) \in \sigma' \land b \neq \epsilon }\).
-    Zatem \(A\) akceptuje \(v\) i \(\abs{w} = \abs{v}\).
-\end{proof}
-
-\begin{proof}
-    `\(\leftarrow\)` \\
-    Niech \(v \in L(A)\). Skoro \(f\) jedynie dodało przejścia między stanami, to \(v \in L(f(A))\),
-    bo \(\sigma \subseteq \sigma'\).
-\end{proof}
-
-\subsection{Rozważmy założenia języka:}
+Zdefiniujmy automat rozpoznający \(K \# L\).
+Niech \(M_1 = (\Sigma, Q_1, \singleton{q_1} F_1, \delta_1)\), \(M_2 = (\Sigma, Q_2, \singleton{q_2}, F_2, \delta_2)\)
+będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) Wtedy automat rozpoznający \(K \# L\) to
+\(M = (\Sigma, Q, \singleton{q}, F, \delta)\), gdzie:
 
 \begin{itemize}
-    \item \( \exists_{ a_i \in L(K), \ b_i \in L(L)} { a_i = b_i = c_i }\iff c_i \in L(K) \cap L(L) \)
-    \item \( \exists_{ a_i \in L(K), \ b_i \in L(L)} { c_i \in \left\{ a_i, b_i \right\} \land \abs{a_i}=\abs{b_i}=\abs{c_i} }
-          \iff
-          \left( c_i \in L(K) \land \exists_{ b_i \in L(L) }{ \abs{c_i} = \abs{b_i} } \right) \lor \left( c_i \in L(L) \land \exists_{ a_i \in L(K) }{ \abs{c_i} = \abs{a_i} } \right)
-          \\ \iff
-          \left( c_i \in L(K) \land c_i \in L(f(L)) \right) \lor \left( c_i \in L(L) \land c_i \in L(f(K)) \right)
-          \iff
-          c_i \in \left( L(K) \cap L(f(L)) \cup L(L) \cap L(f(K)) \right)
-          \)
+    \item \(Q = Q_1 \times Q_2 \times \left\{ 0, 1 \right\}\),
+    \item \(q = (q_1, q_2, 0)\),
+    \item \(\delta((q_1, q_2, 0), a) =  \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)} \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
+    \item \(\delta((q_1, q_2, 1), a) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\),
 \end{itemize}
-
-\subsection{Teza}
-
-Niech \( E := \left( L(K) \cap L(f(L)) \cup L(L) \cap L(f(K)) \right) \) oraz
-\( G := L(K) \cap L(L) \). Oba języki są regularne, bo powstały poprzez
-operacje zachowujące regularność na językach regularnych.
-
-\begin{lemma}
-    \begin{align*}
-        w \in L(K \# L) \iff w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)
-    \end{align*}
-\end{lemma}
-
-\begin{proof}
-    `\(\rightarrow\)` \\
-    Niech \(w \in L(K \# L)\). Z definicji istnieją \(a_1, \ldots , a_n \in L(K), b_1, \ldots b_n \in L(L), c_1, \ldots c_n\), że \(w = c_1 \cdot \ldots \cdot c_n\) i \(\ldots\)
-    Zauważmy, że skoro \(a_{2i}=b_{2i}=c_{2i}\), to \(c_{2i} \in L(K) \cap L(L)\).
-    Więc \(c_{2i} \in G\).
-    Skoro \(c_{2i+1} \in \left\{ a_{2i+1}, b_{2i+1} \right\}\), to \(c_{2i+1} \in E\).
-    Stąd \(w\) ma strukturę \(G \cdot E \cdot G \ldots \cdot \left( E + \epsilon \right)\).
-    Zatem \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\).
-\end{proof}
-
-\begin{proof}
-    `\(\leftarrow\)`
-
-    Niech \(w \in \left( G \cdot E \right)^* \cdot \left( G + \epsilon \right)\).
-    Zatem \(w\) ma strukturę \(G \cdot E \cdot G \cdot \ldots \cdot \left( E +
-    \epsilon \right)\). Stąd istnieją \(c_1 \in G, c_2 \in E, c_3 \in G, \ldots c_n
-    \in E \cup \left\{ \epsilon \right\}\), że \(w = c_1 \cdot \ldots \cdot c_n\).
-
-    Rozważmy \(c_i\), gdzie \(i < n\):
-
-    \begin{itemize}
-        \item \(c_{2i+1} \in G\). \(c_{2i+1} \in L(K) \cap L(L) \iff c_{2i+1} \in L(K) \land c_{2i+1} \in L(L)\). Zatem istnieją \(a_{2i+1} \in L(K), b_{2i+1} \in L(L)\), że \(c_{2i+1} = a_{2i+1} = b_{2i+1} \implies \abs{c_{2i+1}} = \abs{a_{2i+1}} = \abs{b_{2i+1}}\).
-        \item \(c_{2i} \in E\). \(c_{2i} \in \left( L(K) \cap L(f(L)) \cup L(L) \cap L(f(K)) \right) \iff c_{2i} \in L(K) \cap L(f(L)) \lor c_{2i} \in L(L) \cap L(f(K)) \iff \exists_{a_i \in L(K), b_i \in L(L)} c_{2i} \in \left\{ a_{2i}, b_{2i} \right\}\).
-    \end{itemize}
-
-    Jeśli \(c_n = \epsilon\), to możemy pominąć ostatnią literę i rozumowanie
-    działa. W przeciwnym razie \(c_n \in G\), więc działa rozumowanie dla
-    \(c_{2n+1}\).
-\end{proof}
-
-Skoro teza jest prawdziwa, to \(K \# L\) jest językiem regularnym, bo jest
-wynikiem operacji \( +, \cdot, ^*\) na językach regularnych.
 
 \section{}
 
