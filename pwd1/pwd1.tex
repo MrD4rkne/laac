@@ -135,5 +135,23 @@ jest nieregularny. Zatem jest to kontrprzykład.
 
 \section{}
 
+\subsection{Przykład automatu}
+
+Weźmy \(n = 2i, i \in N_+\).
+Rozważmy języki \(K\) i \(L\) nad alfabetem \(\Sigma = \{0, 1\}\):
+\begin{itemize}
+    \item \(K = \{ w \in \Sigma^* : \# 1 \equiv 0 (\mod n) \}\),
+    \item \(L = \{ w \in \Sigma^* : \# 0 \equiv 0 (\mod n) \}\).
+\end{itemize}
+
+Umiemy stworzyć DFA dla obu języków, które mają \(n\) stanów,
+ponieważ możemy pamietac liczbę \(1/0\) z dokładnością do reszty z dzielenia przez \(n\).
+Zatem ich rozmiar jest \(\leq n\).
+
+\subsection{Rozmiar automatu rozpoznającego badany język}
+
+Udowodnijmy, że rozmiar DFA rozpoznającego \(K \# L\) będzie wykładniczy względem rozmiaru automatów \(M_1\) i \(M_2\).
+
+Zauważmy, że w każdym stanie automatu \(M\) musimy zapamiętać, czy jesteśmy w stanie parzystym czy nieparzystym 
 
 \end{document}
