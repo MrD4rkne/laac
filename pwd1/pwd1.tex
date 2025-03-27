@@ -49,6 +49,8 @@
 
 \subsection{Automat rozpoznający K \# L}
 
+\begin{definition}
+
 Zdefiniujmy automat rozpoznający \(K \# L\).
 Niech \(M_1 = (\Sigma, Q_1, \singleton{q_1} F_1, \delta_1)\), \(M_2 = (\Sigma, Q_2, \singleton{q_2}, F_2, \delta_2)\)
 będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) Wtedy automat rozpoznający \(K \# L\) to
@@ -57,9 +59,15 @@ będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Zakładamy, że \(
 \begin{itemize}
     \item \(Q = Q_1 \times Q_2 \times \left\{ 0, 1 \right\}\),
     \item \(q = (q_1, q_2, 0)\),
-    \item \(\delta((q_1, q_2, 0), a) =  \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)} \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
-    \item \(\delta((q_1, q_2, 1), a) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\),
+    \item \(F = F_1 \times F_2 \times \left\{ 0, 1 \right\} \),
+    \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1, q_2 \in Q, a \in \Sigma, s \in P(q_1, q_2) \right\}
+    \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1, q_2 \in Q, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie \\
+    \(P(q_1, q_2) = \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)}
+     \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\), \\
+     \(NP(q_1, q_2) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\) \\
 \end{itemize}
+
+\end{definition}
 
 \section{}
 
