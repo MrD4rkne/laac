@@ -148,10 +148,59 @@ Umiemy stworzyć DFA dla obu języków, które mają \(n\) stanów,
 ponieważ możemy pamietac liczbę \(1/0\) z dokładnością do reszty z dzielenia przez \(n\).
 Zatem ich rozmiar jest \(\leq n\).
 
-\subsection{Rozmiar automatu rozpoznającego badany język}
+\subsubsection{Konstrukcja słów rozróżnialnych}
+Dla $n = 2i$ rozważmy rodzinę słów:
+\[
+\mathcal{F} = \left\{ w_S \right\} _{S \subseteq \{1,3,\dots,2i-1\}}
+\]
+gdzie każde $w_S$ ma:
+\begin{itemize}
+    \item na pozycjach parzystych: stały symbol $0$
+    \item na pozycjach nieparzystych: $1$ w pozycjach z $S$, $0$ w pozostałych
+\end{itemize}
 
-Udowodnijmy, że rozmiar DFA rozpoznającego \(K \# L\) będzie wykładniczy względem rozmiaru automatów \(M_1\) i \(M_2\).
+\subsubsection{Lemat o rozróżnialności}
+Dla dowolnych różnych $S, T \subseteq \{1,3,\dots,2i-1\}$ istnieje \(z \in K \# L\) takie, że:
+\[
+w_S z \in L \quad \land \quad w_T z \notin L
+\]
 
-Zauważmy, że w każdym stanie automatu \(M\) musimy zapamiętać, czy jesteśmy w stanie parzystym czy nieparzystym 
+\textbf{Dowód lematu:}
+\begin{enumerate}
+    \item Niech $k$ będzie najmniejszą pozycją nieparzystą, gdzie $S$ i $T$ się różnią (bez straty ogólności: $k \in S \setminus T$)
+    
+    \item Zdefiniujmy sufiks:
+    \[
+    z = 0^{2i - k} \quad \text{(dopełniający do długości $2i$)}
+    \]
+    
+    \item Dla $w_S z$:
+    \begin{itemize}
+        \item W $K$: wybór symbolu z $S$ na pozycji $k$ zmienia liczbę jedynek $\mod n$
+        \item W $L$: wybór symbolu z $T$ na pozycji $k$ zmienia liczbę zer $\mod n$
+    \end{itemize}
+    
+    \item Konkretnie: jeśli $w_S|_k = 1$ a $w_T|_k = 0$, to:
+    \[
+    \#_1(b) \not\equiv \#_1(b') \mod n \quad \text{lub} \quad \#_0(c) \not\equiv \#_0(c') \mod n
+    \]
+    gdzie $b,c$ i $b',c'$ to odpowiadające dekompozycje dla $w_S z$ i $w_T z$.
+\end{enumerate}
+
+\subsubsection{Liczenie klas abstrakcji}
+\begin{itemize}
+    \item Istnieje $2^i$ różnych podzbiorów $S$
+    \item Z lematu: każde $w_S$ należy do innej klasy $\sim_L$
+    \item Zatem liczba klas abstrakcji $index(\sim_L) \geq 2^i = 2^{n/2}$
+\end{itemize}
+
+\subsubsection{Wniosek}
+Z twierdzenia Myhilla-Nerode’a minimalny DFA dla $L$ ma co najmniej $2^{n/2}$ stanów. Ponieważ $2^{n/2} = \sqrt{2}^n$ jest funkcją wykładniczą względem $n$, nie istnieje wielomian $p(n)$ spełniający warunek z punktu (c).
+
+\[
+\boxed{\index(\sim_{K\#L}) \geq 2^{n/2} \implies \text{DFA wymaga } \Omega(2^{n/2}) \text{ stanów}}
+\]
+
+
 
 \end{document}
