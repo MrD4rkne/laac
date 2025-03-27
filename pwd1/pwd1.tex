@@ -61,13 +61,63 @@ będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Zakładamy, że \(
     \item \(q = (q_1, q_2, 0)\),
     \item \(F = F_1 \times F_2 \times \left\{ 0, 1 \right\} \),
     \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1, q_2 \in Q, a \in \Sigma, s \in P(q_1, q_2) \right\}
-    \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1, q_2 \in Q, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie \\
+    \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1, q_2 \in Q, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie
+
     \(P(q_1, q_2) = \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)}
-     \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\), \\
-     \(NP(q_1, q_2) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\) \\
+    \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
+
+    \(NP(q_1, q_2) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\),
+
+    \(\mathcal{F}(\delta, q) = \left\{ \delta(q, a): a \in \Sigma \right\}\).
 \end{itemize}
 
 \end{definition}
+
+\subsection{Dowód}
+
+Pokażemy, że \(\mathcal{L}(M) = K \# L\).
+
+\begin{proof}
+    \(\rightarrow\)
+
+    Niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). To znaczy, że istnieje bieg \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \left(q_{1,n}, q_{2,n}, 0/1 \right) \).
+    Zauważmy, że zgodnie z naszą konstrukcją: 
+    \begin{itemize}
+        \item zaczynamy na pozycji \(\left(q_{1,1}, q_{2,1}, 0 \right)\),
+        \item automat symuluje przejścia po \(M_1\) i \(M_2\), co jest równoważne przejściom po słowach \(b \in K\) i \(c \in L\),
+        \item gdy przechodzimy ze stanu typu \(0\) do stanu typu \(1\), to w jednym automacie przechodzimy po krawędzi z aktualną literą, a w drugim po dowolnej,
+        co jest równoważne \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\),
+        \item gdy przechodzimy ze stanu typu \(1\) do stanu typu \(0\), to w obu automatach przechodzimy po krawędzi z aktualną literą,
+        co jest równoważne \( a_{2i} = b_{2i} = c_{2i} \),
+        \item kończymy na pozycji \(\left(q_{1,n} q_{2,n}, 0/1 \right)\).
+    \end{itemize}
+
+    Zatem \(w \in K \# L\).
+
+\end{proof}
+
+\begin{proof}
+    \(\leftarrow\)
+
+    Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją \(b_1 b_2 \ldots b_n \in K\) i \(c_1 c_2 \ldots c_n \in L\) takie, że \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
+    
+    
+    Udowodnijmy, że automat \(M\) akceptuje \(w\). Startujemy w stanie \(\left(q_{1,1}, q_{2,1}, 0 \right)\).
+    \begin{itemize}
+        \item Gdy jesteśmy w stanie \(\left(q_{1,2i}, q_{2,2i}, 0 \right)\) i czytamy literę \(a_{2i+1}\)
+        to przechodzimy do stanu \(\left(q_{1,2i+1}, q_{2,2i+1}, 1 \right)\),
+        gdzie w jednym z automatów przechodzimy po krawędzi z literą \(a_{2i+1}\), a w drugim po dowolnej.
+        \item Gdy jesteśmy w stanie \(\left(q_{1,2i+1}, q_{2,2i+1}, 1 \right)\) i czytamy literę \(a_{2i+2}\)
+        to przechodzimy do stanu \(\left(q_{1,2i+2}, q_{2,2i+2}, 0 \right)\), gdzie w obu automatach przechodzimy po krawędzi z literą \(a_{2i+2}\).
+    \end{itemize}
+
+    Wszystkie przejścia są poprawne, gdyż zgodnie z definicją zmiany stanów na tych samych pozycjach (czyli \(q_1 \rightarrow q_1'\) i \(q_2 \rightarrow q_2'\))
+    są zgodne z przejściami w \(M_1\) i \(M_2\).
+    Przy parzystych indeksach przechodzimy po krawędziach z literami, które są równe w obu automatach,
+    a przy nieparzystych po krawędzi w jednym automacie z literą, a w drugim z dowolną (co wprowadza niedeterminizm).
+
+    Zatem \(w \in \mathcal{L}(M)\).
+\end{proof}
 
 \section{}
 
