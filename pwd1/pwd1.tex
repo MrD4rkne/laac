@@ -53,15 +53,15 @@
 
 Zdefiniujmy automat rozpoznający \(K \# L\).
 Niech \(M_1 = (\Sigma, Q_1, \singleton{q_1} F_1, \delta_1)\), \(M_2 = (\Sigma, Q_2, \singleton{q_2}, F_2, \delta_2)\)
-będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) Wtedy automat rozpoznający \(K \# L\) to
+będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Istnieją, bo \(K\) i \(L\) regularne. Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) (zawsze można przemianować stany). Wtedy automat rozpoznający \(K \# L\) to
 \(M = (\Sigma, Q, \singleton{q}, F, \delta)\), gdzie:
 
 \begin{itemize}
     \item \(Q = Q_1 \times Q_2 \times \left\{ 0, 1 \right\}\),
     \item \(q = (q_1, q_2, 0)\),
     \item \(F = F_1 \times F_2 \times \left\{ 0, 1 \right\} \),
-    \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1, q_2 \in Q, a \in \Sigma, s \in P(q_1, q_2) \right\}
-    \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1, q_2 \in Q, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie
+    \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in P(q_1, q_2) \right\}
+    \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie
 
     \(P(q_1, q_2) = \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)}
     \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
@@ -84,7 +84,8 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 \begin{proof}
     \(\rightarrow\)
 
-    Niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). To znaczy, że istnieje bieg \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \left(q_{1,n}, q_{2,n}, 0/1 \right) \).
+    Niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). To znaczy, że istnieje bieg \( \left(q_{1,1}, q_{2,1}, 0 \right)
+     \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \left(q_{1,n}, q_{2,n}, \left[ n \equiv 1 \mod 2  \right] \right) \).
     Zauważmy, że zgodnie z naszą konstrukcją: 
     \begin{itemize}
         \item zaczynamy na pozycji \(\left(q_{1,1}, q_{2,1}, 0 \right)\),
@@ -97,6 +98,7 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
     \end{itemize}
 
     Jako, że tak naprawdę przechodzimy po (dwuwymiarowych) automatach \(M_1\) i \(M_2\), to skoro ostatni stan jest akceptujący, to w obu automatach jesteśmy w stanie akceptującym.
+    Dodatkowo, w każdym z automatów zrobiliśmy dokładnie \(\abs{w}\) kroków.
     Co oznacza, że istnieją słowa \(b \in K\) i \(c \in L\), że \(w\) da się podzielić na fragmenty, które tworzą \(w\) zgodnie z definicją \(K \# L\).
 
     Zatem \(w \in K \# L\).
@@ -121,7 +123,7 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
     Wszystkie przejścia są poprawne, gdyż zgodnie z definicją zmiany stanów na tych samych pozycjach (czyli \(q_1 \rightarrow q_1'\) i \(q_2 \rightarrow q_2'\))
     są zgodne z przejściami w \(M_1\) i \(M_2\).
     Przy parzystych indeksach przechodzimy po krawędziach z literami, które są równe w obu automatach,
-    a przy nieparzystych po krawędzi w jednym automacie z literą, a w drugim z dowolną (co wprowadza niedeterminizm).
+    a przy nieparzystych po krawędzi w jednym automacie z liter, a w drugim z dowolną (co wprowadza niedeterminizm).
     Stan końcowy jest akceptujący, gdyż w obu automatach jesteśmy w stanie akceptującym.
 
     Zatem \(w \in \mathcal{L}(M)\).
@@ -203,4 +205,4 @@ Z twierdzenia Myhilla-Nerode’a minimalny DFA dla $L$ ma co najmniej $2^{n/2}$ 
 
 
 
-\end{document}
+\end{document}ą
