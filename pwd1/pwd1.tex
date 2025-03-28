@@ -117,8 +117,8 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
     Skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli zachowaliśmy niezmiennik dla \(j\).
     Zauważmy, że dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
 
-    Zatem na mocy indukcji wiemy, że istnieją słowa \(b_1 b_2 \ldots b_n \in K, c_1 c_2 \ldots c_n \in L\) takie, że
-    \( \forall_{i \in \{1,2,\ldots n\}} d_i = 3 \left( \implies a_i = b_i = c_i \right) \land d_i = 1/2 \implies b_i/c_i = w_i\).
+    Zatem na mocy indukcji wiemy, że istnieją słowa:
+    \[ b_1 b_2 \ldots b_n \in K, c_1 c_2 \ldots c_n \in L \text{, że } \ \forall_{i \in \{1,2,\ldots n\}} \left( d_i = 3 \implies a_i = b_i = c_i \right) \land \left( d_i = 1/2 \implies b_i/c_i = w_i. \right) \]
 
     Zatem \(w \in K \# L\).
 
@@ -127,8 +127,8 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 \begin{proof}
     \(\leftarrow\)
 
-    Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją \(b_1 b_2 \ldots b_n \in K\) i \(c_1 c_2 \ldots c_n \in L\) takie, że \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
-    
+    Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie,
+    że \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
     
     Udowodnijmy, że automat \(M\) akceptuje \(w\). Startujemy w stanie \(\left(q_{1,1}, q_{2,1}, 0 \right)\).
     \begin{itemize}
@@ -144,6 +144,20 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
     Przy parzystych indeksach przechodzimy po krawędziach z literami, które są równe w obu automatach,
     a przy nieparzystych po krawędzi w jednym automacie z liter, a w drugim z dowolną (co wprowadza niedeterminizm).
     Stan końcowy jest akceptujący, gdyż w obu automatach jesteśmy w stanie akceptującym.
+
+    % Formalnie, zdefiniujmy \(d_i\) jako \(d_i \in \{ 1, 2, 3\}\): \(d_{2i} = 3 \land \text{jeśli} \ a_{2i+1} = b_{2i+1} \implies d_{2i+1} = 1\) i \(d_{2i+1} = 2\) w przeciwnym razie.
+    Będziemy zachowywać niezmiennik, że dla \(j' < j\) istnieje słowo w \(M\) o prefixie \(a_1 a_2 \ldots a_{j'}\). Dla \(j = 0\) niezmiennik jest zachowany.
+    
+    Niech \( j = 2i\) i niezmiennik jest zachowany dla \(j' \leq j\) oraz, że jesteśmy w stanie \(s = \left(q_{1,2i}, q_{2,2i}, 0 \right)\) i czytamy literę \(a_{2i}\).
+    Zgodnie z definicją \(M\), skoro \(b \in K\) i \(c \in L\), to \( \left( s, a_{2i}, \left( q_{1,2i+1}, q_{2,2i+1}, 1 \right) \right) \in \delta\).
+    Skoro niezmiennik jest zachowany dla \(j' \leq j\), to istnieje bieg w \(M\) akceptujący \(a_1 a_2 \ldots a_{j-1}\).
+
+    Analogicznie, dla \(j = 2i+1\), skoro niezmiennik jest zachowany dla \(j'<j\), to istnieje bieg w \(M\) akceptujący \(a_1 a_2 \ldots a_{j-1}\). 
+    Jesteśmy w stanie \(\left(q_{1,2i+1}, q_{2,2i+1}, 1 \right)\), a \(a_{2i+1} \in \{b_{2i+1}, c_{2i+1}\}\), gdzie \(b \in K\) i \(c \in L\). 
+    Zatem istnieje przejście do stanu \(\left(q_{1,2i+2}, q_{2,2i+2}, 0 \right)\), co oznacza, że niezmiennik jest zachowany dla \(j = 2i+1\).
+
+    W ten sposób, na mocy indukcji, niezmiennik jest zachowany dla wszystkich \(j \leq n\).
+
 
     Zatem \(w \in \mathcal{L}(M)\).
 \end{proof}
