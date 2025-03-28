@@ -84,8 +84,6 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 \begin{proof}
     \(\rightarrow\)
 
-    Niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). To znaczy, że istnieje bieg \( \left(q_{1,1}, q_{2,1}, 0 \right)
-     \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \left(q_{1,n}, q_{2,n}, \left[ n \equiv 1 \mod 2  \right] \right) \).
     Zauważmy, że zgodnie z naszą konstrukcją: 
     \begin{itemize}
         \item zaczynamy na pozycji \(\left(q_{1,1}, q_{2,1}, 0 \right)\),
@@ -94,14 +92,33 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
         co jest równoważne \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\),
         \item gdy przechodzimy ze stanu typu \(1\) do stanu typu \(0\), to w obu automatach przechodzimy po krawędzi z aktualną literą,
         co jest równoważne \( a_{2i} = b_{2i} = c_{2i} \),
-        \item kończymy na pozycji \(\left(q_{1,n} q_{2,n}, 0/1 \right)\).
+        \item kończymy na pozycji \(\left(q_{1,n+1} q_{2,n+1}, 0/1 \right)\),  gdzie \(n = \abs{w}\).
     \end{itemize}
 
     Jako, że tak naprawdę przechodzimy po (dwuwymiarowych) automatach \(M_1\) i \(M_2\), to skoro ostatni stan jest akceptujący, to w obu automatach jesteśmy w stanie akceptującym.
     Dodatkowo, w każdym z automatów zrobiliśmy dokładnie \(\abs{w}\) kroków.
     Co oznacza, że istnieją słowa \(b \in K\) i \(c \in L\), że \(w\) da się podzielić na fragmenty, które tworzą \(w\) zgodnie z definicją \(K \# L\).
 
-    Zatem \(w \in K \# L\).
+    Formalnie, niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). 
+    
+    To znaczy, że istnieje bieg \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right)
+     \xrightarrow{a_2} \ldots \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \). Zaczynamy w stanie \(\left( q_1, q_2, 0 \right)\).
+    Dodatkowo na potrzeby wytłumaczenia będziemy uzupełniać ciąg \(d_1, d_2, \ldots, d_n \in \left\{ 1,2, 3 \right\}\), który oznacza, czy wzieliśmy literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu.
+    Będziemy zachowywać niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie zgodnym z \(w\) po zastosowaniu \(d_n\),
+    tz. dla danego \(j\): \(\text{dla \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l = \in \{ k, 3 \} \implies b_l/c_l = w_l\).
+    
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in \mathcal{N}_+, 2i \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0 \right) \).
+    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}) = a_j \). Czyli przypisujemy \(d_j = k\).
+    Dodatkowo, dla \(k \neq k' \in \{ 1, 2 \} \), skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to
+    \(q_{k',j} \notin F_k\), co jest sprzeczne z założeniem, że \(M\) akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
+
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i\). Niech \(j=2i+1 \in \mathcal{N}, 2i+1 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0 \right) \).
+    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}) = a_j \). Czyli przypisujemy \(d_j = 3\).
+    Skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli zachowaliśmy niezmiennik dla \(j\).
+
+    Zauważmy, że dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
+
+    Zatem na mocy indukcji \(w \in K \# L\).
 
 \end{proof}
 
