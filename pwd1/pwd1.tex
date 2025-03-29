@@ -129,25 +129,26 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 
     Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie,
     że \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
+
+    Udowodnimy, że \(M\) akceptuje \(w\).
+
+    Skoro \(b \in K \land c \in L\), to istnieją biegi akceptujące postaci \(q_{1,1} \xrightarrow{b_1} q_{1,2} \xrightarrow{b_2} \ldots \xrightarrow{b_n} q_{1,n+1}\),
+    \(q_{2,1} \xrightarrow{c_1} q_{2,2} \xrightarrow{c_2} \ldots \xrightarrow{c_n} q_{2,n+1}\) odpowiednio w \(M_1\), \(M_2\).
+
+    Zauważmy, że zgodnie z konstrukcją \(M\), stan \( \left( q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right] \right) \in F\).
     
-    Udowodnijmy, że automat \(M\) akceptuje \(w\). Startujemy w stanie \(\left(q_{1,1}, q_{2,1}, 0 \right)\).
-    \begin{itemize}
-        \item Gdy jesteśmy w stanie \(\left(q_{1,2i}, q_{2,2i}, 0 \right)\) i czytamy literę \(a_{2i}\)
-        to przechodzimy do stanu \(\left(q_{1,2i+1}, q_{2,2i+1}, 1 \right)\),
-        gdzie w jednym z automatów przechodzimy po krawędzi z literą \(a_{2i+1}\), a w drugim po dowolnej.
-        \item Gdy jesteśmy w stanie \(\left(q_{1,2i+1}, q_{2,2i+1}, 1 \right)\) i czytamy literę \(a_{2i+2}\)
-        to przechodzimy do stanu \(\left(q_{1,2i+2}, q_{2,2i+2}, 0 \right)\), gdzie w obu automatach przechodzimy po krawędzi z literą \(a_{2i+2}\).
-    \end{itemize}
+    Skoro \(b_{2i} = c_{2i}\), to bieg postaci
+    \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{b_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{b_2} \ldots \xrightarrow{b_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \)
+    i
+    \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{c_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{c_2} \ldots \xrightarrow{c_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \)
+    są akceptujące w \(M\). Zatem \(b, c \in \mathcal{L}(M)\).
+    
+    Teraz pokaże, że można zmodyfikować któryś z tych biegów, aby uzyskać bieg akceptujący dla \(w\).
 
-    Wszystkie przejścia są poprawne, gdyż zgodnie z definicją zmiany stanów na tych samych pozycjach.
-    Przy parzystych indeksach przechodzimy po krawędziach z literami, które są równe w obu automatach,
-    a przy nieparzystych po krawędzi w jednym automacie z liter, a w drugim z dowolną (co wprowadza niedeterminizm).
-    Stan końcowy jest akceptujący, gdyż w obu automatach jesteśmy w stanie akceptującym.
-
-    Będziemy utrzymywać niezmiennik, że dla danego \(j\) istnieje bieg o prefixie stanów \( \left( q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1}
-    \left( q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \xrightarrow{a_{j-1}} \left( q_{1,j}, q_{2,j}, \left[ j \equiv 1 \mod 2  \right] \right) \).
-    Dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
-
+    Skoro oba biegi są akceptujące i składają się z tych samych stanów. to \( \forall_i \in \{1,2,\ldots n\} a_i = b_i \lor a_i = c_i \).
+    Dalej, \( \forall_i \in \{1,2,\ldots n\} \left( \left( q_{1,i}, q_{2,i}, i \equiv 0 \mod 2 \right), a_i, \left( q_{1,i+1}, q_{2,i+1}, i \equiv 1 \mod 2 \right)  \right) 
+    \in \delta \). Stąd, bieg  \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \)
+    jest poprawny i akceptujący w \(M\).
 
     Zatem \(w \in \mathcal{L}(M)\).
 \end{proof}
