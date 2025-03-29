@@ -101,19 +101,19 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 
     Formalnie, niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). 
     
-    To znaczy, że istnieje bieg \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right)
-     \xrightarrow{a_2} \ldots \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \). Zaczynamy w stanie \(\left( q_1, q_2, 0 \right)\).
+    To znaczy, że istnieje bieg akceptujący \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right)
+     \xrightarrow{a_2} \ldots \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \).
     Dodatkowo na potrzeby wytłumaczenia będziemy uzupełniać ciąg \(d_1, d_2, \ldots, d_n \in \left\{ 1,2, 3 \right\}\), który oznacza, czy wzieliśmy literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu.
     Będziemy zachowywać niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie zgodnym z \(w\) po zastosowaniu \(d_n\),
     tz. dla danego \(j\): \(\text{dla \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l = \in \{ k, 3 \} \implies b_l/c_l = w_l\).
     
     Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in \mathcal{N}_+, 2i \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0 \right) \).
-    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}) = a_j \). Czyli przypisujemy \(d_j = k\).
+    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli przypisujemy \(d_j = k\).
     Dodatkowo, dla \(k \neq k' \in \{ 1, 2 \} \), skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to
-    \(q_{k',j} \notin F_k\), co jest sprzeczne z założeniem, że \(M\) akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
+    \(q_{k',n+1} \notin F_k\), co jest sprzeczne z założeniem, że \(M\) akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
 
     Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i\). Niech \(j=2i+1 \in \mathcal{N}, 2i+1 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0 \right) \).
-    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}) = a_j \). Czyli przypisujemy \(d_j = 3\).
+    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli przypisujemy \(d_j = 3\).
     Skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli zachowaliśmy niezmiennik dla \(j\).
     Zauważmy, że dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
 
@@ -139,24 +139,14 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
         to przechodzimy do stanu \(\left(q_{1,2i+2}, q_{2,2i+2}, 0 \right)\), gdzie w obu automatach przechodzimy po krawędzi z literą \(a_{2i+2}\).
     \end{itemize}
 
-    Wszystkie przejścia są poprawne, gdyż zgodnie z definicją zmiany stanów na tych samych pozycjach (czyli \(q_1 \rightarrow q_1'\) i \(q_2 \rightarrow q_2'\))
-    są zgodne z przejściami w \(M_1\) i \(M_2\).
+    Wszystkie przejścia są poprawne, gdyż zgodnie z definicją zmiany stanów na tych samych pozycjach.
     Przy parzystych indeksach przechodzimy po krawędziach z literami, które są równe w obu automatach,
     a przy nieparzystych po krawędzi w jednym automacie z liter, a w drugim z dowolną (co wprowadza niedeterminizm).
     Stan końcowy jest akceptujący, gdyż w obu automatach jesteśmy w stanie akceptującym.
 
-    % Formalnie, zdefiniujmy \(d_i\) jako \(d_i \in \{ 1, 2, 3\}\): \(d_{2i} = 3 \land \text{jeśli} \ a_{2i+1} = b_{2i+1} \implies d_{2i+1} = 1\) i \(d_{2i+1} = 2\) w przeciwnym razie.
-    Będziemy zachowywać niezmiennik, że dla \(j' < j\) istnieje słowo w \(M\) o prefixie \(a_1 a_2 \ldots a_{j'}\). Dla \(j = 0\) niezmiennik jest zachowany.
-    
-    Niech \( j = 2i\) i niezmiennik jest zachowany dla \(j' \leq j\) oraz, że jesteśmy w stanie \(s = \left(q_{1,2i}, q_{2,2i}, 0 \right)\) i czytamy literę \(a_{2i}\).
-    Zgodnie z definicją \(M\), skoro \(b \in K\) i \(c \in L\), to \( \left( s, a_{2i}, \left( q_{1,2i+1}, q_{2,2i+1}, 1 \right) \right) \in \delta\).
-    Skoro niezmiennik jest zachowany dla \(j' \leq j\), to istnieje bieg w \(M\) akceptujący \(a_1 a_2 \ldots a_{j-1}\).
-
-    Analogicznie, dla \(j = 2i+1\), skoro niezmiennik jest zachowany dla \(j'<j\), to istnieje bieg w \(M\) akceptujący \(a_1 a_2 \ldots a_{j-1}\). 
-    Jesteśmy w stanie \(\left(q_{1,2i+1}, q_{2,2i+1}, 1 \right)\), a \(a_{2i+1} \in \{b_{2i+1}, c_{2i+1}\}\), gdzie \(b \in K\) i \(c \in L\). 
-    Zatem istnieje przejście do stanu \(\left(q_{1,2i+2}, q_{2,2i+2}, 0 \right)\), co oznacza, że niezmiennik jest zachowany dla \(j = 2i+1\).
-
-    W ten sposób, na mocy indukcji, niezmiennik jest zachowany dla wszystkich \(j \leq n\).
+    Będziemy utrzymywać niezmiennik, że dla danego \(j\) istnieje bieg o prefixie stanów \( \left( q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1}
+    \left( q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \xrightarrow{a_{j-1}} \left( q_{1,j}, q_{2,j}, \left[ j \equiv 1 \mod 2  \right] \right) \).
+    Dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
 
 
     Zatem \(w \in \mathcal{L}(M)\).
