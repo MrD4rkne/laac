@@ -11,6 +11,8 @@
 \usepackage{physics}
 \usepackage{multicol}
 \usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
 
 % Definicje środowisk do twierdzeń, lematów, dowodów itp.
 \newtheorem{theorem}{Twierdzenie}[section]
@@ -155,80 +157,67 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 
 Skoro \(\mathcal{L}(M) = K \# L\), to \(K \# L\) jest regularny, bo \(M\) jest automatem skończonym.
 
-\section{}
+\section{Kontrprzykład}
 
 Rozważmy \(K = \emptyset, L = \text{dowolny język nieregularny}\). Wtedy
 \(K \# L = \emptyset\), który jest językiem regularnym. Jednak \(L\)
 jest nieregularny. Zatem jest to kontrprzykład.
 
-\section{}
+\section{Kontrprzykład}
 
-\subsection{Przykład automatu}
+Niech \(K_n \subset \{ a,b \}^* \) język, który kończy się na \(a^n\). Jest on oczywiście regularny (bo postaci \( (a+b)^* a^n \)).
 
-Weźmy \(n = 2i, i \in N_+\).
-Rozważmy języki \(K\) i \(L\) nad alfabetem \(\Sigma = \{0, 1\}\):
-\begin{itemize}
-    \item \(K = \{ w \in \Sigma^* : \# 1 \equiv 0 (\mod n) \}\),
-    \item \(L = \{ w \in \Sigma^* : \# 0 \equiv 0 (\mod n) \}\).
-\end{itemize}
+Automat rozpoznający \(K_n\) ma \(n+1\) stanów.
 
-Umiemy stworzyć DFA dla obu języków, które mają \(n\) stanów,
-ponieważ możemy pamietac liczbę \(1/0\) z dokładnością do reszty z dzielenia przez \(n\).
-Zatem ich rozmiar jest \(\leq n\).
+\begin{center}
+\begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto]
+    \node[state, initial] (q_0) {$q_0$};
+    \node[state] (q_1) [right=of q_0] {$q_1$};
+    \node[state] (q_2) [right=of q_1] {$q_2$};
+    \node[state] (q_3) [right=of q_2] {$q_3$};
+    \node[state] (q_n) [right=of q_3] {$q_n$};
 
-\subsubsection{Konstrukcja słów rozróżnialnych}
+     \path[->]
+        (q_0) edge[loop above] node {b} ()
+              edge node {a} (q_1)
+        (q_1) edge[bend left] node {b} (q_0)
+              edge node {a} (q_2)
+        (q_2) edge[bend left] node {b} (q_0)
+              edge node {a} (q_3)
+        (q_3) edge[dashed] node {} (q_n)
+              edge[bend left] node {b} (q_0)
+        (q_n) edge[loop above] node {a} ()
+              edge[bend left] node {b} (q_0);
+    \end{tikzpicture}
+\end{center}
 
-\[
-\mathcal{F} = \left\{ w_S \right\} _{S \subseteq \{1,3,\dots,2i-1\}}
-\]
-gdzie każde $w_S$ ma:
-\begin{itemize}
-    \item na pozycjach parzystych: stały symbol $0$
-    \item na pozycjach nieparzystych: $1$ w pozycjach z $S$, $0$ w pozostałych
-\end{itemize}
+Niech \(L_n \subset \{ a,b \}^* \) język, który kończy się na \( (\text{nie} \ a)^{n-1}\). Jest on oczywiście regularny (bo postaci \( (a+b)^* (\Sigma - {a})^{n-1} \)).
+W tym wypadku, jest to równoważne postaci \( (a+b)^* b^{n-1} \).
 
-\subsubsection{Lemat o rozróżnialności}
-Dla dowolnych różnych $S, T \subseteq \{1,3,\dots,2i-1\}$ istnieje \(z \in K \# L\) takie, że:
-\[
-w_S z \in L \quad \land \quad w_T z \notin L
-\]
+Automat rozpoznający \(L_n\) ma \(n\) stanów.
 
-\textbf{Dowód lematu:}
-\begin{enumerate}
-    \item Niech $k$ będzie najmniejszą pozycją nieparzystą, gdzie $S$ i $T$ się różnią (bez straty ogólności: $k \in S \setminus T$)
+\begin{center}
+    \begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto]
+        \node[state, initial] (q_0) {$q_0$};
+        \node[state] (q_1) [right=of q_0] {$q_1$};
+        \node[state] (q_2) [right=of q_1] {$q_2$};
+        \node[state] (q_3) [right=of q_2] {$q_3$};
+        \node[state] (q_{n-1}) [right=of q_3] {$q_{n-1}$};
     
-    \item Zdefiniujmy sufiks:
-    \[
-    z = 0^{2i - k} \quad \text{(dopełniający do długości $2i$)}
-    \]
+         \path[->]
+            (q_0) edge[loop above] node {a} ()
+                  edge node {b} (q_1)
+            (q_1) edge[bend left] node {a} (q_0)
+                  edge node {b} (q_2)
+            (q_2) edge[bend left] node {a} (q_0)
+                  edge node {b} (q_3)
+            (q_3) edge[dashed] node {} (q_n)
+                  edge[bend left] node {a} (q_0)
+            (q_{n-1}) edge[loop above] node {b} ()
+                  edge[bend left] node {a} (q_0);
+        \end{tikzpicture}
+    \end{center}
     
-    \item Dla $w_S z$:
-    \begin{itemize}
-        \item W $K$: wybór symbolu z $S$ na pozycji $k$ zmienia liczbę jedynek $\mod n$
-        \item W $L$: wybór symbolu z $T$ na pozycji $k$ zmienia liczbę zer $\mod n$
-    \end{itemize}
-    
-    \item Konkretnie: jeśli $w_S|_k = 1$ a $w_T|_k = 0$, to:
-    \[
-    \#_1(b) \not\equiv \#_1(b') \mod n \quad \text{lub} \quad \#_0(c) \not\equiv \#_0(c') \mod n
-    \]
-    gdzie $b,c$ i $b',c'$ to odpowiadające dekompozycje dla $w_S z$ i $w_T z$.
-\end{enumerate}
-
-\subsubsection{Liczenie klas abstrakcji}
-\begin{itemize}
-    \item Istnieje $2^i$ różnych podzbiorów $S$
-    \item Z lematu: każde $w_S$ należy do innej klasy $\sim_L$
-    \item Zatem liczba klas abstrakcji $index(\sim_L) \geq 2^i = 2^{n/2}$
-\end{itemize}
-
-\subsubsection{Wniosek}
-Z twierdzenia Myhilla-Nerode’a minimalny DFA dla $L$ ma co najmniej $2^{n/2}$ stanów. Ponieważ $2^{n/2} = \sqrt{2}^n$ jest funkcją wykładniczą względem $n$, nie istnieje wielomian $p(n)$ spełniający warunek z punktu (c).
-
-\[
-\boxed{\index(\sim_{K\#L}) \geq 2^{n/2} \implies \text{DFA wymaga } \Omega(2^{n/2}) \text{ stanów}}
-\]
-
 
 
 \end{document}
