@@ -165,59 +165,42 @@ jest nieregularny. Zatem jest to kontrprzykład.
 
 \section{Kontrprzykład}
 
-Niech \(K_n \subset \{ a,b \}^* \) język, który kończy się na \(a^n\). Jest on oczywiście regularny (bo postaci \( (a+b)^* a^n \)).
+Będziemy pracować na językach nad alfabetem \(\Sigma = \{a, b\}\).
 
-Automat rozpoznający \(K_n\) ma \(n+1\) stanów.
+Niech \(K_n = ( (a+b)a )^* (aa)^n, n \in \mathcal{N_+}\). Jest to język słów o parzystej długości,
+które na parzystych pozycjach mają literę `a', a patrząc tylko na pozycje nieparzyste, kończą się na \(a^n\).
+DFA rozpoznający \(K_n\) ma \(2n+1\) stanów.
 
-\begin{center}
-\begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto]
-    \node[state, initial] (q_0) {$q_0$};
-    \node[state] (q_1) [right=of q_0] {$q_1$};
-    \node[state] (q_2) [right=of q_1] {$q_2$};
-    \node[state] (q_3) [right=of q_2] {$q_3$};
-    \node[state] (q_n) [right=of q_3] {$q_n$};
+% \begin{center}
+%     \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
+%         \node[state, initial] (q_00)   {$q_{0,1}$};
+%         \node[state] (q_01) [above of=q_00] {$q_{0,2}$};
 
-     \path[->]
-        (q_0) edge[loop above] node {b} ()
-              edge node {a} (q_1)
-        (q_1) edge[bend left] node {b} (q_0)
-              edge node {a} (q_2)
-        (q_2) edge[bend left] node {b} (q_0)
-              edge node {a} (q_3)
-        (q_3) edge[dashed] node {} (q_n)
-              edge[bend left] node {b} (q_0)
-        (q_n) edge[loop above] node {a} ()
-              edge[bend left] node {b} (q_0);
-    \end{tikzpicture}
-\end{center}
+%         \node[state] (q_10) [right of=q_00] {$q_{1,1}$};
+%         \node[state] (q_11) [above of=q_10] {$q_{1,2}$};
 
-Niech \(L_n \subset \{ a,b \}^* \) język, który kończy się na \( (\text{nie} \ a)^{n-1}\). Jest on oczywiście regularny (bo postaci \( (a+b)^* (\Sigma - {a})^{n-1} \)).
-W tym wypadku, jest to równoważne postaci \( (a+b)^* b^{n-1} \).
+%         \path[->]
+%             (q_00) edge node {a} (q_01)
+%             (q_01) edge [bend left] node {a} (q_00)
+%             (q_00) edge node {b} (q_10)
 
-Automat rozpoznający \(L_n\) ma \(n\) stanów.
+%             (q_10) edge node {a} (q_11)
+%             (q_11) edge [bend left] node {a} (q_10);
+%     \end{tikzpicture}
+% \end{center}
 
-\begin{center}
-    \begin{tikzpicture}[shorten >=1pt, node distance=2cm, on grid, auto]
-        \node[state, initial] (q_0) {$q_0$};
-        \node[state] (q_1) [right=of q_0] {$q_1$};
-        \node[state] (q_2) [right=of q_1] {$q_2$};
-        \node[state] (q_3) [right=of q_2] {$q_3$};
-        \node[state] (q_{n-1}) [right=of q_3] {$q_{n-1}$};
-    
-         \path[->]
-            (q_0) edge[loop above] node {a} ()
-                  edge node {b} (q_1)
-            (q_1) edge[bend left] node {a} (q_0)
-                  edge node {b} (q_2)
-            (q_2) edge[bend left] node {a} (q_0)
-                  edge node {b} (q_3)
-            (q_3) edge[dashed] node {} (q_n)
-                  edge[bend left] node {a} (q_0)
-            (q_{n-1}) edge[loop above] node {b} ()
-                  edge[bend left] node {a} (q_0);
-        \end{tikzpicture}
-    \end{center}
-    
+Niech \(L_n = ( (a+b)a )^* (aa)^{n-1}, n \in \mathcal{N_+}\). Jest to język słów o parzystej długości,
+które na parzystych pozycjach mają literę `a', a patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\).
+DFA rozpoznający \(L_n\) ma \(2n+1\) stanów.
+
+Weźmy język \(K \# L\). Zauważmy, że \( \forall w= w_0 w_1 \ldots w_n \in K \# L \ \forall_{i \in \{ 2, 4, \ldots n \} } w_i = a\). Wynika to z z definicji
+\(K\), \(L\) i konstrukcji \(K \# L\).
+
+Udowodnimy, że \(K \# L \subset \{ a, b \}^*\) jest równy językowi, którego \(2n\) tą litera od końca jest `a'.
+Łatwo zauważyć, że \(K \# L\) jest językiem o parzystej długości, bo \(K\) i \(L\) są językami o parzystej długości.
+
+Niech \(w = w_0 w_1 \ldots w_2m \in K \# L\). \(2n \leq 2m\), bo wszystkie słowa w \(K\) mają długość conajmniej \(2n\).
+Zarówno \(K\) i \(L\) na parzystych pozycjach mają literę `a', więc \(w\) również.
 
 
 \end{document}
