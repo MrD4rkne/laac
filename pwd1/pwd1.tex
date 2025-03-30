@@ -201,6 +201,8 @@ Rozważmy \(K = \emptyset, L = \text{dowolny język nieregularny}\). Wtedy \(K \
 L = \emptyset\), który jest językiem regularnym. Jednak \(L\) jest
 nieregularny. Zatem jest to kontrprzykład.
 
+Co dowodzi fałszywości zdania z polecenia.
+
 \section{Kontrprzykład}
 
 Będziemy pracować na językach nad alfabetem \(\Sigma = \{a, b\}\).
@@ -289,5 +291,9 @@ pozycjach są `a'.
     fragmenty \(b\) i \(c\) zgodnie z definicją \(K \# L\). Zatem \(w \in K \# L\).
 
 \end{proof}
+
+Z wykładu wiemy, że język \(K \# L\) wymaga DFA o \( \mathcal{O}(2^{2n}) \) stanach.
+Zatem nie istnieje \(p(n)\) takie, że \(K \# L\) jest rozpoznawany przez DFA o \(p(n)\) stanach.
+Co dowodzi fałszywości zdania z polecenia.
 
 \end{document}
