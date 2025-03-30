@@ -189,18 +189,58 @@ DFA rozpoznający \(K_n\) ma \(2n+1\) stanów.
 %     \end{tikzpicture}
 % \end{center}
 
-Niech \(L_n = ( (a+b)a )^* (aa)^{n-1}, n \in \mathcal{N_+}\). Jest to język słów o parzystej długości,
+Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język słów o parzystej długości,
 które na parzystych pozycjach mają literę `a', a patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\).
 DFA rozpoznający \(L_n\) ma \(2n+1\) stanów.
 
 Weźmy język \(K \# L\). Zauważmy, że \( \forall w= w_0 w_1 \ldots w_n \in K \# L \ \forall_{i \in \{ 2, 4, \ldots n \} } w_i = a\). Wynika to z z definicji
 \(K\), \(L\) i konstrukcji \(K \# L\).
 
-Udowodnimy, że \(K \# L \subset \{ a, b \}^*\) jest równy językowi, którego \(2n\) tą litera od końca jest `a'.
-Łatwo zauważyć, że \(K \# L\) jest językiem o parzystej długości, bo \(K\) i \(L\) są językami o parzystej długości.
+Udowodnimy, że \(K \# L \subset \{ a, b \}^*\) jest równy językowi, którego \(2n-1\) tą litera od końca jest `a' oraz
+wszystkie litery na parzystych pozycjach są `a'.
 
-Niech \(w = w_0 w_1 \ldots w_2m \in K \# L\). \(2n \leq 2m\), bo wszystkie słowa w \(K\) mają długość conajmniej \(2n\).
+\begin{proof}
+
+\(\rightarrow\)
+
+Łatwo zauważyć, że \(K \# L\) jest językiem o parzystej długości, bo \(K\) i \(L\) są językami o parzystej długości.
 Zarówno \(K\) i \(L\) na parzystych pozycjach mają literę `a', więc \(w\) również.
+
+Niech \(w = w_1 w_2 \ldots w_{2m} \in K \# L\). \(2n \leq 2m\), bo wszystkie słowa w \(K\) mają długość conajmniej \(2n\).
+Skoro \(w\) istnieje to zgodnie z definicją \(K \# L\) istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie,
+że \(w_{2i} = b_{2i} = c_{2i}\) i \(w_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
+
+Jako, że (patrząc na pozycje nieparzyste) \(b\) kończy się na \(a^n\), a \(c\) kończy się na \(b^{n-1}\), to \(n\)-ta
+nieparzysta pozycja od końca \(w\) jest `a'.
+
+Dodatkowo, \( \forall_{i \in \{2m - 2n + 1, 2m - 2n + 1 + 2, \ldots, 2m - 1 \}} w_i \in \{ a,b \}\). Każda możliwość
+spełniająca ten warunek jest poprawna.
+
+Finalnie, zauważmy, że zarówno \(b\) jak i \(c\) zaczyna się od dowolnego prefikxu \( ((a+b)a)^{2m-2n} \).
+Tu również, każda możliwość spełniająca ten warunek jest poprawna.
+
+Zatem \(w \in \text{język nad alfabetem } \{ a, b \}\) o słowach parzystej długości, conajmniej \(2n\), 
+że \(2n-1\)-ta litera od końca jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a'.
+
+\end{proof}
+
+\begin{proof}
+
+    \(\leftarrow\)
+    
+    Niech \(w = w_1 w_2 \ldots w_{2m}\in \text{język nad alfabetem } \{ a, b \}\) o słowach parzystej długości, conajmniej \(2n\),
+że \(2n-1\)-ta litera od końca jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a':
+
+\begin{itemize}
+    \item \(w_{2i} = a\) dla \(i \in \{1, 2, \ldots m\}\),
+    \item \(w_{2m-2n+1} = a\).
+\end{itemize}
+
+    Zdefiniujmy \(b = w_1 a w_3 \ldots w_{2m-2n-1} a a^{2n}\), \(c = w_1 a w_3 \ldots w_{2m-2n-1} a a a (ba)^{n-1}\).
+    Zauważmy, że \(w\) można podzielić na fragmenty \(b\) i \(c\) zgodnie z definicją \(K \# L\).
+    Zatem \(w \in K \# L\).
+
+    \end{proof}
 
 
 \end{document}
