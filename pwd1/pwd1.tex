@@ -53,30 +53,35 @@
 
 \begin{definition}
 
-Zdefiniujmy automat rozpoznający \(K \# L\).
-Niech \(M_1 = (\Sigma, Q_1, \singleton{q_1} F_1, \delta_1)\), \(M_2 = (\Sigma, Q_2, \singleton{q_2}, F_2, \delta_2)\)
-będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Istnieją, bo \(K\) i \(L\) regularne. Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) (zawsze można przemianować stany). Wtedy automat rozpoznający \(K \# L\) to
-\(M = (\Sigma, Q, \singleton{q}, F, \delta)\), gdzie:
+    Zdefiniujmy automat rozpoznający \(K \# L\). Niech \(M_1 = (\Sigma, Q_1,
+    \singleton{q_1} F_1, \delta_1)\), \(M_2 = (\Sigma, Q_2, \singleton{q_2}, F_2,
+    \delta_2)\) będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Istnieją,
+    bo \(K\) i \(L\) regularne. Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) (zawsze
+    można przemianować stany). Wtedy automat rozpoznający \(K \# L\) to \(M =
+    (\Sigma, Q, \singleton{q}, F, \delta)\), gdzie:
 
-\begin{itemize}
-    \item \(Q = Q_1 \times Q_2 \times \left\{ 0, 1 \right\}\),
-    \item \(q = (q_1, q_2, 0)\),
-    \item \(F = F_1 \times F_2 \times \left\{ 0, 1 \right\} \),
-    \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in P(q_1, q_2) \right\}
-    \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie
+    \begin{itemize}
+        \item \(Q = Q_1 \times Q_2 \times \left\{ 0, 1 \right\}\),
+        \item \(q = (q_1, q_2, 0)\),
+        \item \(F = F_1 \times F_2 \times \left\{ 0, 1 \right\} \),
+        \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in P(q_1, q_2) \right\}
+              \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie
 
-    \(P(q_1, q_2) = \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)}
-    \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
+              \(P(q_1, q_2) = \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)}
+              \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
 
-    \(NP(q_1, q_2) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\),
+              \(NP(q_1, q_2) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\),
 
-    \(\mathcal{F}(\delta, q) = \left\{ \delta(q, a): a \in \Sigma \right\}\).
-\end{itemize}
+              \(\mathcal{F}(\delta, q) = \left\{ \delta(q, a): a \in \Sigma \right\}\).
+    \end{itemize}
 
-Inaczej mówiąc, automat \(M\) symuluje jednocześnie przejścia w \(M_1\) i \(M_2\).
-Przechodzimy między stanami na pozycji parzystej / nieparzystej (czyli parzystość litery po której dotarliśmy do danego stanu).
-Z pozycji nieparzystej przechodzimy w obu automatach po krawędzi ze wskazaną literą (są deterministyczne, więc jest dokładnie jedna taka krawędź).
-Z pozycji parzystej w jednym automacie przechodzimy po krawędzi z literą, a w drugim po dowolnej (co wprowadza niedeterminizm).
+    Inaczej mówiąc, automat \(M\) symuluje jednocześnie przejścia w \(M_1\) i
+    \(M_2\). Przechodzimy między stanami na pozycji parzystej / nieparzystej (czyli
+    parzystość litery po której dotarliśmy do danego stanu). Z pozycji nieparzystej
+    przechodzimy w obu automatach po krawędzi ze wskazaną literą (są
+    deterministyczne, więc jest dokładnie jedna taka krawędź). Z pozycji parzystej
+    w jednym automacie przechodzimy po krawędzi z literą, a w drugim po dowolnej
+    (co wprowadza niedeterminizm).
 \end{definition}
 
 \subsection{Dowód}
@@ -86,38 +91,58 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 \begin{proof}
     \(\rightarrow\)
 
-    Zauważmy, że zgodnie z naszą konstrukcją: 
+    Zauważmy, że zgodnie z naszą konstrukcją:
     \begin{itemize}
         \item zaczynamy na pozycji \(\left(q_{1,1}, q_{2,1}, 0 \right)\),
-        \item automat symuluje przejścia po \(M_1\) i \(M_2\), co jest równoważne przejściom po słowach \(b \in K\) i \(c \in L\),
-        \item gdy przechodzimy ze stanu typu \(0\) do stanu typu \(1\), to w jednym automacie przechodzimy po krawędzi z aktualną literą, a w drugim po dowolnej,
-        co jest równoważne \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\),
-        \item gdy przechodzimy ze stanu typu \(1\) do stanu typu \(0\), to w obu automatach przechodzimy po krawędzi z aktualną literą,
-        co jest równoważne \( a_{2i} = b_{2i} = c_{2i} \),
-        \item kończymy na pozycji \(\left(q_{1,n+1} q_{2,n+1}, 0/1 \right)\),  gdzie \(n = \abs{w}\).
+        \item automat symuluje przejścia po \(M_1\) i \(M_2\), co jest równoważne przejściom
+              po słowach \(b \in K\) i \(c \in L\),
+        \item gdy przechodzimy ze stanu typu \(0\) do stanu typu \(1\), to w jednym automacie
+              przechodzimy po krawędzi z aktualną literą, a w drugim po dowolnej, co jest
+              równoważne \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\),
+        \item gdy przechodzimy ze stanu typu \(1\) do stanu typu \(0\), to w obu automatach
+              przechodzimy po krawędzi z aktualną literą, co jest równoważne \( a_{2i} =
+              b_{2i} = c_{2i} \),
+        \item kończymy na pozycji \(\left(q_{1,n+1} q_{2,n+1}, 0/1 \right)\), gdzie \(n =
+              \abs{w}\).
     \end{itemize}
 
-    Jako, że tak naprawdę przechodzimy po (dwuwymiarowych) automatach \(M_1\) i \(M_2\), to skoro ostatni stan jest akceptujący, to w obu automatach jesteśmy w stanie akceptującym.
-    Dodatkowo, w każdym z automatów zrobiliśmy dokładnie \(\abs{w}\) kroków.
-    Co oznacza, że istnieją słowa \(b \in K\) i \(c \in L\), że \(w\) da się podzielić na fragmenty, które tworzą \(w\) zgodnie z definicją \(K \# L\).
+    Jako, że tak naprawdę przechodzimy po (dwuwymiarowych) automatach \(M_1\) i
+    \(M_2\), to skoro ostatni stan jest akceptujący, to w obu automatach jesteśmy w
+    stanie akceptującym. Dodatkowo, w każdym z automatów zrobiliśmy dokładnie
+    \(\abs{w}\) kroków. Co oznacza, że istnieją słowa \(b \in K\) i \(c \in L\), że
+    \(w\) da się podzielić na fragmenty, które tworzą \(w\) zgodnie z definicją \(K
+    \# L\).
 
-    Formalnie, niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\). 
-    
-    To znaczy, że istnieje bieg akceptujący \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right)
-     \xrightarrow{a_2} \ldots \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \).
-    Dodatkowo na potrzeby wytłumaczenia będziemy uzupełniać ciąg \(d_1, d_2, \ldots, d_n \in \left\{ 1,2, 3 \right\}\), który oznacza, czy wzieliśmy literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu.
-    Będziemy zachowywać niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie zgodnym z \(w\) po zastosowaniu \(d_n\),
-    tz. dla danego \(j\): \(\text{dla \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l = \in \{ k, 3 \} \implies b_l/c_l = w_l\).
-    
-    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in \mathcal{N}_+, 2i \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0 \right) \).
-    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli przypisujemy \(d_j = k\).
-    Dodatkowo, dla \(k \neq k' \in \{ 1, 2 \} \), skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to
-    \(q_{k',n+1} \notin F_k\), co jest sprzeczne z założeniem, że \(M\) akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
+    Formalnie, niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\).
 
-    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i\). Niech \(j=2i+1 \in \mathcal{N}, 2i+1 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0 \right) \).
-    Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\), \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli przypisujemy \(d_j = 3\).
-    Skoro bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli zachowaliśmy niezmiennik dla \(j\).
-    Zauważmy, że dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
+    To znaczy, że istnieje bieg akceptujący \( \left(q_{1,1}, q_{2,1}, 0 \right)
+    \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots
+    \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right]
+    \right) \). Dodatkowo na potrzeby wytłumaczenia będziemy uzupełniać ciąg \(d_1,
+    d_2, \ldots, d_n \in \left\{ 1,2, 3 \right\}\), który oznacza, czy wzieliśmy
+    literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu. Będziemy zachowywać
+    niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie
+    zgodnym z \(w\) po zastosowaniu \(d_n\), tz. dla danego \(j\): \(\text{dla
+        \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l = \in
+    \{ k, 3 \} \implies b_l/c_l = w_l\).
+
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in
+    \mathcal{N}_+, 2i \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
+    \right) \). Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\),
+    \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli
+    przypisujemy \(d_j = k\). Dodatkowo, dla \(k \neq k' \in \{ 1, 2 \} \), skoro
+    bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był,
+    to \(q_{k',n+1} \notin F_k\), co jest sprzeczne z założeniem, że \(M\)
+    akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
+
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i\). Niech \(j=2i+1 \in
+    \mathcal{N}, 2i+1 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
+    \right) \). Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\),
+    \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli
+    przypisujemy \(d_j = 3\). Skoro bieg jest akceptujący to niezmiennik dla \(j\)
+    jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli
+    zachowaliśmy niezmiennik dla \(j\). Zauważmy, że dla \(j = 0\) niezmiennik jest
+    zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
 
     Zatem na mocy indukcji wiemy, że istnieją słowa:
     \[ b_1 b_2 \ldots b_n \in K, c_1 c_2 \ldots c_n \in L \text{, że } \ \forall_{i \in \{1,2,\ldots n\}} \left( d_i = 3 \implies a_i = b_i = c_i \right) \land \left( d_i = 1/2 \implies b_i/c_i = w_i. \right) \]
@@ -129,47 +154,61 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
 \begin{proof}
     \(\leftarrow\)
 
-    Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie,
-    że \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
+    Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją
+    \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie, że
+    \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1}
+    \right\}\).
 
     Udowodnimy, że \(M\) akceptuje \(w\).
 
-    Skoro \(b \in K \land c \in L\), to istnieją biegi akceptujące postaci \(q_{1,1} \xrightarrow{b_1} q_{1,2} \xrightarrow{b_2} \ldots \xrightarrow{b_n} q_{1,n+1}\),
-    \(q_{2,1} \xrightarrow{c_1} q_{2,2} \xrightarrow{c_2} \ldots \xrightarrow{c_n} q_{2,n+1}\) odpowiednio w \(M_1\), \(M_2\).
+    Skoro \(b \in K \land c \in L\), to istnieją biegi akceptujące postaci
+    \(q_{1,1} \xrightarrow{b_1} q_{1,2} \xrightarrow{b_2} \ldots \xrightarrow{b_n}
+    q_{1,n+1}\), \(q_{2,1} \xrightarrow{c_1} q_{2,2} \xrightarrow{c_2} \ldots
+    \xrightarrow{c_n} q_{2,n+1}\) odpowiednio w \(M_1\), \(M_2\).
 
-    Zauważmy, że zgodnie z konstrukcją \(M\), stan \( \left( q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right] \right) \in F\).
-    
-    Skoro \(b_{2i} = c_{2i}\), to bieg postaci
-    \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{b_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{b_2} \ldots \xrightarrow{b_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \)
-    i
-    \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{c_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{c_2} \ldots \xrightarrow{c_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \)
-    są akceptujące w \(M\). Zatem \(b, c \in \mathcal{L}(M)\).
-    
-    Teraz pokaże, że można zmodyfikować któryś z tych biegów, aby uzyskać bieg akceptujący dla \(w\).
+    Zauważmy, że zgodnie z konstrukcją \(M\), stan \( \left( q_{1,n+1}, q_{2,n+1},
+    \left[ n \equiv 1 \mod 2 \right] \right) \in F\).
 
-    Skoro oba biegi są akceptujące i składają się z tych samych stanów. to \( \forall_i \in \{1,2,\ldots n\} a_i = b_i \lor a_i = c_i \).
-    Dalej, \( \forall_i \in \{1,2,\ldots n\} \left( \left( q_{1,i}, q_{2,i}, i \equiv 0 \mod 2 \right), a_i, \left( q_{1,i+1}, q_{2,i+1}, i \equiv 1 \mod 2 \right)  \right) 
-    \in \delta \). Stąd, bieg  \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2  \right] \right) \)
-    jest poprawny i akceptujący w \(M\).
+    Skoro \(b_{2i} = c_{2i}\), to bieg postaci \( \left(q_{1,1}, q_{2,1}, 0 \right)
+    \xrightarrow{b_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{b_2} \ldots
+    \xrightarrow{b_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right]
+    \right) \) i \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{c_1}
+    \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{c_2} \ldots \xrightarrow{c_n}
+    \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right] \right) \) są
+    akceptujące w \(M\). Zatem \(b, c \in \mathcal{L}(M)\).
+
+    Teraz pokaże, że można zmodyfikować któryś z tych biegów, aby uzyskać bieg
+    akceptujący dla \(w\).
+
+    Skoro oba biegi są akceptujące i składają się z tych samych stanów. to \(
+    \forall_i \in \{1,2,\ldots n\} a_i = b_i \lor a_i = c_i \). Dalej, \( \forall_i
+    \in \{1,2,\ldots n\} \left( \left( q_{1,i}, q_{2,i}, i \equiv 0 \mod 2 \right),
+    a_i, \left( q_{1,i+1}, q_{2,i+1}, i \equiv 1 \mod 2 \right) \right) \in \delta
+    \). Stąd, bieg \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1}
+    \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \xrightarrow{a_n}
+    \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right] \right) \) jest
+    poprawny i akceptujący w \(M\).
 
     Zatem \(w \in \mathcal{L}(M)\).
 \end{proof}
 
-Skoro \(\mathcal{L}(M) = K \# L\), to \(K \# L\) jest regularny, bo \(M\) jest automatem skończonym.
+Skoro \(\mathcal{L}(M) = K \# L\), to \(K \# L\) jest regularny, bo \(M\) jest
+automatem skończonym.
 
 \section{Kontrprzykład}
 
-Rozważmy \(K = \emptyset, L = \text{dowolny język nieregularny}\). Wtedy
-\(K \# L = \emptyset\), który jest językiem regularnym. Jednak \(L\)
-jest nieregularny. Zatem jest to kontrprzykład.
+Rozważmy \(K = \emptyset, L = \text{dowolny język nieregularny}\). Wtedy \(K \#
+L = \emptyset\), który jest językiem regularnym. Jednak \(L\) jest
+nieregularny. Zatem jest to kontrprzykład.
 
 \section{Kontrprzykład}
 
 Będziemy pracować na językach nad alfabetem \(\Sigma = \{a, b\}\).
 
-Niech \(K_n = ( (a+b)a )^* (aa)^n, n \in \mathcal{N_+}\). Jest to język słów o parzystej długości,
-które na parzystych pozycjach mają literę `a', a patrząc tylko na pozycje nieparzyste, kończą się na \(a^n\).
-DFA rozpoznający \(K_n\) ma \(2n+1\) stanów.
+Niech \(K_n = ( (a+b)a )^* (aa)^n, n \in \mathcal{N_+}\). Jest to język słów o
+parzystej długości, które na parzystych pozycjach mają literę `a', a patrząc
+tylko na pozycje nieparzyste, kończą się na \(a^n\). DFA rozpoznający \(K_n\)
+ma \(2n+1\) stanów.
 
 % \begin{center}
 %     \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
@@ -189,58 +228,66 @@ DFA rozpoznający \(K_n\) ma \(2n+1\) stanów.
 %     \end{tikzpicture}
 % \end{center}
 
-Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język słów o parzystej długości,
-które na parzystych pozycjach mają literę `a', a patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\).
-DFA rozpoznający \(L_n\) ma \(2n+1\) stanów.
+Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język
+słów o parzystej długości, które na parzystych pozycjach mają literę `a', a
+patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\). DFA
+rozpoznający \(L_n\) ma \(2n+1\) stanów.
 
-Weźmy język \(K \# L\). Zauważmy, że \( \forall w= w_0 w_1 \ldots w_n \in K \# L \ \forall_{i \in \{ 2, 4, \ldots n \} } w_i = a\). Wynika to z z definicji
+Weźmy język \(K \# L\). Zauważmy, że \( \forall w= w_0 w_1 \ldots w_n \in K \#
+L \ \forall_{i \in \{ 2, 4, \ldots n \} } w_i = a\). Wynika to z z definicji
 \(K\), \(L\) i konstrukcji \(K \# L\).
 
-Udowodnimy, że \(K \# L \subset \{ a, b \}^*\) jest równy językowi, którego \(2n-1\) tą litera od końca jest `a' oraz
-wszystkie litery na parzystych pozycjach są `a'.
+Udowodnimy, że \(K \# L \subset \{ a, b \}^*\) jest równy językowi, którego
+\(2n-1\) tą litera od końca jest `a' oraz wszystkie litery na parzystych
+pozycjach są `a'.
 
 \begin{proof}
 
-\(\rightarrow\)
+    \(\rightarrow\)
 
-Łatwo zauważyć, że \(K \# L\) jest językiem o parzystej długości, bo \(K\) i \(L\) są językami o parzystej długości.
-Zarówno \(K\) i \(L\) na parzystych pozycjach mają literę `a', więc \(w\) również.
+    Łatwo zauważyć, że \(K \# L\) jest językiem o parzystej długości, bo \(K\) i \(L\) są językami o parzystej długości.
+    Zarówno \(K\) i \(L\) na parzystych pozycjach mają literę `a', więc \(w\) również.
 
-Niech \(w = w_1 w_2 \ldots w_{2m} \in K \# L\). \(2n \leq 2m\), bo wszystkie słowa w \(K\) mają długość conajmniej \(2n\).
-Skoro \(w\) istnieje to zgodnie z definicją \(K \# L\) istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie,
-że \(w_{2i} = b_{2i} = c_{2i}\) i \(w_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\).
+    Niech \(w = w_1 w_2 \ldots w_{2m} \in K \# L\). \(2n \leq 2m\), bo wszystkie
+    słowa w \(K\) mają długość conajmniej \(2n\). Skoro \(w\) istnieje to zgodnie z
+    definicją \(K \# L\) istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2
+    \ldots c_n \in L\) takie, że \(w_{2i} = b_{2i} = c_{2i}\) i \(w_{2i+1} \in
+    \left\{ b_{2i+1}, c_{2i+1} \right\}\).
 
-Jako, że (patrząc na pozycje nieparzyste) \(b\) kończy się na \(a^n\), a \(c\) kończy się na \(b^{n-1}\), to \(n\)-ta
-nieparzysta pozycja od końca \(w\) jest `a'.
+    Jako, że (patrząc na pozycje nieparzyste) \(b\) kończy się na \(a^n\), a \(c\)
+    kończy się na \(b^{n-1}\), to \(n\)-ta nieparzysta pozycja od końca \(w\) jest
+    `a'.
 
-Dodatkowo, \( \forall_{i \in \{2m - 2n + 1, 2m - 2n + 1 + 2, \ldots, 2m - 1 \}} w_i \in \{ a,b \}\). Każda możliwość
-spełniająca ten warunek jest poprawna.
+    Dodatkowo, \( \forall_{i \in \{2m - 2n + 1, 2m - 2n + 1 + 2, \ldots, 2m - 1 \}}
+    w_i \in \{ a,b \}\). Każda możliwość spełniająca ten warunek jest poprawna.
 
-Finalnie, zauważmy, że zarówno \(b\) jak i \(c\) zaczyna się od dowolnego prefikxu \( ((a+b)a)^{2m-2n} \).
-Tu również, każda możliwość spełniająca ten warunek jest poprawna.
+    Finalnie, zauważmy, że zarówno \(b\) jak i \(c\) zaczyna się od dowolnego
+    prefikxu \( ((a+b)a)^{2m-2n} \). Tu również, każda możliwość spełniająca ten
+    warunek jest poprawna.
 
-Zatem \(w \in \text{język nad alfabetem } \{ a, b \}\) o słowach parzystej długości, conajmniej \(2n\), 
-że \(2n-1\)-ta litera od końca jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a'.
+    Zatem \(w \in \text{język nad alfabetem } \{ a, b \}\) o słowach parzystej
+    długości, conajmniej \(2n\), że \(2n-1\)-ta litera od końca jest `a' oraz
+    wszystkie litery na parzystych pozycjach parzystych są `a'.
 
 \end{proof}
 
 \begin{proof}
 
     \(\leftarrow\)
-    
-    Niech \(w = w_1 w_2 \ldots w_{2m}\in \text{język nad alfabetem } \{ a, b \}\) o słowach parzystej długości, conajmniej \(2n\),
-że \(2n-1\)-ta litera od końca jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a':
 
-\begin{itemize}
-    \item \(w_{2i} = a\) dla \(i \in \{1, 2, \ldots m\}\),
-    \item \(w_{2m-2n+1} = a\).
-\end{itemize}
+    Niech \(w = w_1 w_2 \ldots w_{2m}\in \text{język nad alfabetem } \{ a, b \}\) o
+    słowach parzystej długości, conajmniej \(2n\), że \(2n-1\)-ta litera od końca
+    jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a':
 
-    Zdefiniujmy \(b = w_1 a w_3 \ldots w_{2m-2n-1} a a^{2n}\), \(c = w_1 a w_3 \ldots w_{2m-2n-1} a a a (ba)^{n-1}\).
-    Zauważmy, że \(w\) można podzielić na fragmenty \(b\) i \(c\) zgodnie z definicją \(K \# L\).
-    Zatem \(w \in K \# L\).
+    \begin{itemize}
+        \item \(w_{2i} = a\) dla \(i \in \{1, 2, \ldots m\}\),
+        \item \(w_{2m-2n+1} = a\).
+    \end{itemize}
 
-    \end{proof}
+    Zdefiniujmy \(b = w_1 a w_3 \ldots w_{2m-2n-1} a a^{2n}\), \(c = w_1 a w_3
+    \ldots w_{2m-2n-1} a a a (ba)^{n-1}\). Zauważmy, że \(w\) można podzielić na
+    fragmenty \(b\) i \(c\) zgodnie z definicją \(K \# L\). Zatem \(w \in K \# L\).
 
+\end{proof}
 
 \end{document}
