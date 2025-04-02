@@ -212,23 +212,23 @@ parzystej długości, które na parzystych pozycjach mają literę `a', a patrz�
 tylko na pozycje nieparzyste, kończą się na \(a^n\). DFA rozpoznający \(K_n\)
 ma \(2n+1\) stanów.
 
-% \begin{center}
-%     \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
-%         \node[state, initial] (q_00)   {$q_{0,1}$};
-%         \node[state] (q_01) [above of=q_00] {$q_{0,2}$};
+ \begin{center}
+     \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
+        \node[state, initial] (q_00)   {$q_{0,1}$};
+        \node[state] (q_01) [above of=q_00] {$q_{0,2}$};
 
-%         \node[state] (q_10) [right of=q_00] {$q_{1,1}$};
-%         \node[state] (q_11) [above of=q_10] {$q_{1,2}$};
+         \node[state] (q_10) [right of=q_00] {$q_{1,1}$};
+         \node[state] (q_11) [above of=q_10] {$q_{1,2}$};
 
-%         \path[->]
-%             (q_00) edge node {a} (q_01)
-%             (q_01) edge [bend left] node {a} (q_00)
-%             (q_00) edge node {b} (q_10)
+        \path[->]
+             (q_00) edge node {a} (q_01)
+             (q_01) edge [bend left] node {a} (q_00)
+            (q_00) edge node {b} (q_10)
 
-%             (q_10) edge node {a} (q_11)
-%             (q_11) edge [bend left] node {a} (q_10);
-%     \end{tikzpicture}
-% \end{center}
+            (q_10) edge node {a} (q_11)
+             (q_11) edge [bend left] node {a} (q_10);
+     \end{tikzpicture}
+ \end{center}
 
 Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język
 słów o parzystej długości, które na parzystych pozycjach mają literę `a', a
