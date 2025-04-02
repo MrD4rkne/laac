@@ -228,9 +228,8 @@ Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
          \node[state] (q_n0) [right of=q_21] {$q_{n,0}$};
          \node[state] (q_n1) [right of=q_n0] {$q_{n,1}$};
 
-         \node[state] (q_n10) [right of=q_n1] {$q_{n+1,0}$};
+         \node[state, accepting] (q_n10) [right of=q_n1] {$q_{n+1,0}$};
          \node[state] (q_n11) [above of=q_n10] {$q_{n+1,1}$};
-
 
         \path[->]
              (q_00) edge [bend left] node {b} (q_01)
@@ -262,6 +261,12 @@ Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
 
 Udowodnijmy, że faktycznie \(\mathcal{L}(M_K) = K_n\).
 
+\begin{proof}
+    \(\rightarrow\)
+
+    Niech 
+
+\end{proof}
 
 
 Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język
