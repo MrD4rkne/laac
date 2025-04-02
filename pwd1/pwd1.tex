@@ -10,6 +10,9 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{physics}
 \usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
 
 % Definicje środowisk do twierdzeń, lematów, dowodów itp.
 \newtheorem{theorem}{Twierdzenie}[section]
@@ -28,11 +31,333 @@
 \date{\today}
 
 % Remove padding at the top of subsections
-\usepackage{titlesec}
 \titlespacing*{\subsection}{0pt}{*0}{*0}
+
+% Redefine section numbering to use letters
+\renewcommand{\thesection}{\Alph{section}}
+
+% Define a command for singleton sets
+\newcommand{\singleton}[1]{\left\{ #1 \right\}}
 
 \begin{document}
 
 \maketitle
+
+\begin{remark}
+    W całej pracy przyjmujemy, że pracujemy na językach nad skończonym alfabetem \(\Sigma\), tz. w \( \Sigma^* \). \(\mathcal{A}\) to klasa automatów rozpoznających te języki.
+\end{remark}
+
+\section{}
+
+\subsection{Automat rozpoznający K \# L}
+
+\begin{definition}
+
+    Zdefiniujmy automat rozpoznający \(K \# L\). Niech \(M_1 = (\Sigma, Q_1,
+    \singleton{q_1} F_1, \delta_1)\), \(M_2 = (\Sigma, Q_2, \singleton{q_2}, F_2,
+    \delta_2)\) będą DFA rozpoznającymi odpowiednio języki \(K\) i \(L\). Istnieją,
+    bo \(K\) i \(L\) regularne. Zakładamy, że \(Q_1 \cap Q_2 = \emptyset\) (zawsze
+    można przemianować stany). Wtedy automat rozpoznający \(K \# L\) to \(M =
+    (\Sigma, Q, \singleton{q}, F, \delta)\), gdzie:
+
+    \begin{itemize}
+        \item \(Q = Q_1 \times Q_2 \times \left\{ 0, 1 \right\}\),
+        \item \(q = (q_1, q_2, 0)\),
+        \item \(F = F_1 \times F_2 \times \left\{ 0, 1 \right\} \),
+        \item \(\delta = \left\{ \left( \left(q_1, q_2, 0 \right), a, s \right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in P(q_1, q_2) \right\}
+              \cup \left\{ \left( \left(q_1, q_2, 1 \right), a, s\right): q_1 \in Q_1, q_2 \in Q_2, a \in \Sigma, s \in NP(q_1, q_2) \right\} \), gdzie
+
+              \(P(q_1, q_2) = \left( \mathcal{F}(\delta_1, q_1) \times \singleton{\delta_2(q_2,a)}
+              \cup \singleton{\delta_1(q_1,a)} \times \mathcal{F}(\delta_2, q_2) \right) \times \singleton{1}\),
+
+              \(NP(q_1, q_2) =  \left( \delta_1(q_1,a), \delta_2(q_2,a), 0 \right)\),
+
+              \(\mathcal{F}(\delta, q) = \left\{ \delta(q, a): a \in \Sigma \right\}\).
+    \end{itemize}
+
+    Inaczej mówiąc, automat \(M\) symuluje jednocześnie przejścia w \(M_1\) i
+    \(M_2\). Przechodzimy między stanami na pozycji parzystej / nieparzystej (czyli
+    parzystość litery po której dotarliśmy do danego stanu). Z pozycji nieparzystej
+    przechodzimy w obu automatach po krawędzi ze wskazaną literą (są
+    deterministyczne, więc jest dokładnie jedna taka krawędź). Z pozycji parzystej
+    w jednym automacie przechodzimy po krawędzi z literą, a w drugim po dowolnej
+    (co wprowadza niedeterminizm).
+\end{definition}
+
+\subsection{Dowód}
+
+Pokażemy, że \(\mathcal{L}(M) = K \# L\).
+
+\begin{proof}
+    \(\rightarrow\)
+
+    Zauważmy, że zgodnie z naszą konstrukcją:
+    \begin{itemize}
+        \item zaczynamy na pozycji \(\left(q_{1,1}, q_{2,1}, 0 \right)\),
+        \item automat symuluje przejścia po \(M_1\) i \(M_2\), co jest równoważne przejściom
+              po słowach \(b \in K\) i \(c \in L\),
+        \item gdy przechodzimy ze stanu typu \(0\) do stanu typu \(1\), to w jednym automacie
+              przechodzimy po krawędzi z aktualną literą, a w drugim po dowolnej, co jest
+              równoważne \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1} \right\}\),
+        \item gdy przechodzimy ze stanu typu \(1\) do stanu typu \(0\), to w obu automatach
+              przechodzimy po krawędzi z aktualną literą, co jest równoważne \( a_{2i} =
+              b_{2i} = c_{2i} \),
+        \item kończymy na pozycji \(\left(q_{1,n+1} q_{2,n+1}, 0/1 \right)\), gdzie \(n =
+              \abs{w}\).
+    \end{itemize}
+
+    Jako, że tak naprawdę przechodzimy po (dwuwymiarowych) automatach \(M_1\) i
+    \(M_2\), to skoro ostatni stan jest akceptujący, to w obu automatach jesteśmy w
+    stanie akceptującym. Dodatkowo, w każdym z automatów zrobiliśmy dokładnie
+    \(\abs{w}\) kroków. Co oznacza, że istnieją słowa \(b \in K\) i \(c \in L\), że
+    \(w\) da się podzielić na fragmenty, które tworzą \(w\) zgodnie z definicją \(K
+    \# L\).
+
+    Formalnie, niech \(w = a_1 a_2 a_3\ldots a_n \in \mathcal{L}(M)\).
+
+    To znaczy, że istnieje bieg akceptujący \( \left(q_{1,1}, q_{2,1}, 0 \right)
+    \xrightarrow{a_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots
+    \xrightarrow{a_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right]
+    \right) \). Dodatkowo na potrzeby wytłumaczenia będziemy uzupełniać ciąg \(d_1,
+    d_2, \ldots, d_n \in \left\{ 1,2, 3 \right\}\), który oznacza, czy wzieliśmy
+    literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu. Będziemy zachowywać
+    niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie
+    zgodnym z \(w\) po zastosowaniu \(d_n\), tz. dla danego \(j\): \(\text{dla
+        \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l \in
+    \{ k, 3 \} \implies b_l/c_l = w_l\).
+
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in
+    \mathcal{N}_+, 2i \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
+    \right) \). Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\),
+    \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli
+    przypisujemy \(d_j = k\). Dodatkowo, dla \(k \neq k' \in \{ 1, 2 \} \), skoro
+    bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był,
+    to \(q_{k',n+1} \notin F_k\), co jest sprzeczne z założeniem, że \(M\)
+    akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
+
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i\). Niech \(j=2i+1 \in
+    \mathcal{N}, 2i+1 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
+    \right) \). Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\),
+    \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli
+    przypisujemy \(d_j = 3\). Skoro bieg jest akceptujący to niezmiennik dla \(j\)
+    jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli
+    zachowaliśmy niezmiennik dla \(j\). Zauważmy, że dla \(j = 0\) niezmiennik jest
+    zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
+
+    Zatem na mocy indukcji wiemy, że istnieją słowa:
+    \[ b_1 b_2 \ldots b_n \in K, c_1 c_2 \ldots c_n \in L \text{, że } \ \forall_{i \in \{1,2,\ldots n\}} \left( d_i = 3 \implies a_i = b_i = c_i \right) \land \left( d_i = 1/2 \implies b_i/c_i = w_i. \right) \]
+
+    Zatem \(w \in K \# L\).
+
+\end{proof}
+
+\begin{proof}
+    \(\leftarrow\)
+
+    Niech \(w = a_1 a_2 a_3\ldots a_n \in K \# L\). Zgodnie z definicją istnieją
+    \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2 \ldots c_n \in L\) takie, że
+    \(a_{2i} = b_{2i} = c_{2i}\) i \(a_{2i+1} \in \left\{ b_{2i+1}, c_{2i+1}
+    \right\}\).
+
+    Udowodnimy, że \(M\) akceptuje \(w\).
+
+    Skoro \(b \in K \land c \in L\), to istnieją biegi akceptujące postaci
+    \(q_{1,1} \xrightarrow{b_1} q_{1,2} \xrightarrow{b_2} \ldots \xrightarrow{b_n}
+    q_{1,n+1}\), \(q_{2,1} \xrightarrow{c_1} q_{2,2} \xrightarrow{c_2} \ldots
+    \xrightarrow{c_n} q_{2,n+1}\) odpowiednio w \(M_1\), \(M_2\).
+
+    Zauważmy, że zgodnie z konstrukcją \(M\), stan \( \left( q_{1,n+1}, q_{2,n+1},
+    \left[ n \equiv 1 \mod 2 \right] \right) \in F\).
+
+    Skoro \(b_{2i} = c_{2i}\), to bieg postaci \( \left(q_{1,1}, q_{2,1}, 0 \right)
+    \xrightarrow{b_1} \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{b_2} \ldots
+    \xrightarrow{b_n} \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right]
+    \right) \) i \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{c_1}
+    \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{c_2} \ldots \xrightarrow{c_n}
+    \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right] \right) \) są
+    akceptujące w \(M\). Zatem \(b, c \in \mathcal{L}(M)\).
+
+    Teraz pokaże, że można zmodyfikować któryś z tych biegów, aby uzyskać bieg
+    akceptujący dla \(w\).
+
+    Skoro oba biegi są akceptujące i składają się z tych samych stanów. to \(
+    \forall_i \in \{1,2,\ldots n\} a_i = b_i \lor a_i = c_i \). Dalej, \( \forall_i
+    \in \{1,2,\ldots n\} \left( \left( q_{1,i}, q_{2,i}, i \equiv 0 \mod 2 \right),
+    a_i, \left( q_{1,i+1}, q_{2,i+1}, i \equiv 1 \mod 2 \right) \right) \in \delta
+    \). Stąd, bieg \( \left(q_{1,1}, q_{2,1}, 0 \right) \xrightarrow{a_1}
+    \left(q_{1,2}, q_{2,2}, 1 \right) \xrightarrow{a_2} \ldots \xrightarrow{a_n}
+    \left(q_{1,n+1}, q_{2,n+1}, \left[ n \equiv 1 \mod 2 \right] \right) \) jest
+    poprawny i akceptujący w \(M\).
+
+    Zatem \(w \in \mathcal{L}(M)\).
+\end{proof}
+
+Skoro \(\mathcal{L}(M) = K \# L\), to \(K \# L\) jest regularny, bo \(M\) jest
+automatem skończonym.
+
+\section{Kontrprzykład}
+
+Rozważmy \(K = \emptyset, L = \text{dowolny język nieregularny}\). Wtedy \(K \#
+L = \emptyset\), który jest językiem regularnym. Jednak \(L\) jest
+nieregularny. Zatem jest to kontrprzykład.
+
+Co dowodzi fałszywości zdania z polecenia.
+
+\section{Kontrprzykład}
+
+Będziemy pracować na językach nad alfabetem \(\Sigma = \{a, b\}\).
+
+Niech \(K_n = ( (a+b)a )^* (aa)^n, n \in \mathcal{N_+}\). Jest to język słów o
+parzystej długości, które na parzystych pozycjach mają literę `a', a patrząc
+tylko na pozycje nieparzyste, kończą się na \(a^n\). DFA rozpoznający \(K_n\)
+ma \(\mathcal{O}(n)\) stanów.
+
+Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
+
+ \begin{center}
+     \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
+        \node[state, initial] (q_00)   {$q_{0,0}$};
+        \node[state] (q_03) [above of=q_00] {$q_{0,3}$};
+         \node[state] (q_01) [right of=q_00] {$q_{0,1}$};
+
+         \node[state] (q_10) [right of=q_01] {$q_{1,0}$};
+         \node[state] (q_11) [right of=q_10] {$q_{1,1}$};
+
+         \node[state] (q_20) [right of=q_11] {$q_{2,0}$};
+         \node[state] (q_21) [right of=q_20] {$q_{2,1}$};
+
+         \node[state] (q_n1) [right of=q_21] {$q_{n-1,1}$};
+         \node[state, accepting] (q_n0) [right of=q_n1] {$q_{n,0}$};
+         \node[state] (q_n3) [above of=q_n0] {$q_{n+1,1}$};
+
+        \path[->]
+             (q_00) edge [bend left] node {b} (q_03)
+             (q_03) edge [bend left] node {a} (q_00)
+
+            (q_00) edge node {a} (q_01)
+            (q_01) edge node {a} (q_10)
+            (q_10) edge node {a} (q_11)
+            (q_10) edge [above, bend right] node {b} (q_03)
+
+            (q_11) edge node {a} (q_20)
+            (q_20) edge [above, bend right] node {b} (q_03)
+            (q_20) edge node {a} (q_21)
+            
+            (q_21) edge [dotted] node {a} (q_n1)
+            (q_n0) edge node {a} (q_n3)
+            
+            (q_n1) edge node {a} (q_n0)
+            (q_n0) edge [above, bend right] node {b} (q_03)
+            (q_n3) edge [bend left] node {a} (q_n0);
+     \end{tikzpicture}
+ \end{center}
+
+\begin{remark}
+    Na diagramie brakuje `śmietnika', czyli wszytskie brakujące krawędzie z literą \(b\), np. z \(q_{0,3},q_{0,1},q_{1,1}, q_{n+1,1}\).
+    Śmietnik to stan, z którego nie można wyjść, a który nie jest akceptujący.
+\end{remark}
+
+Udowodnijmy, że faktycznie \(\mathcal{L}(M_K) = K_n\).
+
+\begin{proof}
+    \(\rightarrow\)
+
+    Niech \(w \in K_n\). Wiemy z definicji, że \(w\) jest słowem o parzystej długości oraz 
+    \(w = vu\), gdzie \(v \in \{(a+b)a\}^*\) i \(u = (aa)^n\).
+
+    Gdy automat czyta \(v\), to nigdy nie przechodzimy do śmietnika, gdyż na pozycjach parzystych w \(w\) zawsze występuje `a', zatem też w \(v\).
+    Zauważmy, że po wczytaniu \(v\) musimy być w stanie o drugiej współrzędnej parzystej oraz że wczytanie jednej litery prowadzi
+    do stanu o innej parzystości drugiej współrzednej (z wyłączniem śmietnika).
+
+    Skoro jesteśmy na pozycji parzystej, to wczytanie \(u\) prowadzi do \(q_{n,0}\).
+    Zatem \(w\) prowadzi do stanu akceptującego. Stąd \(w \in \mathcal{L}(M_K)\).
+\end{proof}
+
+\begin{proof}
+    \(\leftarrow\)
+
+    Niech \(w \in \mathcal{L}(M_K)\). Wiemy z poprzednich obserwacji, że \(w\) jest słowem o parzystej długości oraz że 
+    kończy się na \((aa)^n\). 
+    Skoro \(w\) prowadzi do stanu akceptującego, to nie przechodzi przez śmietnik.
+    Zauważmy, że \(w\) można podzielić na fragmenty \(v\) i \(u\), gdzie \(v \in \{(a+b)a\}^*\) i \(u = (aa)^n\).
+    Stąd \(w\) pasuje do postaci regularnej \(K_n\). \(w \in K_n\).
+
+\end{proof}
+
+
+Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język
+słów o parzystej długości, które na parzystych pozycjach mają literę `a', a
+patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\). DFA rozpoznający \(L_n\)
+ma \(\mathcal{O}(n)\) stanów. Dowód jak dla \(K_n\).
+
+Weźmy język \(K \# L\). Zauważmy, że \( \forall w= w_0 w_1 \ldots w_n \in K \#
+L \ \forall_{i \in \{ 2, 4, \ldots n \} } w_i = a\). Wynika to z z definicji
+\(K\), \(L\) i konstrukcji \(K \# L\).
+
+Udowodnimy, że \(K \# L \subset \{ a, b \}^*\) jest równy językowi, którego
+\(2n-1\) tą litera od końca jest `a' oraz wszystkie litery na parzystych
+pozycjach są `a'.
+
+\begin{proof}
+
+    \(\rightarrow\)
+
+    Łatwo zauważyć, że \(K \# L\) jest językiem o parzystej długości, bo \(K\) i \(L\) są językami o parzystej długości.
+    Zarówno \(K\) i \(L\) na parzystych pozycjach mają literę `a', więc \(w\) również.
+
+    Niech \(w = w_1 w_2 \ldots w_{2m} \in K \# L\). \(2n \leq 2m\), bo wszystkie
+    słowa w \(K\) mają długość conajmniej \(2n\). Skoro \(w\) istnieje to zgodnie z
+    definicją \(K \# L\) istnieją \(b=b_1 b_2 \ldots b_n \in K\) i \(c=c_1 c_2
+    \ldots c_n \in L\) takie, że \(w_{2i} = b_{2i} = c_{2i}\) i \(w_{2i+1} \in
+    \left\{ b_{2i+1}, c_{2i+1} \right\}\).
+
+    Jako, że (patrząc na pozycje nieparzyste) \(b\) kończy się na \(a^n\), a \(c\)
+    kończy się na \(b^{n-1}\), to \(n\)-ta nieparzysta pozycja od końca \(w\) jest
+    `a'.
+
+    Dodatkowo, \( \forall_{i \in \{2m - 2n + 1, 2m - 2n + 1 + 2, \ldots, 2m - 1 \}}
+    w_i \in \{ a,b \}\). Każda możliwość spełniająca ten warunek jest poprawna.
+
+    Finalnie, zauważmy, że zarówno \(b\) jak i \(c\) zaczyna się od dowolnego
+    prefikxu \( ((a+b)a)^{2m-2n} \). Tu również, każda możliwość spełniająca ten
+    warunek jest poprawna.
+
+    Zatem \(w \in \text{język nad alfabetem } \{ a, b \}\) o słowach parzystej
+    długości, conajmniej \(2n\), że \(2n-1\)-ta litera od końca jest `a' oraz
+    wszystkie litery na parzystych pozycjach parzystych są `a'.
+
+\end{proof}
+
+\begin{proof}
+
+    \(\leftarrow\)
+
+    Niech \(w = w_1 w_2 \ldots w_{2m}\in \text{język nad alfabetem } \{ a, b \}\) o
+    słowach parzystej długości, conajmniej \(2n\), że \(2n-1\)-ta litera od końca
+    jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a':
+
+    \begin{itemize} 
+        \item \(w_{2i} = a\) dla \(i \in \{1, 2, \ldots m\}\),
+        \item \(w_{2m-2n+1} = a\).
+    \end{itemize}
+
+    Zdefiniujmy \(b = w_1 a w_3 \ldots w_{2m-2n-1} a a^{2n}\), \(c = w_1 a w_3
+    \ldots w_{2m-2n-1} a a a (ba)^{n-1}\). Zauważmy, że \(w\) można podzielić na
+    fragmenty \(b\) i \(c\) zgodnie z definicją \(K \# L\). Zatem \(w \in K \# L\).
+
+\end{proof}
+
+Skoro udowodniliśmy zgodność definicji \(K \# L\) z opisanym językiem, to policzmy jego klasy abstrakcji.
+
+Zauważmy, że dowolne \(w = a(a+b)^n \in K \# L\).
+
+Weźmy dwa słowa \(w_1 = a(a+b)^n\) i \(w_2 = a(a+b)^n\), gdzie \(n \neq m\).
+Skoro się różnią, to istnieje \(i \in \{2, 3 \ldots n+1\}\) takie, że \(w_1[i] \neq w_2[i]\).
+BSO niech \(w_1[i] = a\) i \(w_2[i] = b\).
+Zauważmy, że \(w_1 \cdot (a+b)^{i-1} \in K \# L\), ale \(w_2 \cdot (a+b)^{i-1} \not \in K \# L\). Takich par jest \( \mathcal{O}(2^n) \).
+Zatem na mocy Tw. Myhill-Nerode'a, minimalny DFA rozpoznający \(K \# L\) ma conajmniej \( \mathcal{O}(2^n) \) stanów.
+
+Stąd nie istnieje \(p(n)\) takie, że \(K \# L\) jest rozpoznawany przez DFA o \(p(n)\) stanach.
+Co dowodzi fałszywości zdania z polecenia.
 
 \end{document}
