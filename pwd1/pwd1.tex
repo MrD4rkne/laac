@@ -217,45 +217,43 @@ Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
  \begin{center}
      \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
         \node[state, initial] (q_00)   {$q_{0,0}$};
-        \node[state] (q_01) [above of=q_00] {$q_{0,1}$};
+        \node[state] (q_03) [above of=q_00] {$q_{0,3}$};
+         \node[state] (q_01) [right of=q_00] {$q_{0,1}$};
 
-         \node[state] (q_10) [right of=q_00] {$q_{1,0}$};
+         \node[state] (q_10) [right of=q_01] {$q_{1,0}$};
          \node[state] (q_11) [right of=q_10] {$q_{1,1}$};
 
          \node[state] (q_20) [right of=q_11] {$q_{2,0}$};
          \node[state] (q_21) [right of=q_20] {$q_{2,1}$};
 
-         \node[state] (q_n0) [right of=q_21] {$q_{n,0}$};
-         \node[state] (q_n1) [right of=q_n0] {$q_{n,1}$};
-
-         \node[state, accepting] (q_n10) [right of=q_n1] {$q_{n+1,0}$};
-         \node[state] (q_n11) [above of=q_n10] {$q_{n+1,1}$};
+         \node[state] (q_n1) [right of=q_21] {$q_{n-1,1}$};
+         \node[state, accepting] (q_n0) [right of=q_n1] {$q_{n,0}$};
+         \node[state] (q_n3) [above of=q_n0] {$q_{n+1,1}$};
 
         \path[->]
-             (q_00) edge [bend left] node {b} (q_01)
-             (q_01) edge [bend left] node {a} (q_00)
+             (q_00) edge [bend left] node {b} (q_03)
+             (q_03) edge [bend left] node {a} (q_00)
 
-            (q_00) edge node {a} (q_10)
+            (q_00) edge node {a} (q_01)
+            (q_01) edge node {a} (q_10)
             (q_10) edge node {a} (q_11)
-            (q_11) edge [above, bend right] node {b} (q_01)
+            (q_10) edge [above, bend right] node {b} (q_03)
 
             (q_11) edge node {a} (q_20)
+            (q_20) edge [above, bend right] node {b} (q_03)
             (q_20) edge node {a} (q_21)
-            (q_21) edge [above, bend right] node {b} (q_01)
-
-            (q_21) edge [dotted] node {a} (q_n0)
-            (q_n0) edge node {a} (q_n1)
-            (q_n1) edge [above, bend right] node {b} (q_01)
             
-            (q_n1) edge node {a} (q_n10)
-            (q_n10) edge [bend left] node {a} (q_n11)
-            (q_n10) edge [above, bend right] node {b} (q_01)
-            (q_n11) edge [bend left] node {a} (q_n10);
+            (q_21) edge [dotted] node {a} (q_n1)
+            (q_n0) edge node {a} (q_n3)
+            
+            (q_n1) edge node {a} (q_n0)
+            (q_n0) edge [above, bend right] node {b} (q_03)
+            (q_n3) edge [bend left] node {a} (q_n0);
      \end{tikzpicture}
  \end{center}
 
 \begin{remark}
-    Na diagramie brakuje `śmietnika', czyli wszytskie brakujące krawędzie z literą \(b\), np. z \(q_{0,1},q_{1,0},q_{2,0}, q_{n+1,1}\).
+    Na diagramie brakuje `śmietnika', czyli wszytskie brakujące krawędzie z literą \(b\), np. z \(q_{0,3},q_{0,1},q_{1,1}, q_{n+1,1}\).
     Śmietnik to stan, z którego nie można wyjść, a który nie jest akceptujący.
 \end{remark}
 
@@ -264,7 +262,25 @@ Udowodnijmy, że faktycznie \(\mathcal{L}(M_K) = K_n\).
 \begin{proof}
     \(\rightarrow\)
 
-    Niech 
+    Niech \(w \in K_n\). Wiemy z definicji, że \(w\) jest słowem o parzystej długości oraz 
+    \(w = vu\), gdzie \(v \in \{(a+b)a\}^*\) i \(u = (aa)^n\).
+
+    Gdy automat czyta \(v\), to nigdy nie przechodzimy do śmietnika, gdyż na pozycjach parzystych w \(w\) zawsze występuje `a', zatem też w \(v\).
+    Zauważmy, że po wczytaniu \(v\) musimy być w stanie o drugiej współrzędnej parzystej oraz że wczytanie jednej litery prowadzi
+    do stanu o innej parzystości drugiej współrzednej (z wyłączniem śmietnika).
+
+    Skoro jesteśmy na pozycji parzystej, to wczytanie \(u\) prowadzi do \(q_{n,0}\).
+    Zatem \(w\) prowadzi do stanu akceptującego. Stąd \(w \in \mathcal{L}(M_K)\).
+\end{proof}
+
+\begin{proof}
+    \(\leftarrow\)
+
+    Niech \(w \in \mathcal{L}(M_K)\). Wiemy z poprzednich obserwacji, że \(w\) jest słowem o parzystej długości oraz że 
+    kończy się na \((aa)^n\). 
+    Skoro \(w\) prowadzi do stanu akceptującego, to nie przechodzi przez śmietnik.
+    Zauważmy, że \(w\) można podzielić na fragmenty \(v\) i \(u\), gdzie \(v \in \{(a+b)a\}^*\) i \(u = (aa)^n\).
+    Stąd \(w\) pasuje do postaci regularnej \(K_n\). \(w \in K_n\).
 
 \end{proof}
 
@@ -331,8 +347,17 @@ pozycjach są `a'.
 
 \end{proof}
 
-Z wykładu wiemy, że język \(K \# L\) wymaga DFA o \( \mathcal{O}(2^{2n}) \) stanach.
-Zatem nie istnieje \(p(n)\) takie, że \(K \# L\) jest rozpoznawany przez DFA o \(p(n)\) stanach.
+Skoro udowodniliśmy zgodność definicji \(K \# L\) z opisanym językiem, to policzmy jego klasy abstrakcji.
+
+Zauważmy, że dowolne \(w = a(a+b)^n \in K \# L\).
+
+Weźmy dwa słowa \(w_1 = a(a+b)^n\) i \(w_2 = a(a+b)^n\), gdzie \(n \neq m\).
+Skoro się różnią, to istnieje \(i \in \{2, 3 \ldots n+1\}\) takie, że \(w_1[i] \neq w_2[i]\).
+BSO niech \(w_1[i] = a\) i \(w_2[i] = b\).
+Zauważmy, że \(w_1 \cdot (a+b)^{i-1} \in K \# L\), ale \(w_2 \cdot (a+b)^{i-1} \not \in K \# L\). Takich par jest \( \mathcal{O}(2^n) \).
+Zatem na mocy Tw. Myhill-Nerode'a, minimalny DFA rozpoznający \(K \# L\) ma conajmniej \( \mathcal{O}(2^n) \) stanów.
+
+Stąd nie istnieje \(p(n)\) takie, że \(K \# L\) jest rozpoznawany przez DFA o \(p(n)\) stanach.
 Co dowodzi fałszywości zdania z polecenia.
 
 \end{document}
