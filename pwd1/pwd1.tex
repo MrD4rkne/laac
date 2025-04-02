@@ -123,7 +123,7 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
     literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu. Będziemy zachowywać
     niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie
     zgodnym z \(w\) po zastosowaniu \(d_n\), tz. dla danego \(j\): \(\text{dla
-        \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l = \in
+        \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l \in
     \{ k, 3 \} \implies b_l/c_l = w_l\).
 
     Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in
@@ -210,30 +210,64 @@ Będziemy pracować na językach nad alfabetem \(\Sigma = \{a, b\}\).
 Niech \(K_n = ( (a+b)a )^* (aa)^n, n \in \mathcal{N_+}\). Jest to język słów o
 parzystej długości, które na parzystych pozycjach mają literę `a', a patrząc
 tylko na pozycje nieparzyste, kończą się na \(a^n\). DFA rozpoznający \(K_n\)
-ma \(2n+1\) stanów.
+ma \(\mathcal{O}(n)\) stanów.
+
+Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
 
  \begin{center}
      \begin{tikzpicture}[shorten >=1pt, node distance=2cm, auto]
-        \node[state, initial] (q_00)   {$q_{0,1}$};
-        \node[state] (q_01) [above of=q_00] {$q_{0,2}$};
+        \node[state, initial] (q_00)   {$q_{0,0}$};
+        \node[state] (q_01) [above of=q_00] {$q_{0,1}$};
 
-         \node[state] (q_10) [right of=q_00] {$q_{1,1}$};
-         \node[state] (q_11) [above of=q_10] {$q_{1,2}$};
+         \node[state] (q_10) [right of=q_00] {$q_{1,0}$};
+         \node[state] (q_11) [right of=q_10] {$q_{1,1}$};
+
+         \node[state] (q_20) [right of=q_11] {$q_{2,0}$};
+         \node[state] (q_21) [right of=q_20] {$q_{2,1}$};
+
+         \node[state] (q_n0) [right of=q_21] {$q_{n,0}$};
+         \node[state] (q_n1) [right of=q_n0] {$q_{n,1}$};
+
+         \node[state] (q_n10) [right of=q_n1] {$q_{n+1,0}$};
+         \node[state] (q_n11) [above of=q_n10] {$q_{n+1,1}$};
+
 
         \path[->]
-             (q_00) edge node {a} (q_01)
+             (q_00) edge [bend left] node {b} (q_01)
              (q_01) edge [bend left] node {a} (q_00)
-            (q_00) edge node {b} (q_10)
 
+            (q_00) edge node {a} (q_10)
             (q_10) edge node {a} (q_11)
-             (q_11) edge [bend left] node {a} (q_10);
+            (q_11) edge [above, bend right] node {b} (q_01)
+
+            (q_11) edge node {a} (q_20)
+            (q_20) edge node {a} (q_21)
+            (q_21) edge [above, bend right] node {b} (q_01)
+
+            (q_21) edge [dotted] node {a} (q_n0)
+            (q_n0) edge node {a} (q_n1)
+            (q_n1) edge [above, bend right] node {b} (q_01)
+            
+            (q_n1) edge node {a} (q_n10)
+            (q_n10) edge [bend left] node {a} (q_n11)
+            (q_n10) edge [above, bend right] node {b} (q_01)
+            (q_n11) edge [bend left] node {a} (q_n10);
      \end{tikzpicture}
  \end{center}
 
+\begin{remark}
+    Na diagramie brakuje `śmietnika', czyli wszytskie brakujące krawędzie z literą \(b\), np. z \(q_{0,1},q_{1,0},q_{2,0}, q_{n+1,1}\).
+    Śmietnik to stan, z którego nie można wyjść, a który nie jest akceptujący.
+\end{remark}
+
+Udowodnijmy, że faktycznie \(\mathcal{L}(M_K) = K_n\).
+
+
+
 Niech \(L_n = ( (a+b)a )^* aa (ba)^{n-1}, n \in \mathcal{N_+}\). Jest to język
 słów o parzystej długości, które na parzystych pozycjach mają literę `a', a
-patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\). DFA
-rozpoznający \(L_n\) ma \(2n+1\) stanów.
+patrząc tylko na pozycje nieparzyste, kończą się na \( (b)^{n-1}\). DFA rozpoznający \(L_n\)
+ma \(\mathcal{O}(n)\) stanów. Dowód jak dla \(K_n\).
 
 Weźmy język \(K \# L\). Zauważmy, że \( \forall w= w_0 w_1 \ldots w_n \in K \#
 L \ \forall_{i \in \{ 2, 4, \ldots n \} } w_i = a\). Wynika to z z definicji
@@ -281,7 +315,7 @@ pozycjach są `a'.
     słowach parzystej długości, conajmniej \(2n\), że \(2n-1\)-ta litera od końca
     jest `a' oraz wszystkie litery na parzystych pozycjach parzystych są `a':
 
-    \begin{itemize}
+    \begin{itemize} 
         \item \(w_{2i} = a\) dla \(i \in \{1, 2, \ldots m\}\),
         \item \(w_{2m-2n+1} = a\).
     \end{itemize}
