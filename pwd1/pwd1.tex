@@ -121,28 +121,32 @@ Pokażemy, że \(\mathcal{L}(M) = K \# L\).
     \right) \). Dodatkowo na potrzeby wytłumaczenia będziemy uzupełniać ciąg \(d_1,
     d_2, \ldots, d_n \in \left\{ 1,2, 3 \right\}\), który oznacza, czy wzieliśmy
     literkę ze słowa z automatu \(M_1\) czy \(M_2\), czy z obu. Będziemy zachowywać
-    niezmiennik, że dla danego \(j\) istnieje słowo w \(M_1\) / \(M_2\) o prefixie
+    niezmiennik, że dla danego \(j\) bieg jest poprawny w \(M_1\) / \(M_2\) o prefixie
     zgodnym z \(w\) po zastosowaniu \(d_n\), tz. dla danego \(j\): \(\text{dla
         \(k\)=1/2} \ \exists_{v \in M_k} \forall_{l \in \{ 1,2, \ldots j \}} d_l \in
     \{ k, 3 \} \implies b_l/c_l = w_l\).
 
-    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i-1\). Niech \(j=2i \in
-    \mathcal{N}_+, 2i \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
+    Załóżmy, że niezmiennik jest zachowany dla wszystkich \(j' \leq 2i\). Niech \(j=2i+1 \in
+    \mathcal{N}_+, 2i+2 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
     \right) \). Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\),
-    \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli
-    przypisujemy \(d_j = k\). Dodatkowo, dla \(k \neq k' \in \{ 1, 2 \} \), skoro
-    bieg jest akceptujący to niezmiennik dla \(j\) jest zachowany. Gdyby nie był,
-    to \(q_{k',n+1} \notin F_k\), co jest sprzeczne z założeniem, że \(M\)
-    akceptuje \(w\). Czyli zachowaliśmy niezmiennik dla \(j\).
+    \( \exists _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Gdyby nie istniało, to 
+    przejście do stanu \( \left(q_{1,j+1}, q_{2,j+1},1\right) \) by nie istniało.
+    Czyli przypisujemy \(d_j = k\). Skoro niezmiennik do tej pory był zachowany dla tego \(M_k\),
+    to nadal jest zachowany, bo \(d_j = k\).
+    Dodatkowo, dla \(k \neq k' \in \{1,2\} \exists_{b \in \Sigma} (q_{k,j}, b, q_{k',j+1}) \in \delta\).
+    Gdyby nie istniało, to zgodnie z konstrukcją \(M\), bieg w \(M\) by nie istniał. Co jest oczywiście sprzeczne.
+    Zatem zachowaliśmy niezmiennik dla \(j\).
 
-    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i\). Niech \(j=2i+1 \in
+    Załóżmy, że niezmiennik jest zachowany dla \(j' \leq 2i+1\). Niech \(j=2i+2 \in
     \mathcal{N}, 2i+1 \leq n,\). Jesteśmy w stanie \( \left(q_{1,j}, q_{2,j}, 0
     \right) \). Skoro bieg jest akceptujący, to zgodnie z konstrukcją \(\delta\),
     \( \forall _{k \in \{1,2\}} \delta_k(q_{k,j}, a_j) = q_{k, j+1} \). Czyli
-    przypisujemy \(d_j = 3\). Skoro bieg jest akceptujący to niezmiennik dla \(j\)
-    jest zachowany. Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). Czyli
-    zachowaliśmy niezmiennik dla \(j\). Zauważmy, że dla \(j = 0\) niezmiennik jest
-    zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
+    przypisujemy \(d_j = 3\). Z czego wynika, że niezmiennik dla \(j\) jest zachowany.
+    Gdyby nie był, to bieg nie byłby akceptujący (jak wyżej). 
+    Czyli zachowaliśmy niezmiennik dla \(j\).
+    
+    Zauważmy, że dla \(j = 0\) niezmiennik jest zachowany, bo \(\{1, 2, \ldots j\} = \emptyset\).
+    Dodatkowo, stany \(q_{1, n+1}, q_{2, n+1}\) są akceptujące odpowiednio w \(M_1\) i \(M_2\).
 
     Zatem na mocy indukcji wiemy, że istnieją słowa:
     \[ b_1 b_2 \ldots b_n \in K, c_1 c_2 \ldots c_n \in L \text{, że } \ \forall_{i \in \{1,2,\ldots n\}} \left( d_i = 3 \implies a_i = b_i = c_i \right) \land \left( d_i = 1/2 \implies b_i/c_i = w_i. \right) \]
@@ -199,9 +203,7 @@ automatem skończonym.
 
 Rozważmy \(K = \emptyset, L = \text{dowolny język nieregularny}\). Wtedy \(K \#
 L = \emptyset\), który jest językiem regularnym. Jednak \(L\) jest
-nieregularny. Zatem jest to kontrprzykład.
-
-Co dowodzi fałszywości zdania z polecenia.
+nieregularny. Zatem jest to kontrprzykład, co przeczy zdaniu z polecenia.
 
 \section{Kontrprzykład}
 
@@ -253,8 +255,8 @@ Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
  \end{center}
 
 \begin{remark}
-    Na diagramie brakuje `śmietnika', czyli wszytskie brakujące krawędzie z literą \(b\), np. z \(q_{0,3},q_{0,1},q_{1,1}, q_{n+1,1}\).
-    Śmietnik to stan, z którego nie można wyjść, a który nie jest akceptujący.
+    Na diagramie brakuje `śmietnika', czyli wszystkie brakujące krawędzie z literą \(b\), np. z \(q_{0,3},q_{0,1},q_{1,1}, q_{n+1,1}\).
+    Śmietnik to stan, z którego nie można wyjść, a który nie jest akceptujący. Nie zmienia on rzędu rozmiaru automatu.
 \end{remark}
 
 Udowodnijmy, że faktycznie \(\mathcal{L}(M_K) = K_n\).
