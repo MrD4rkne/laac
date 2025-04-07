@@ -228,8 +228,9 @@ Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
          \node[state] (q_20) [right of=q_11] {$q_{2,0}$};
          \node[state] (q_21) [right of=q_20] {$q_{2,1}$};
 
-         \node[state] (q_n1) [right of=q_21] {$q_{n-1,1}$};
-         \node[state, accepting] (q_n0) [right of=q_n1] {$q_{n,0}$};
+         \node[state] (q_n01) [right of=q_21] {$q_{n-1,0}$};
+         \node[state] (q_n11) [right of=q_n01] {$q_{n-1,1}$};
+         \node[state, accepting] (q_n0) [right of=q_n11] {$q_{n,0}$};
          \node[state] (q_n3) [above of=q_n0] {$q_{n+1,1}$};
 
         \path[->]
@@ -245,10 +246,12 @@ Niech \(M_K\) to automat rozpoznający \(K_n\). \(M_K\) ma postać:
             (q_20) edge [above, bend right] node {b} (q_03)
             (q_20) edge node {a} (q_21)
             
-            (q_21) edge [dotted] node {a} (q_n1)
+            (q_21) edge [dotted] node {a} (q_n01)
+            (q_n01) edge node {a} (q_n11)
+            (q_n01) edge [above, bend right] node {b} (q_03)
             (q_n0) edge node {a} (q_n3)
             
-            (q_n1) edge node {a} (q_n0)
+            (q_n11) edge node {a} (q_n0)
             (q_n0) edge [above, bend right] node {b} (q_03)
             (q_n3) edge [bend left] node {a} (q_n0);
      \end{tikzpicture}
