@@ -10,6 +10,9 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{physics}
 \usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
 
 % Definicje środowisk do twierdzeń, lematów, dowodów itp.
 \newtheorem{theorem}{Twierdzenie}[section]
@@ -28,11 +31,94 @@
 \date{\today}
 
 % Remove padding at the top of subsections
-\usepackage{titlesec}
 \titlespacing*{\subsection}{0pt}{*0}{*0}
+
+% Redefine section numbering to use letters
+\renewcommand{\thesection}{\Alph{section}}
+
+% Define a command for singleton sets
+\newcommand{\singleton}[1]{\left\{ #1 \right\}}
 
 \begin{document}
 
 \maketitle
+
+\section{}
+
+\begin{remark}
+    Zauważmy na początku, że jako że \(\Sigma\) jst językiem jednoliterowym, to
+    \(\abs{w} = \#_a(w)\).
+\end{remark}
+
+Są 2 typy takich wielomianów:
+
+\begin{enumerate}
+    \item \(ax + b, a,b \in Z\),
+    \item \(a_nx^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0, a_i \in Z \land a_n < 0\).
+\end{enumerate}
+
+\subsection{liniowy}
+
+Weźmy dowolny wielomian postaci \( p(x)=bx + c\), gdzie \(b,c \in Z\). 
+Niech \(A_p := \mathcal{L}(a^x \$ a^{bx + c})\) dla \(x \in \mathcal{N}\).
+\(A_p\) jest językiem bezkontekstowym, bo można go opisać za pomocą gramatyki
+o symbolu startowym \(S\) i produkcjach:
+\begin{align*}
+    S &\to a S a^b  \\
+    S &\to \$ a^c
+\end{align*}
+Prosto pokazać, że \(L_p\) jest bezkontekstowy, bo \(A_p = L_p\).
+
+\begin{proof}
+    `\(\subseteq\)'
+    Niech \(w \in A_p\). Stąd \(w = a^x \$ a^{bx + c}\) dla pewnego \(x \in \mathcal{N}\).
+    \( \abs{a^x}=x, \abs{a^{bx + c}}=bx + c = p(x)\). Zatem \(w \in L_p\).
+\end{proof}
+
+\begin{proof}
+    `\(\supseteq\)'
+    Niech \(w \in L_p\). Stąd \(w = u \$ v\), że \( \abs{v} = p(\abs{u})
+    = bx+c\). Zatem \(w = a^x \$ a^{bx + c} \in A_p\).
+\end{proof}
+
+Zatem \(L_p\) jest bezkontekstowy.
+
+\subsection{o współczynniku przy najwyższej potędzie ujemnym}
+
+Weźmy dowolny wielomian postaci \( p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z \land a_n < 0\).
+
+Zauważmy, że \(\left\{ x: 0 \leq p(x) \right\}\) jest skończony, bo d.d.d. \(n\) \(a_n x^n < a_{n-1}x^{n-1} + \cdots + a_1x + a_0\) dla \(x \geq 0\).
+
+Zatem \(L_p\) jest językiem skończonym, bo \(p(x)\) ma skończoną liczbę argumentów
+dla których przyjmuje wartości nieujemne.
+Skoro \(L_p\) jest językiem skończonym, to również regularny, a zatem bezkontekstowy.
+
+\subsection{pozostałe przypadki}
+
+Udowodnimy, że w pozostałych przypadkach \(L_p\) nie jest bezkontekstowy.
+
+Niech \(p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z\) i \(a_n > 0 \land n>1\).
+Zauważmy, że \(\left\{ x: 0 \leq p(x) \right\}\) jest nieskończony,
+bo d.d.d. \(x\) \(a_n x^n > a_{n-1}x^{n-1} + \cdots + a_1x + a_0\).
+
+Załóżmy, że \(L_p\) jest bezkontekstowy. Weźmy dowolne \(w \in L_p, n \in \mathcal{N}\),
+że \(n \leq \abs{w}\).
+Podzielmy to słowo dowolnie na:
+\(w y u z v\), gdzie \(\abs{yz} > 0 \land \abs{yuz} \leq n\).
+
+Jeśli \(\$ \in y \lor \$ \in z\), to \(w y^m u z^m v \not \in L_p\) dla \(m \geq 2\), gdyż każde słowo
+z \(L_p\) ma dokładnie jedną literę `\$'.
+
+Dla \(\$ \in w\) zmieniamy prawą stronę słowa, jednakże wielomian to funkcja,
+więc nie może tak być, że \(p(d)=e=f, e \neq f\).
+
+Dla \(\$ \in v\) zmieniamy lewą stronę słowa, jednakże w wielomianie stopnia większego niż 1
+dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m(\abs{y} + \abs{z})) \neq h\).
+
+Dla \(\$ \in u\) zmieniamy środek słowa, jednakże w wielomianie stopnia większego niż 1
+dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m \abs{y}) \neq h + m \abs{z}\).
+
+Zatem z lematu o pompowaniu języków bezkontekstowych sprzeczność.
+Czyli dla takich wielomianów \(p\), \(L_p\) nie jest bezkontekstowy.
 
 \end{document}
