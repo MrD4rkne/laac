@@ -97,6 +97,8 @@ Skoro \(L_p\) jest językiem skończonym, to również regularny, a zatem bezkon
 
 Udowodnimy, że w pozostałych przypadkach \(L_p\) nie jest bezkontekstowy.
 
+\begin{proof}
+
 Niech \(p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z\) i \(a_n > 0 \land n>1\).
 Zauważmy, że \(\left\{ x: 0 \leq p(x) \right\}\) jest nieskończony,
 bo d.d.d. \(x\) \(a_n x^n > a_{n-1}x^{n-1} + \cdots + a_1x + a_0\).
@@ -106,19 +108,29 @@ Załóżmy, że \(L_p\) jest bezkontekstowy. Weźmy dowolne \(w \in L_p, n \in \
 Podzielmy to słowo dowolnie na:
 \(w y u z v\), gdzie \(\abs{yz} > 0 \land \abs{yuz} \leq n\).
 
-Jeśli \(\$ \in y \lor \$ \in z\), to \(w y^m u z^m v \not \in L_p\) dla \(m \geq 2\), gdyż każde słowo
-z \(L_p\) ma dokładnie jedną literę `\$'.
+\begin{itemize}
 
-Dla \(\$ \in w\) zmieniamy prawą stronę słowa, jednakże wielomian to funkcja,
-więc nie może tak być, że \(p(d)=e=f, e \neq f\).
+\item Jeśli \(\$ \in y \lor \$ \in z\), to \(w y^m u z^m v \not \in L_p\) dla \(m \geq 2\), gdyż każde słowo
+z \(L_p\) ma dokładnie jedną literę `\$';
 
-Dla \(\$ \in v\) zmieniamy lewą stronę słowa, jednakże w wielomianie stopnia większego niż 1
-dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m(\abs{y} + \abs{z})) \neq h\).
+\item Dla \(\$ \in w\) zmieniamy prawą stronę słowa, jednakże wielomian to funkcja,
+więc nie może tak być, że \(p(d)=e=f, e \neq f\),
+zatem \(\exists_{m \in \mathcal{N}} \ w y^m u z^m v \not \in L_p\);
 
-Dla \(\$ \in u\) zmieniamy środek słowa, jednakże w wielomianie stopnia większego niż 1
-dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m \abs{y}) \neq h + m \abs{z}\).
+\item Dla \(\$ \in v\) zmieniamy lewą stronę słowa, jednakże w wielomianie stopnia większego niż 1
+dla \(w = g \$ h, \exists_{m \in \mathcal{N}} \ p(\abs{g} + m(\abs{y} + \abs{z})) \neq h\),
+zatem \(\exists_{m \in \mathcal{N}} \ w y^m u z^m v \not \in L_p\);
 
-Zatem z lematu o pompowaniu języków bezkontekstowych sprzeczność.
+\item Dla \(\$ \in u\) zmieniamy środek słowa, jednakże w wielomianie stopnia większego niż 1
+dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m \abs{y}) \neq h + m \abs{z}\),
+zatem \(\exists_{m \in \mathcal{N}} \ w y^m u z^m v \not \in L_p\).
+
+\end{itemize}
+
+Stąd z lematu o pompowaniu języków bezkontekstowych, sprzeczność.
+
+\end{proof}
+
 Czyli dla takich wielomianów \(p\), \(L_p\) nie jest bezkontekstowy.
 
 \end{document}
