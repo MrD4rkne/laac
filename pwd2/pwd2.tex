@@ -103,8 +103,8 @@ Niech \(p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z
 Zauważmy, że \(\left\{ x: 0 \leq p(x) \right\}\) jest nieskończony,
 bo d.d.d. \(x\) \(a_n x^n > a_{n-1}x^{n-1} + \cdots + a_1x + a_0\).
 
-Załóżmy, że \(L_p\) jest bezkontekstowy. Weźmy dowolne \(w \in L_p, n \in \mathcal{N}\),
-że \(n \leq \abs{w}\).
+Załóżmy, że \(L_p\) jest bezkontekstowy. Weźmy dowolne \(c \in L_p, n \in \mathcal{N}\),
+że \(n \leq \abs{c}\).
 Podzielmy to słowo dowolnie na:
 \(w y u z v\), gdzie \(\abs{yz} > 0 \land \abs{yuz} \leq n\).
 
@@ -132,5 +132,51 @@ Stąd z lematu o pompowaniu języków bezkontekstowych, sprzeczność.
 \end{proof}
 
 Czyli dla takich wielomianów \(p\), \(L_p\) nie jest bezkontekstowy.
+
+\section{}
+
+\subsection{liniowe}
+Rozważmy wielomiany postaci \(p(x,y)=dx + ey + f\), gdzie \(d,e,f \in Z\).
+Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
+że \(L_p = L(M)\).
+
+\begin{definition}
+    Niech \(M\) będzie automatem ze stosem, że:
+    \(M\) na początku na stosie ma \(f\) symboli `l'.
+    Zaczyna w stanie \(q_0\).
+    Gdy automat przeczyta `a', wkłada na stos \(a^d\) i pozostaje w stanie \(q_0\).
+    Gdy przeczyta `b', wkłada na stos \(a^e\) i pozostaje w stanie \(q_0\).
+    Gdy przeczyta `c' przechodzi do stanu \(q_1\).
+
+    W stanie \(q_1\) z każdą literką `a' zdejmuje ze stosu jedno `l'.
+    Gdy stos jest pusty, a słowo jeszcze nie zostało przeczytane w pełni, to przechodzi do śmietnika.
+    Akceptuje w stanie \(q_1\).
+
+    Jeśli automat napotka na `\$' więcej niż raz, przechodzi do śmietnika.
+\end{definition}
+
+\begin{proof}
+    `\(\subseteq\)'
+    Weźmy dowolne słowo \(w \in L_p, w = l \ \$ \ r\).
+    Zauważmy, że gdy automat \(M\) będzie czytał \(w\),
+    to w momencie przeczytania `\$' na stosie będzie \(d(\#_{a}(l))+e(\#_{b}(l))+f\) symboli `l'.
+    Po przeczytaniu `\$' automat przechodzi do stanu \(q_1\).
+    W stanie \(q_1\) zdejmuje ze stosu symbol `l' za każdą przeczytaną literę.
+    Zatem w momencie przeczytania \(r\) na stosie 0 symboli `l' oraz będziemy w stanie \(q_1\).
+    Zatem \(w \in L(M)\).
+\end{proof}
+\begin{proof}
+    `\(\supseteq\)'
+    Weźmy dowolne słowo \(w \in L(M), w = l \ \$ \ r\).
+    Zauważmy, że zgodnie z definicją automatu,
+    na początku na stosie mamy \(f\) symboli `l',
+    za każdą literę `a' wkładamy \(d\) symboli `l',
+    za każdą literę `b' wkładamy \(e\) symboli `l'.
+    Akceptujemy tylko słowa, które po symbolu `\$' mają \(d(\#_{a}(l))+e(\#_{b}(l))+f\) liter.
+    Zatem \(w \in L_p\).
+\end{proof}
+
+Zatem \(L_p = L(M)\).
+Stąd \(L_p\) jest bezkontekstowy.
 
 \end{document}
