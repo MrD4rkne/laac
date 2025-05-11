@@ -157,8 +157,8 @@ Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
             \item jeśli na szczycie jest taki sam symbol jak dodawany, to dodaje \(d(/e)\) razy,
             \item jeśli na szczycie jest inny symbol, to:
             \begin{itemize}
-                \item zdejmuje go \(\min(d(/e))\) razy,
-                \item dodaje \(d(/e) - \min(d(/e))\) razy,
+                \item zdejmuje ze stosu \(d(/e)\) razy lub do pustości stosu, wykonując łącznie \(m \leq d(/e)\) operacji,
+                \item gdy \(m < d(/e)\) to oznacza, że stos jest pusty, więc dodaje \(d(/e) - m\) razy symbol (ten który pierwotnie miał dodawać),
             \end{itemize}
         \end{itemize}
     \end{itemize}
@@ -166,11 +166,15 @@ Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
     Gdy przeczyta pierwsze `\$' przechodzi do stanu \(q_1\).
 
     W stanie \(q_1\) z każdą literką `a' lub `b' zdejmuje ze stosu jedno `+'.
-    Gdy stos jest pusty a słowo jeszcze nie zostało przeczytane w pełni lub na jego górze jest `-',
+    Gdy:
+    \begin{itemize}
+        \item stos jest pusty a słowo jeszcze nie zostało przeczytane,
+        \item na górze stosu jest `-',
+        \item automat napotka kolejny `\$'
+    \end{itemize}
     to przechodzi do śmietnika.
-    Akceptuje w stanie \(q_1\) wtw. gdy stos jest pusty.
 
-    Jeśli automat napotka na `\$' więcej niż raz, przechodzi do śmietnika.
+    Automat akceptuje w stanie \(q_1\) wtw. gdy stos jest pusty.
 \end{definition}
 
 \begin{proof}
@@ -213,7 +217,7 @@ Zatem \(L_p\) jest bezkontekstowy.
 
 Jakie są to wielomiany?
 Powinny zbiegac do \(- \infty\) dla \(x \to \infty\) oraz \(y \to \infty\).
-Zatem napewno muszą mieć stopień (największą sumę potęg zmiennych przy jednym wyrazie) parzystą oraz współczynnik przy tych wyrazach musi być ujemny.
+Zatem napewno muszą mieć stopień (największą sumę potęg zmiennych przy jednym wyrazie) parzystą (wpp. dla zmiennych dążących do \(-\infty\) by nie zbiegało) oraz współczynnik przy tych wyrazach musi być ujemny.
 Dalej trudno jest mi powiedzieć, czy są jakieś inne ograniczenia.
 
 \subsection{koniec}
