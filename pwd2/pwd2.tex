@@ -168,7 +168,7 @@ Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
     W stanie \(q_1\) z każdą literką `a' lub `b' zdejmuje ze stosu jedno `+'.
     Gdy stos jest pusty a słowo jeszcze nie zostało przeczytane w pełni lub na jego górze jest `-',
     to przechodzi do śmietnika.
-    Akceptuje w stanie \(q_1\).
+    Akceptuje w stanie \(q_1\) wtw. gdy stos jest pusty.
 
     Jeśli automat napotka na `\$' więcej niż raz, przechodzi do śmietnika.
 \end{definition}
@@ -210,5 +210,15 @@ Skoro \(Y\) jest zbiorem skończonym, to:
 \(L_p = \bigcup_{<x,y> \in Y} {X_{<x,y>}\ \$ \ Z_{<x,y>}} \) jest skończoną sumą iloczynów języków skończonych, zatem również jest językiem skończonym.
 
 Zatem \(L_p\) jest bezkontekstowy.
+
+Jakie są to wielomiany?
+Powinny zbiegac do \(- \infty\) dla \(x \to \infty\) oraz \(y \to \infty\).
+Zatem napewno muszą mieć stopień (największą sumę potęg zmiennych przy jednym wyrazie) parzystą oraz współczynnik przy tych wyrazach musi być ujemny.
+Dalej trudno jest mi powiedzieć, czy są jakieś inne ograniczenia.
+
+\subsection{koniec}
+
+Trudno jest mi powiedzieć czy są jakieś inne przypadki, zatem i trudno o ogólny zwarty opis i dowód, że wpp. nie są bezkontekstowe.
+
 
 \end{document}
