@@ -93,7 +93,7 @@ Zatem \(L_p\) jest językiem skończonym, bo \(p(x)\) ma skończoną liczbę arg
 dla których przyjmuje wartości nieujemne.
 Skoro \(L_p\) jest językiem skończonym, to również regularny, a zatem bezkontekstowy.
 
-\subsection{pozostałe przypadki}
+\subsection{pozostałe przypadki}\label{sec:a:remaining}
 
 Udowodnimy, że w pozostałych przypadkach \(L_p\) nie jest bezkontekstowy.
 
@@ -141,7 +141,7 @@ Rozważmy wielomiany \(p(x,y)\), które są wielomianami defacto jednej zmiennej
 \(\forall_{x_1,x_2,y \in \mathcal{Z}} p(x_1,y)=p(x_2,y)\) \ 
 lub \(\forall_{y_1,y_2,x \in \mathcal{Z}} p(x,y_1)=p(x,y_2)\). Wtedy przenosimy rozumowanie z podpunktu \ref{sec:a}.
 
-\subsection{liniowe}
+\subsection{liniowe}\label{sec:b:lin}
 Rozważmy wielomiany postaci \(p(x,y)=dx + ey + f\), gdzie \(d,e,f \in Z \land d \neq 0, e \neq 0\).
 Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
 że \(L_p = L(M)\).
@@ -219,6 +219,29 @@ Jakie są to wielomiany?
 Powinny zbiegac do \(- \infty\) dla \(x \to \infty\) oraz \(y \to \infty\).
 Zatem napewno muszą mieć stopień (największą sumę potęg zmiennych przy jednym wyrazie) parzystą (wpp. dla zmiennych dążących do \(-\infty\) by nie zbiegało) oraz współczynnik przy tych wyrazach musi być ujemny.
 Dalej trudno jest mi powiedzieć, czy są jakieś inne ograniczenia.
+
+\subsection{sumy wielomianów jednej zmiennej}
+
+Rozważmy wielomiany \(p(x,y) = p_a(x) + p_b(y)\), gdzie \(p_a(x)\) i \(p_b(y)\) są wielomianami jednej zmiennej o współczynnikach całkowitych.
+Rozważałem już przypadek, że \(p_a(x)\) i \(p_b(y)\) są liniowe w \ref{sec:b:lin}.
+
+\begin{itemize}
+    \item jeśli który kolwiek wielomian jest stopnia większego niż 1 i ma współczynnik przy najwyższej potędze dodatni,
+    to \(L_p\) nie jest bezkontekstowy. Wynika to z tego, że wystarczy pominąć drugą literę (poprzez obraz mapujący ją na `$\epsilon$')
+    i otrzymujemy język nie bezkontekstwowy, co udowadniałem w \ref{sec:a:remaining}. Języki bezkontekstowe sa zamknięte na obraz,
+    zatem \(L_p\) nie jest bezkontekstowy.
+
+    Niżej rozważę przypadki, gdy nie jest to prawda.
+    
+    \item wpp. oba wielomiany: są conajwyżej liniowe lub mają współczynnik przy najwyższej potędze ujemny.
+    Gdy ktoryś ma współczynnik przy najwyższej potędze ujemny, to:
+    \begin{itemize}
+        \item \(L_p\) jest językiem skończonym, gdy w obydwu wielomianach współczynnik przy najwyższej potędze jest ujemny,
+        Skoro \(L_p\) jest językiem skończonym, to również regularny, a zatem bezkontekstowy.
+        \item W przeciwnym razie, \(L_p\) jest skończoną sumą jezyków bezkontekstowych,
+        zatem również jest językiem bezkontekstowym.
+    \end{itemize}
+\end{itemize}
 
 \subsection{koniec}
 
