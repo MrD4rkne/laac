@@ -43,7 +43,7 @@
 
 \maketitle
 
-\section{}
+\section{}\label{sec:a}
 
 \begin{remark}
     Zauważmy na początku, że jako że \(\Sigma\) jst językiem jednoliterowym, to
@@ -97,28 +97,128 @@ Skoro \(L_p\) jest językiem skończonym, to również regularny, a zatem bezkon
 
 Udowodnimy, że w pozostałych przypadkach \(L_p\) nie jest bezkontekstowy.
 
+\begin{proof}
+
 Niech \(p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z\) i \(a_n > 0 \land n>1\).
 Zauważmy, że \(\left\{ x: 0 \leq p(x) \right\}\) jest nieskończony,
 bo d.d.d. \(x\) \(a_n x^n > a_{n-1}x^{n-1} + \cdots + a_1x + a_0\).
 
-Załóżmy, że \(L_p\) jest bezkontekstowy. Weźmy dowolne \(w \in L_p, n \in \mathcal{N}\),
-że \(n \leq \abs{w}\).
+Załóżmy, że \(L_p\) jest bezkontekstowy. Weźmy dowolne \(c \in L_p, n \in \mathcal{N}\),
+że \(n \leq \abs{c}\).
 Podzielmy to słowo dowolnie na:
 \(w y u z v\), gdzie \(\abs{yz} > 0 \land \abs{yuz} \leq n\).
 
-Jeśli \(\$ \in y \lor \$ \in z\), to \(w y^m u z^m v \not \in L_p\) dla \(m \geq 2\), gdyż każde słowo
-z \(L_p\) ma dokładnie jedną literę `\$'.
+\begin{itemize}
 
-Dla \(\$ \in w\) zmieniamy prawą stronę słowa, jednakże wielomian to funkcja,
-więc nie może tak być, że \(p(d)=e=f, e \neq f\).
+\item Jeśli \(\$ \in y \lor \$ \in z\), to \(w y^m u z^m v \not \in L_p\) dla \(m \geq 2\), gdyż każde słowo
+z \(L_p\) ma dokładnie jedną literę `\$';
 
-Dla \(\$ \in v\) zmieniamy lewą stronę słowa, jednakże w wielomianie stopnia większego niż 1
-dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m(\abs{y} + \abs{z})) \neq h\).
+\item Dla \(\$ \in w\) zmieniamy prawą stronę słowa, jednakże wielomian to funkcja,
+więc nie może tak być, że \(p(d)=e=f, e \neq f\),
+zatem \(\exists_{m \in \mathcal{N}} \ w y^m u z^m v \not \in L_p\);
 
-Dla \(\$ \in u\) zmieniamy środek słowa, jednakże w wielomianie stopnia większego niż 1
-dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m \abs{y}) \neq h + m \abs{z}\).
+\item Dla \(\$ \in v\) zmieniamy lewą stronę słowa, jednakże w wielomianie stopnia większego niż 1
+dla \(w = g \$ h, \exists_{m \in \mathcal{N}} \ p(\abs{g} + m(\abs{y} + \abs{z})) \neq h\),
+zatem \(\exists_{m \in \mathcal{N}} \ w y^m u z^m v \not \in L_p\);
 
-Zatem z lematu o pompowaniu języków bezkontekstowych sprzeczność.
+\item Dla \(\$ \in u\) zmieniamy środek słowa, jednakże w wielomianie stopnia większego niż 1
+dla \(w = g \$ h, \exists_{m \in \mathcal{N}} p(\abs{g} + m \abs{y}) \neq h + m \abs{z}\),
+zatem \(\exists_{m \in \mathcal{N}} \ w y^m u z^m v \not \in L_p\).
+
+\end{itemize}
+
+Stąd z lematu o pompowaniu języków bezkontekstowych, sprzeczność.
+
+\end{proof}
+
 Czyli dla takich wielomianów \(p\), \(L_p\) nie jest bezkontekstowy.
+
+\section{}
+
+\subsection{jednej zmiennej}
+
+Rozważmy wielomiany \(p(x,y)\), które są wielomianami defacto jednej zmiennej. Tz., że
+\(\forall_{x_1,x_2,y \in \mathcal{Z}} p(x_1,y)=p(x_2,y)\) \ 
+lub \(\forall_{y_1,y_2,x \in \mathcal{Z}} p(x,y_1)=p(x,y_2)\). Wtedy przenosimy rozumowanie z podpunktu \ref{sec:a}.
+
+\subsection{liniowe}
+Rozważmy wielomiany postaci \(p(x,y)=dx + ey + f\), gdzie \(d,e,f \in Z \land d \neq 0, e \neq 0\).
+Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
+że \(L_p = L(M)\).
+
+\begin{definition}
+    Niech \(M\) będzie automatem ze stosem, że:
+    \(M\) na początku na stosie ma \(f\) symboli `+'.
+    Zaczyna w stanie \(q_0\).
+    Gdy automat przeczyta `a'(/`b)', to zostaje w stanie \(q_0\):
+    \begin{itemize}
+        \item jeśli przeczyta literę `a'(/`b') to `dokłada' na stos \(d(/e)\) symboli `+' lub `-' w zależności od znaku (+ dla >0, - dla <0):
+        \begin{itemize}
+            \item jeśli na szczycie jest taki sam symbol jak dodawany, to dodaje \(d(/e)\) razy,
+            \item jeśli na szczycie jest inny symbol, to:
+            \begin{itemize}
+                \item zdejmuje go \(\min(d(/e))\) razy,
+                \item dodaje \(d(/e) - \min(d(/e))\) razy,
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+
+    Gdy przeczyta pierwsze `\$' przechodzi do stanu \(q_1\).
+
+    W stanie \(q_1\) z każdą literką `a' lub `b' zdejmuje ze stosu jedno `+'.
+    Gdy stos jest pusty a słowo jeszcze nie zostało przeczytane w pełni lub na jego górze jest `-',
+    to przechodzi do śmietnika.
+    Akceptuje w stanie \(q_1\) wtw. gdy stos jest pusty.
+
+    Jeśli automat napotka na `\$' więcej niż raz, przechodzi do śmietnika.
+\end{definition}
+
+\begin{proof}
+    `\(\subseteq\)'
+
+    Weźmy dowolne słowo \(w \in L_p, w = l \ \$ \ r\).
+    Zauważmy, że gdy automat \(M\) będzie czytał \(w\),
+    to w momencie przeczytania `\$' na stosie będzie \(d(\#_{a}(l))+e(\#_{b}(l))+f\) symboli `+'.
+    Po przeczytaniu `\$' automat przechodzi do stanu \(q_1\).
+    W stanie \(q_1\) zdejmuje ze stosu symbol `+' za każdą przeczytaną literę.
+    Zatem w momencie przeczytania \(r\) na stosie 0 symboli `+' oraz będziemy w stanie \(q_1\).
+    Zatem \(w \in L(M)\).
+\end{proof}
+\begin{proof}
+    `\(\supseteq\)'
+
+    Weźmy dowolne słowo \(w \in L(M), w = l \ \$ \ r\).
+    Zauważmy, że zgodnie z definicją automatu,
+    na początku na stosie mamy \(f\) symboli `+',
+    za każdą literę `a'(/`b') dodajemy do naszego licznika (w formie stosu) \(d/(e)\).
+    Akceptujemy tylko słowa, które po symbolu `\$' mają \(d(\#_{a}(l))+e(\#_{b}(l))+f\) liter.
+    Zatem \(w \in L_p\).
+\end{proof}
+
+Zatem \(L_p = L(M)\).
+Stąd \(L_p\) jest bezkontekstowy.
+
+\subsection{o skończonej liczbie punktów o wartości nieujemnej}
+
+Rozważmy wielomiany \(p(x,y)\), że \( Y = \left\{ <x,y>: \ p(x,y) \geq 0 \right\}\) jest zbiorem skończonym.
+
+Zauważmy, że skoro jest to zbiór skończony, to język słów \( X_{<x,y>} = \left\{ w: \ \#_a(w) = x \land \#_b(w) = y \right\} \subset \Sigma^* \) jest skończony.
+
+Również język \(Z_{<x,y>} = \left\{ w: \ \abs{w} = p(x,y) \right\}\) jest językiem skończonym dla każdego \(<x,y> \in Y\), gdyż \(\Sigma\) jest skończony.
+
+Skoro \(Y\) jest zbiorem skończonym, to: 
+\(L_p = \bigcup_{<x,y> \in Y} {X_{<x,y>}\ \$ \ Z_{<x,y>}} \) jest skończoną sumą iloczynów języków skończonych, zatem również jest językiem skończonym.
+
+Zatem \(L_p\) jest bezkontekstowy.
+
+Jakie są to wielomiany?
+Powinny zbiegac do \(- \infty\) dla \(x \to \infty\) oraz \(y \to \infty\).
+Zatem napewno muszą mieć stopień (największą sumę potęg zmiennych przy jednym wyrazie) parzystą oraz współczynnik przy tych wyrazach musi być ujemny.
+Dalej trudno jest mi powiedzieć, czy są jakieś inne ograniczenia.
+
+\subsection{koniec}
+
+Trudno jest mi powiedzieć czy są jakieś inne przypadki, zatem i trudno o ogólny zwarty opis i dowód, że wpp. nie są bezkontekstowe.
+
 
 \end{document}
