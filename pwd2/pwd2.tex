@@ -54,12 +54,12 @@ Są 2 typy takich wielomianów:
 
 \begin{enumerate}
     \item \(ax + b, a,b \in Z\),
-    \item \(a_nx^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0, a_i \in Z \land a_n < 0\).
+    \item \(a_nx^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0, a_i \in Z \land a_n < 0 \land n \geq 2\).
 \end{enumerate}
 
 \subsection{liniowy}
 
-Weźmy dowolny wielomian postaci \( p(x)=bx + c\), gdzie \(b,c \in Z\). 
+Weźmy dowolny wielomian postaci \( p(x)=bx + c\), gdzie \(b,c \in Z \land b \geq 0\). 
 Niech \(A_p := \mathcal{L}(a^x \$ a^{bx + c})\) dla \(x \in \mathcal{N}\).
 \(A_p\) jest językiem bezkontekstowym, bo można go opisać za pomocą gramatyki
 o symbolu startowym \(S\) i produkcjach:
@@ -83,9 +83,14 @@ Prosto pokazać, że \(L_p\) jest bezkontekstowy, bo \(A_p = L_p\).
 
 Zatem \(L_p\) jest bezkontekstowy.
 
+
+\begin{remark}
+Gdy \(b < 0\) to język ma skończenie wiele słów, więc jest regularny, zatem bezkontekstowy.
+\end{remark}
+
 \subsection{o współczynniku przy najwyższej potędzie ujemnym}
 
-Weźmy dowolny wielomian postaci \( p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z \land a_n < 0\).
+Weźmy dowolny wielomian postaci \( p(x)=a_n x^n + a_{n-1}x^{n-1} + \cdots + a_1x + a_0\), gdzie \(a_i \in Z \land a_n < 0 \land n \geq 2\).
 
 Zauważmy, że \(\left\{ x: 0 \leq p(x) \right\}\) jest skończony, bo d.d.d. \(n\) \(a_n x^n < a_{n-1}x^{n-1} + \cdots + a_1x + a_0\) dla \(x \geq 0\).
 
@@ -93,7 +98,7 @@ Zatem \(L_p\) jest językiem skończonym, bo \(p(x)\) ma skończoną liczbę arg
 dla których przyjmuje wartości nieujemne.
 Skoro \(L_p\) jest językiem skończonym, to również regularny, a zatem bezkontekstowy.
 
-\subsection{pozostałe przypadki}
+\subsection{pozostałe przypadki}\label{sec:a:remaining}
 
 Udowodnimy, że w pozostałych przypadkach \(L_p\) nie jest bezkontekstowy.
 
@@ -141,7 +146,7 @@ Rozważmy wielomiany \(p(x,y)\), które są wielomianami defacto jednej zmiennej
 \(\forall_{x_1,x_2,y \in \mathcal{Z}} p(x_1,y)=p(x_2,y)\) \ 
 lub \(\forall_{y_1,y_2,x \in \mathcal{Z}} p(x,y_1)=p(x,y_2)\). Wtedy przenosimy rozumowanie z podpunktu \ref{sec:a}.
 
-\subsection{liniowe}
+\subsection{liniowe}\label{sec:b:lin}
 Rozważmy wielomiany postaci \(p(x,y)=dx + ey + f\), gdzie \(d,e,f \in Z \land d \neq 0, e \neq 0\).
 Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
 że \(L_p = L(M)\).
@@ -182,7 +187,7 @@ Weźmy język \(L_p\). Pokażę, że istnieje automat ze stosem \(M\),
 
     Weźmy dowolne słowo \(w \in L_p, w = l \ \$ \ r\).
     Zauważmy, że gdy automat \(M\) będzie czytał \(w\),
-    to w momencie przeczytania `\$' na stosie będzie \(d(\#_{a}(l))+e(\#_{b}(l))+f\) symboli `+'.
+    to w momencie przeczytania `\$' na stosie będzie `miał wartość' \(d(\#_{a}(l))+e(\#_{b}(l))+f\).
     Po przeczytaniu `\$' automat przechodzi do stanu \(q_1\).
     W stanie \(q_1\) zdejmuje ze stosu symbol `+' za każdą przeczytaną literę.
     Zatem w momencie przeczytania \(r\) na stosie 0 symboli `+' oraz będziemy w stanie \(q_1\).
@@ -217,8 +222,29 @@ Zatem \(L_p\) jest bezkontekstowy.
 
 Jakie są to wielomiany?
 Powinny zbiegac do \(- \infty\) dla \(x \to \infty\) oraz \(y \to \infty\).
-Zatem napewno muszą mieć stopień (największą sumę potęg zmiennych przy jednym wyrazie) parzystą (wpp. dla zmiennych dążących do \(-\infty\) by nie zbiegało) oraz współczynnik przy tych wyrazach musi być ujemny.
-Dalej trudno jest mi powiedzieć, czy są jakieś inne ograniczenia.
+
+\subsection{sumy wielomianów jednej zmiennej}
+
+Rozważmy wielomiany \(p(x,y) = p_a(x) + p_b(y)\), gdzie \(p_a(x)\) i \(p_b(y)\) są wielomianami jednej zmiennej o współczynnikach całkowitych.
+Rozważałem już przypadek, że \(p_a(x)\) i \(p_b(y)\) są liniowe w \ref{sec:b:lin}.
+
+\begin{itemize}
+    \item jeśli który kolwiek wielomian jest stopnia większego niż 1 i ma współczynnik przy najwyższej potędze dodatni,
+    to \(L_p\) nie jest bezkontekstowy. Wynika to z tego, że wystarczy pominąć drugą literę (poprzez obraz mapujący ją na `$\epsilon$')
+    i otrzymujemy język nie bezkontekstwowy, co udowadniałem w \ref{sec:a:remaining}.
+    Języki bezkontekstowe są zamknięte na obraz,
+    zatem \(L_p\) nie jest bezkontekstowy.
+
+    Niżej rozważę przypadki, gdy nie jest to prawda.
+    
+    \item wpp. oba wielomiany: są conajwyżej liniowe lub mają współczynnik przy najwyższej potędze ujemny.
+    Gdy ktoryś ma współczynnik przy najwyższej potędze ujemny, to:
+    \begin{itemize}
+        \item \(L_p\) gdy w obydwu wielomianach współczynnik przy najwyższej potędze jest ujemny, to jest językiem skończonym.
+        \item W przeciwnym razie, \(L_p\) jest skończoną sumą jezyków bezkontekstowych,
+        zatem również jest językiem bezkontekstowym.
+    \end{itemize}
+\end{itemize}
 
 \subsection{koniec}
 
