@@ -1,0 +1,58 @@
+\documentclass{article}
+\setlength{\headheight}{8pt}
+
+\usepackage[a4paper, margin=0.3in]{geometry}
+\usepackage{lmodern}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{physics}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+% Definicje środowisk do twierdzeń, lematów, dowodów itp.
+\newtheorem{theorem}{Twierdzenie}[section]
+\newtheorem{lemma}[theorem]{Lemat}
+\newtheorem{corollary}[theorem]{Wniosek}
+\newtheorem{proposition}[theorem]{Stwierdzenie}
+\theoremstyle{definition}
+\newtheorem{definition}{Definicja}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Uwaga}
+\newtheorem*{example}{Przykład}
+\newtheorem*{property}{Własność}
+
+\title{Praca domowa 2}
+\author{Marcin Szopa 459531}
+\date{\today}
+
+% Remove padding at the top of subsections
+\titlespacing*{\subsection}{0pt}{*0}{*0}
+
+% Redefine section numbering to use letters
+\renewcommand{\thesection}{\Alph{section}}
+
+% Define a command for singleton sets
+\newcommand{\singleton}[1]{\left\{ #1 \right\}}
+
+\begin{document}
+
+\maketitle
+
+\section{niepisząca maszyna Turinga z 1 taśmą roboczą}
+
+Weźmy taką maszynę \(M\).
+
+Zauważmy, że zgodnie z definicją \(P\) jest puste, gdy mamy tylko 1 taśmę roboczą.
+
+Stąd pomińmy pusty zbiór w funkcji przejścia, gdyż nic on nie wnosi. Tz. w dowolnej konfiguracji ten "warunek" jest spełniony: \(\sigma \subseteq, \mathcal{Q} \times A \times \mathcal{Q} \times \left\{ \circlearrowright,  \rightarrow  \right\} \times \left\{ \leftarrow, \circlearrowright,  \rightarrow  \right\}^k\).
+
+Pokażę, że taśma robocza jest bezużyteczna. Wynika to z faktu, że możemy się po niej w sposób nieograniczony poruszać, jednakże nic z niej odczytywać. Stąd tak naprawdę \(M\) to automat.
+
+Zdefiniujmy \(M_A = \left<\Sigma, \right>\)
+
+\end{document}
