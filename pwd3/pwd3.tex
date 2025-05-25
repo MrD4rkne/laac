@@ -22,7 +22,7 @@
 \theoremstyle{definition}
 \newtheorem{definition}{Definicja}[section]
 \theoremstyle{remark}
-\newtheorem*{remark}{Uwaga}
+\newtheorem{remark}{Uwaga}[section]
 \newtheorem*{example}{Przykład}
 \newtheorem*{property}{Własność}
 
@@ -47,12 +47,65 @@
 
 Weźmy taką maszynę \(M\).
 
-Zauważmy, że zgodnie z definicją \(P\) jest puste, gdy mamy tylko 1 taśmę roboczą.
+Zauważmy, że zgodnie z definicją \(P\) jest puste, gdyż mamy tylko 1 taśmę roboczą.
 
-Stąd pomińmy pusty zbiór w funkcji przejścia, gdyż nic on nie wnosi. Tz. w dowolnej konfiguracji ten "warunek" jest spełniony: \(\sigma \subseteq, \mathcal{Q} \times A \times \mathcal{Q} \times \left\{ \circlearrowright,  \rightarrow  \right\} \times \left\{ \leftarrow, \circlearrowright,  \rightarrow  \right\}^k\).
+Stąd pomińmy pusty zbiór w funkcji przejścia, gdyż nic on nie wnosi. Tz. w dowolnej konfiguracji ten "warunek" jest spełniony: \(\delta \subseteq, Q \times A \times Q \times \left\{ \circlearrowright,  \rightarrow  \right\} \times \left\{ \leftarrow, \circlearrowright,  \rightarrow  \right\}^k\).
 
 Pokażę, że taśma robocza jest bezużyteczna. Wynika to z faktu, że możemy się po niej w sposób nieograniczony poruszać, jednakże nic z niej odczytywać. Stąd tak naprawdę \(M\) to automat.
 
-Zdefiniujmy \(M_A = \left<\Sigma, \right>\)
+Zdefiniujmy \(M_A = \left<\Sigma_A, Q_A, I_A, F_A, \delta_A \right>\):
+\begin{itemize}
+\item \(\Sigma_A = \Sigma\)
+\item \(Q_A = Q \times \Sigma \cup \{ \left< S, \epsilon \right> \} \)
+\item \(I_A = \{ \left<q_M, x \right>: q_M \in I \land x \in \Sigma \}\)
+\item \(F_A = F \times \Sigma\)
+\item \(\delta_A\) jest zdefiniowane następująco:
+\begin{itemize}
+\item mapujemy \( \left<q, a, q', \rightarrow, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a\right>, a, \left<q',x\right> \right>: x \in \Sigma \} \),
+czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) to w \(M_A\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a\right>\) i przechodzi do stanu \(\left<q',x\right>\), gdzie \(x\) jest dowolną literą z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stnau będzie istniał wtw następną literą jest dane \(x\).
+
+\item mapujemy \( \left<q, a, q', \circlearrowright, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a\right>, \epsilon, \left<q',a\right> \right>\} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) bez zmiany głowicy to w \(M_A\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a\right>\) i przechodzi do stanu \(\left<q',a\right>\) nie wykorzystując litery.
+
+\end{itemize}
+
+\(\delta\) jest sumą zbiorów przejść z powyższych przypadków.
+
+\begin{remark}\label{remark:transition}
+    Zauważmy, że ze stanu \(\left<q,a\right>\) maszyna \(M_A\) może przejść do stanu \(\left<q',x\right>\) tylko wtedy,
+    gdy wczyta literę \(a\) lub do stanu \(\left<q',a\right>\) bez wczytania litery.
+\end{remark}
+
+\end{itemize}
+
+Pokażemy, że \(\mathcal{L}(M) = \mathcal{L}(M_A)\).
+
+\begin{proof}
+`\(\subseteq\)'
+
+Niech \(w \in \mathcal{L}(M)\). Wtedy istnieje akceptujący bieg \(b\) maszyny \(M\) na słowie \(w\).
+Zauważmy, że każdy bieg akceptujący maszyny \(M\) można odwzorować na bieg akceptujący maszyny \(M_A\):
+
+Automat zgadnie początkowy stan \(\left<q_0,x \right>\) zgodnie z \(\ref{remark:transition}\).
+Następnie będzie wczytywać litery z \(w\) i przechodzić do stanów \(\left<q,a\right>\) zgodnie z regułami przejść maszyny \(M\). W końcu, gdy maszyna \(M\) osiągnie stan akceptujący \(q_f\), maszyna \(M_A\) będzie w stanie \(\left<q_f,x\right>\), gdzie \(x\) jest dowolną literą z alfabetu. 
+Ostatecznie maszyna \(M_A\) zaakceptuje słowo \(w\), gdyż będzie w stanie akceptującym \(\left<q_f,x\right>\).
+Zatem \(w \in \mathcal{L}(M_A)\).
+
+`\(\supseteq\)'
+
+Niech \(w \in \mathcal{L}(M_A)\). Wtedy istnieje akceptujący bieg \(b\) maszyny \(M_A\) na słowie \(w\).
+Zauważmy, że każdy bieg akceptujący maszyny \(M_A\) można odwzorować na bieg akceptujący maszyny \(M\):
+
+Na początku maszyna \(M_A\) jest w stanie \(q_0\), a głowicę ma nad pierwszą literą słowa \(w\).
+Następnie będzie wczytywać litery z \(w\) i przechodzić do stanów \(\left<q,a\right>\) zgodnie ze swoją definicją.
+\begin{itemize}
+\item Jeśli przejście w \(b\) jest zdefiniowane jako \( \left< \left<q,a\right>, a, \left<q',x\right> \right> \),
+ to maszyna \(M\) przechodzi do stanu \(q'\) wczytując literę \(a\) i przesuwajac głowicę w prawo.
+\item Jeśli przejście w \(b\) jest zdefiniowane jako \( \left< \left<q,a\right>, \epsilon, \left<q',a\right> \right> \),
+ to maszyna \(M\) przechodzi do stanu \(q'\) bez wczytywania litery i nie przesuwa głowicy.
+\end{itemize}
+
+W końcu, gdy maszyna \(M_A\) osiągnie stan akceptujący \(\left<q_f,x\right>\), maszyna \(M\) będzie w stanie \(q_f \in I\).
+Zatem \(w \in \mathcal{L}(M)\).
+\end{proof}
 
 \end{document}
