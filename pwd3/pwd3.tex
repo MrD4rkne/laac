@@ -89,7 +89,9 @@ Automat zgadnie początkowy stan \(\left<q_0,x \right>\) zgodnie z \(\ref{remark
 Następnie będzie wczytywać litery z \(w\) i przechodzić do stanów \(\left<q,a\right>\) zgodnie z regułami przejść maszyny \(M\). W końcu, gdy maszyna \(M\) osiągnie stan akceptujący \(q_f\), maszyna \(M_A\) będzie w stanie \(\left<q_f,x\right>\), gdzie \(x\) jest dowolną literą z alfabetu. 
 Ostatecznie maszyna \(M_A\) zaakceptuje słowo \(w\), gdyż będzie w stanie akceptującym \(\left<q_f,x\right>\).
 Zatem \(w \in \mathcal{L}(M_A)\).
+\end{proof}
 
+\begin{proof}
 `\(\supseteq\)'
 
 Niech \(w \in \mathcal{L}(M_A)\). Wtedy istnieje akceptujący bieg \(b\) maszyny \(M_A\) na słowie \(w\).
@@ -107,5 +109,47 @@ Następnie będzie wczytywać litery z \(w\) i przechodzić do stanów \(\left<q
 W końcu, gdy maszyna \(M_A\) osiągnie stan akceptujący \(\left<q_f,x\right>\), maszyna \(M\) będzie w stanie \(q_f \in I\).
 Zatem \(w \in \mathcal{L}(M)\).
 \end{proof}
+
+\section{niepisząca maszyna Turinga z 2 taśmami roboczymi}
+Weźmy taką maszynę \(M\).
+
+Zauważmy, że obecność 2 taśm roboczych pozwala nam na sprawdzenie, czy 
+\( \#_{a}(\rightarrow) - \#_{a}(\leftarrow) = \#_{b}(\rightarrow) -  \#_{b}(\leftarrow) \) dla taśm \(a\) i \(b\).
+
+\[ \#_{a}(\rightarrow) - \#_{a}(\leftarrow) = \#_{b}(\rightarrow) -  \#_{b}(\leftarrow) \iff  \#_{a}(\rightarrow) + \#_{b}(\leftarrow) = \#_{b}(\rightarrow) + \#_{a}(\leftarrow) \]
+
+Czyli tak naprawdę możemy kodować informację o ruchach głowicy na taśmie \(a\) i taśmie \(b\) w jednym liczniku \(c\):
+\begin{itemize}
+\item \( \#_{a}(\rightarrow) + \#_{b}(\leftarrow) \) - liczba ruchów głowicy na taśmie \(a\) w prawo i liczba ruchów głowicy na taśmie \(b\) w lewo - \(c++\).
+\item \( \#_{a}(\leftarrow) + \#_{b}(\rightarrow) \) - liczba ruchów głowicy na taśmie \(a\) w lewo i liczba ruchów głowicy na taśmie \(b\) w prawo - \(c--\).
+\item jeśli głowice się nie ruszają, to \(c\) nie zmienia swojej wartości.
+\item \(a == b \iff c == 0\).
+\end{itemize}
+
+Jednak naturalne dla języków bezkontekstowych jest to, że są rozpoznawane przez automaty ze stosem, a nie automaty z licznikiem.
+Dlatego będziemy kodować wartość licznika \(c\) na stosie:
+\begin{itemize}
+\item \(c++\) - zdejmujemy ze stosu literę \(b\) (jeśli jest co zdejmować). Wpp dodajemy literę \(a\) na stos.
+\item \(c--\) - zdejmujemy ze stosu literę \(a\) (jeśli jest co zdejmować). Wpp dodajemy literę \(b\) na stos.
+\item jeśli licznik nie zmienia swojej wartości, to nie zmieniamy stosu (\(\text{pop}(\epsilon), \text{push}(\epsilon)\)).
+\item \(c == 0 \iff \text{stos jest pusty}\).
+\end{itemize}
+
+Zdefiniujmy automat ze stosem \(M_S = \left<\Sigma_S, Q_S, q_{S_0}, F_S, s_0, \delta_S \right>\):
+\begin{itemize}
+\item \(\Sigma_S = \Sigma\)
+\item \(Q_S = Q \times \Sigma \cup \{ \left< S, \epsilon, \epsilon \right> \} \)
+\item \(q_{S_0} = \left< q_M, x, y \right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu.
+\item \(F_S = F \times \Sigma \times \Sigma\)
+\item \(\delta_S\) jest zdefiniowane następująco:
+\begin{itemize}
+\item mapujemy \( \left<q, a, q', \rightarrow, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, a, \left<q',x,y\right> \right>: x,y \in \Sigma \} \),  
+czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',x,y\right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stanu będzie istniał wtw następną literą jest dane \(x\).
+
+\item mapujemy \( \left<q, a, q', \circlearrowright, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, \epsilon, \left<q',a,y\right> \right>\} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) bez zmiany głowicy to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',a,y\right>\) nie wykorzystując litery.
+\item mapujemy \( \left<q, a, q', \rightarrow, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, a, \left<q',x,y\right> \right>: x,y \in \Sigma \} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) przesuwając głowicę w prawo to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',x,y\right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stanu będzie istniał wtw następną literą jest dane \(x\).
+\item mapujemy \( \left<q, a, q', \circlearrowright, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, a, \left<q',x,y\right> \right>: x,y \in \Sigma \} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) bez zmiany głowicy to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',x,y\right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stanu będzie istniał wtw następną literą jest dane \(x\).
+\end{itemize}
+\end{itemize}
 
 \end{document}
