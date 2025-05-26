@@ -70,11 +70,13 @@ Skonstruujemy automat skończony $M_A = \langle \Sigma_A, Q_A, q_{A_0}, F_A, \de
     
     \item Dla każdego przejścia $\langle q, a, q', \circlearrowright, d \rangle \in \delta$ (gdzie $d \in \{\leftarrow, \circlearrowright, \rightarrow\}$) dodajemy do $\delta_A$ przejście:
     $\langle \langle q,a \rangle, \epsilon, \langle q',a \rangle \rangle$
+
+    \item dodatkowo $\{ \langle q, a \rangle, x, \langle q, a \rangle: a, x \in \Sigma, q \in F \}$ (czyli ze stanu akceptującego w \(M\) nie da się już wyjść).
 \end{enumerate}
 \end{itemize}
 
 \begin{remark}\label{remark:transition}
-    Stan $\langle q,a \rangle$ automatu $M_A$ oznacza, że maszyna $M$ jest w stanie $q$ i pod głowicą znajduje się symbol $a$.
+    Stan $\langle q,a \rangle$ automatu $M_A$ oznacza, że maszyna $M$ jest w stanie $q$ i pod głowicą znajduje się symbol $a$., z wyjątkiem sytuacji, gdy \(q \in F\).
 \end{remark}
 
 \begin{theorem}
@@ -92,7 +94,9 @@ Skonstruujemy akceptujący bieg $\rho_A$ automatu $M_A$ na słowie $w$.
 
 Bieg $\rho$ można przedstawić jako sekwencję konfiguracji $(q_0, p_0, h_0) \vdash (q_1, p_1, h_1) \vdash \ldots \vdash (q_m, p_m, h_m)$, gdzie $q_0 \in I$, $q_m \in F$, $p_i$ oznacza pozycję głowicy na taśmie wejściowej a $h_i$ pozycję głowicy na taśmie roboczej.
 
-Odpowiadający bieg $\rho_A$ automatu $M_A$ ma postać $\langle q_0, a_{p_0} \rangle \vdash \langle q_1, a_{p_1} \rangle \vdash \ldots \vdash \langle q_m, a_{p_m} \rangle$, gdzie każde przejście odpowiada przejściu w $\rho$ zgodnie z definicją $\delta_A$.
+Odpowiadający bieg $\rho_A$ automatu $M_A$ ma postać $\langle q_0, a_{p_0} \rangle \vdash \langle q_1, a_{p_1} \rangle \vdash \ldots \vdash \langle q_m, a_{p_m} \rangle$, gdzie każde przejście odpowiada przejściu w $\rho$ zgodnie z definicją $\delta_A$, zatem istnieją.
+Jeśli maszyna $M$ zaakceptuje nie przeczytając całego słowa,
+to będzie to w stanie \(q_m, m < n\) i wtedy automat \(M_A\) wczyta litery poruszając się tylko między stanami z \(F\), zatem zaakceptuje słowo. 
 
 Ponieważ $q_m \in F$, stan $\langle q_m, a_{p_m} \rangle \in F_A$, więc bieg $\rho_A$ akceptuje słowo $w$, co oznacza $w \in \mathcal{L}(M_A)$.
 
@@ -111,10 +115,12 @@ Dla każdego przejścia w $\rho_A$:
     \item Jeśli jest to przejście typu $\langle \langle q_i, a \rangle, \epsilon, \langle q_{i+1}, a \rangle \rangle$, to w biegu $\rho$ maszyny $M$ wykonujemy odpowiadające przejście $\langle q_i, a, q_{i+1}, \circlearrowright, d \rangle$ dla pewnego $d \in \{\leftarrow, \circlearrowright, \rightarrow\}$.
 \end{itemize}
 
-Zauważmy, że stan końcowy $\langle q_m, b_m \rangle \in F_A$ oznacza, że $q_m \in F$. Zatem skonstruowany bieg $\rho$ kończy się w stanie akceptującym, co oznacza $w \in \mathcal{L}(M)$.
+Skoro bieg w \(M_A\) jest akceptujący, to \(M_A\) co najmniej raz będzie w stanie postaci \(\langle q_f, x \rangle, q_f \in F, x \in \Sigma\). Maszyna \(M\) zaakceptuje słowo w takim momencie.
+Zatem istnieje akceptujący bieg $\rho$ maszyny $M$ na słowie $w$, co oznacza $w \in \mathcal{L}(M)$.
 \end{proof}
 
-Wykazaliśmy zatem, że niepisząca maszyna Turinga z jedną taśmą roboczą rozpoznaje dokładnie języki regularne, co potwierdza tezę o równoważności z automatem skończonym.
+Wykazaliśmy, że $\mathcal{L}(M) = \mathcal{L}(M_A)$, co oznacza, że maszyna $M$ jest równoważna automatowi skończonemu $M_A$.
+Zatem język akceptowany przez maszynę $M$ jest językiem regularnym.
 
 \section{niepisząca maszyna Turinga z 2 taśmami roboczymi}
 Weźmy taką maszynę \(M\).
@@ -141,23 +147,82 @@ Dlatego będziemy kodować wartość licznika \(c\) na stosie:
 \item \(c == 0 \iff \text{stos jest pusty}\).
 \end{itemize}
 
-Zdefiniujmy automat ze stosem \(M_S = \left<\Sigma_S, Q_S, q_{S_0}, F_S, s_0, \delta_S \right>\):
+Zdefiniujmy automat ze stosem \(M_S = \left<\Sigma_S, Q_S, I_{S}, F_S, s_0, \delta_S \right>\) akceptujący przez stan:
 \begin{itemize}
 \item \(\Sigma_S = \Sigma\)
-\item \(Q_S = Q \times \Sigma \cup \{ \left< S, \epsilon, \epsilon \right> \} \)
-\item \(q_{S_0} = \left< q_M, x, y \right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu.
-\item \(F_S = F \times \Sigma \times \Sigma\)
-\item \(\delta_S\) jest zdefiniowane następująco:
+\item \(Q_S = Q \times \Sigma\)
+\item \(I_S = \{ \left< q_{M_0}, x\right>: x \in \Sigma \}\)
+\item \(F_S = F \times \Sigma\)
+\item \(s_0 = \epsilon\) (pusty stos)
+\item \(\delta_S\) jest zdefiniowane następująco (dla prostoty pomijam formalną definicję operacji na stosie, jest to trywialne,
+będę operować w sposób licznikowy):
 \begin{itemize}
-\item mapujemy \( \left<q, a, q', \rightarrow, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, a, \left<q',x,y\right> \right>: x,y \in \Sigma \} \),  
-czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',x,y\right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stanu będzie istniał wtw następną literą jest dane \(x\).
+    \item Dla każdego przejścia $\langle q, a, = (/ \neq), q', \rightarrow, d, e \rangle \in \delta$ (gdzie $d, e \in \{\leftarrow, \circlearrowright, \rightarrow\}$) dodajemy do $\delta_S$ przejścia:
 
-\item mapujemy \( \left<q, a, q', \circlearrowright, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, \epsilon, \left<q',a,y\right> \right>\} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) bez zmiany głowicy to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',a,y\right>\) nie wykorzystując litery.
-\item mapujemy \( \left<q, a, q', \rightarrow, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, a, \left<q',x,y\right> \right>: x,y \in \Sigma \} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) przesuwając głowicę w prawo to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',x,y\right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stanu będzie istniał wtw następną literą jest dane \(x\).
-\item mapujemy \( \left<q, a, q', \circlearrowright, \leftarrow / \circlearrowright / \rightarrow \right> \in \delta\) na \( \{ \left< \left<q,a,y\right>, a, \left<q',x,y\right> \right>: x,y \in \Sigma \} \), czyli gdy maszyna widzi pod głowicą literę \(a\), jest w stanie \(q\) i przechodzi do stanu \(q'\) bez zmiany głowicy to w \(M_S\) będzie to wyglądać tak, że maszyna widzi literę \(a\), jest w stanie \(\left<q,a,y\right>\) i przechodzi do stanu \(\left<q',x,y\right>\), gdzie \(x\) i \(y\) są dowolnymi literami z alfabetu (gdyż nie wiadomo co jest dalej). Jednak bieg akceptujący dalej z tego stanu będzie istniał wtw następną literą jest dane \(x\).
-\end{itemize}
+    $\{\langle \langle q,a \rangle, a, counter==0 (/ counter!=0), \langle q',b \rangle, counter+=C(d,e) \rangle : b \in \Sigma\}$
+    
+    \item Dla każdego przejścia $\langle q, a, = (/ \neq), q', \circlearrowright, d, e \rangle \in \delta$ (gdzie $d, e \in \{\leftarrow, \circlearrowright, \rightarrow\}$) dodajemy do $\delta_S$ przejścia: 
+    
+    $\{\langle \langle q,a \rangle, \epsilon, counter==0 (/ counter!=0), \langle q',a \rangle, counter+=C(d,e) \rangle\}$
+
+    \item dodatkowo $\{ \langle q, a \rangle, x, \text{always}, \langle q, a \rangle, counter+=0: a, x \in \Sigma, q \in F \}$ (czyli ze stanu akceptującego w \(M\) nie da się już wyjść).
 \end{itemize}
 
-TODO: co gdy masyzne terminuje przedwcześnie
+\end{itemize}
+
+\begin{remark}
+    $ C(d,e) = [d = \rightarrow] + [e = \leftarrow] - [d = \leftarrow] - [e = \rightarrow] $.
+\end{remark}
+
+\begin{theorem}
+$\mathcal{L}(M) = \mathcal{L}(M_S)$
+\end{theorem}
+
+\begin{proof}
+Udowodnimy równość tych języków przez podwójną inkluzję.
+
+\medskip
+\noindent\textbf{$\mathcal{L}(M) \subseteq \mathcal{L}(M_S)$:}
+Niech $w \in \mathcal{L}(M)$. Istnieje więc akceptujący bieg $\rho$ maszyny $M$ na słowie $w = a_1a_2\ldots a_n$.
+Skonstruujemy akceptujący bieg $\rho_S$ automatu $M_S$ na słowie $w$.
+Bieg $\rho$ można przedstawić jako sekwencję konfiguracji $(q_0, p_0, d_0, e_0) \vdash (q_1, p_1, d_1, e_1) \vdash \ldots \vdash (q_m, p_m, d_m, e_m)$, gdzie $q_0 \in I$, $q_m \in F$, $p_i$ 
+oznacza pozycję głowicy na taśmie wejściowej a $d_i$, $e_i$ pozycje głowicy na taśmach roboczych.
+
+Odpowiadający bieg $\rho_S$ automatu $M_S$ ma postać $\langle q_0, a_{p_0} \rangle, c_0 \vdash \langle q_1, a_{p_1} \rangle, c_1 \vdash \ldots \vdash \langle q_m, a_{p_m} \rangle, c_m$, gdzie każde przejście odpowiada przejściu w $\rho$ zgodnie z definicją $\delta_S$, zatem istnieją.
+$c$ jest wartością licznika (symulowanego przez stos) w danym momencie.
+
+Jeśli $ m < n$, to maszyna $M$ zaakceptuje nie przeczytawszy całego słowa, a wtedy automat $M_S$ wczyta litery poruszając się tylko między stanami z \(F\), zatem zaakceptuje słowo.
+Ponieważ $q_m \in F$, stan $\langle q_m, a_{p_m} \rangle \in F_S$, więc bieg $\rho_S$ akceptuje słowo $w$, co oznacza $w \in \mathcal{L}(M_S)$.
+
+\medskip
+\noindent\textbf{$\mathcal{L}(M_S) \subseteq \mathcal{L}(M)$:}
+Niech $w \in \mathcal{L}(M_S)$. Istnieje więc akceptujący bieg $\rho_S$ automatu $M_S$ na słowie $w = a_1a_2\ldots a_n$.
+Skonstruujemy akceptujący bieg $\rho$ maszyny $M$ na słowie $w$.
+Bieg $\rho_S$ ma postać $\langle q_0, b_0 \rangle, c_0 \vdash \langle q_1, b_1 \rangle, c_1 \vdash \ldots \vdash \langle q_m, b_m \rangle, c_m$, gdzie $\langle q_0, b_0 \rangle$ jest stanem początkowym, a $\langle q_m, b_m \rangle \in F_S$.
+Dla każdego przejścia w $\rho_S$:
+\begin{itemize}
+    \item Jeśli jest to przejście typu $\langle \langle q_i, a \rangle, a, counter==0 (/ counter!=0), \langle q_{i+1}, b \rangle, counter+=C(d,e) \rangle$, to w biegu $\rho$ maszyny $M$ wykonujemy odpowiadające przejście $\langle q_i, a, q_{i+1}, \rightarrow, d, e \rangle$ dla pewnego $d, e \in \{\leftarrow, \circlearrowright, \rightarrow\}$.
+    Takie przejście istnieje zgodnie z definicją $\delta_S$.
+    
+    \item Jeśli jest to przejście typu $\langle \langle q_i, a \rangle, \epsilon, counter==0 (/ counter!=0), \langle q_{i+1}, a \rangle, counter+=C(d,e) \rangle$, to w biegu $\rho$ maszyny $M$ wykonujemy odpowiadające przejście $\langle q_i, a, q_{i+1}, \circlearrowright, d, e \rangle$ dla pewnego $d, e \in \{\leftarrow, \circlearrowright, \rightarrow\}$.
+\end{itemize}
+Skoro bieg w \(M_S\) jest akceptujący, to \(M_S\) co najmniej raz będzie w stanie postaci \(\langle q_f, x \rangle, q_f \in F, x \in \Sigma\). Maszyna \(M\) zaakceptuje słowo w takim momencie.
+Zatem istnieje akceptujący bieg $\rho$ maszyny $M$ na słowie $w$, co oznacza $w \in \mathcal{L}(M)$.
+
+\end{proof}
+
+Przykładem języka, który jest nie jest regularny, a jest akceptowany przez \(M\) jest $a^n b^n$.
+
+\section{niepisząca maszyna Turinga z 3 taśmami roboczymi}
+Weźmy taką maszynę \(M\).
+
+Łatwo zauważyć, że przy pomocy 3 taśm roboczych możemy symulować automat z dwoma licznikami.
+Na jednej taśmie będziemy kodować wartość pierwszego licznika, na drugiej wartość drugiego licznika, 
+a trzecią będziemy kodować 0 (czyli nie ruszać) w celu testowania, czy wartość któregoś licznika jest równa 0.
+
+Wiemy z wykładu, że automatem z dwoma licznikami można symulować automat z trzema licznikami.
+Natomiast automat z trzema licznikami jest równoważny maszynie turinga.
+Skoro każdy problem częściowo rozstrzygalny jest rozpoznawany przez maszynę turinga, to każdy problem częściowo rozstrzygalny jest rozpoznawany przez automat z trzema licznikami.
+Stąd każdy język częściowo rozstrzygalny jest rozpoznawany przez pewną niepiszącą maszynę Turinga z 3 taśmami roboczymi.
 
 \end{document}
