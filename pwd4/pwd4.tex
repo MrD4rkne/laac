@@ -43,4 +43,24 @@
 
 \maketitle
 
+\begin{section}{NP}
+
+Zdefiniujmy maszynę niedeterministyczną, która w czasie wielomianowym rozwiązuje podany problem.
+
+Maszyna na początku niedeterministycznie wybiera podzbiór $W' \subseteq W$ i tworzy mieszankę $w$ zgodnie z definicją.
+Zachowuje przy tym kolejność między literami z tego samego słowa, tz. że dla słowa $W = w_1 w_2 \ldots w_n$, jeśli litera $w_i$ i $w_j$, $ i < j$ pochodzą z tego samego słowa, to
+$w_i$ poprzedza $w_j$ w słowie $v \in W'$.
+
+Następnie maszyna sprawdza, czy powstałe słowo jest palindromem. Jeśli nie jest, to odrzuca. Wiemy z ćwiczeń, że maszyna umie zrobić to w czasie wielomianowym.
+
+Jeśli słowo jest palindromem, to maszyna symuluje automat $A$ na słowie $w$. Jeśli automat $A$ zaakceptuje słowo, to maszyna akceptuje, w przeciwnym razie odrzuca.
+Symulacja również jest w czasie wielomianowym, co robiliśmy na ćwiczeniach.
+
+Zatem w czasie wielomianowym maszyna niedeterministyczna sprawdza, czy istnieje taki podzbiór $W' \subseteq W$,
+że powstała mieszanka $w$ jest palindromem i jest akceptowane przez automat $A$.
+
+Zatem ten problem jest w klasie NP.
+
+\end{section}
+
 \end{document}
