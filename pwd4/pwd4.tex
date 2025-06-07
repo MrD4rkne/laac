@@ -65,16 +65,80 @@ Zatem ten problem jest w klasie NP.
 
 \begin{section}{NP trudność}
 
-By udowodnić NP trudność, pokażemy wielomianową redukcję z problemu SAT do rozważanego problemu.
+By udowodnić NP trudność, pokażemy wielomianową redukcję z problemu 3-CNF-SAT dla $n$ zmiennych do problemu zdefiniowanego w zadaniu.
 
-Rozważmy problem SAT dla $n$ zmiennych.
+BSO. zakładamy, że $n$ jest parzyste. Jeśli nie jest, wystarczy dodać zmienną $x_{n+1}$ oraz klauzulę $(x_{n+1} \lor \neg x_{n+1})$.
 
+\begin{subsection}{W}
 Zdefiniujmy takie $W$, aby dla każdego wartościowania zmiennych $x_1, x_2, \ldots, x_n$ istniał taki podzbiór $W' \subseteq W$,
  że powstała mieszanka $w$ jest palindromem reprezentującym to wartościowanie.
 
+Wartościowaniem $n$ zmiennych $x_1=b_1, x_2=b_2, \ldots, x_n=b_n, b_i \in \{0,1\}$ będzie słowo $w = b_1 b_2 \ldots b_n \# b_n, b_{n-1}, \ldots, b_1$.
+
+\begin{definition}
+Niech $d_{i, b} = b^i, 0 \leq i \leq n \land b \in \{0,1\}$.
+Wtedy $W = \{ d_{i, b} + \# d_{i, b} \#: i = 0, 1, \ldots, n;  b \in \{0,1\} \}$.
+
+\begin{remark}
+$\abs{W} = 4(n+1)$.
+\end{remark}
+
+\begin{remark}
+Każde słowo $d_{i,b}$ jest palindromem, zatem każde postaci $ \# d_{i,b} \#$ również jest palindromem.
+Stąd wszystkie słowa w $W$ są palindromami.
+\end{remark}
+
+\end{definition}
+
+Pokażmy, że dla każdego wartościowania istnieje taki podzbiór $W' \subseteq W$, że można stworzyć mieszankę $w$, która jest palindromem i reprezentuje to wartościowanie.
+
+Dla ciągu zmiennych $x_1, x_2, \ldots, x_n$ z wartościowaniem $b_1, b_2, \ldots, b_n$ zdefiniujmy słowo $v$ jako:
+\[
+v = \# \# b_1 b_2 \ldots b_n b_n b_{n-1} \ldots b_1 \# \#
+\]
+\begin{proof}
+Weźmy dowolne wartościowanie $b_1, b_2, \ldots, b_n$. Ma ono $i$ zmiennych równych $1$ i $n-i$ zmiennych równych $0$.
+Zatem aby otrzymać reprezentację tego wartościowania musimy wybrać takie \(W' \subseteq W\), że w sumie słowa w \(W'\) będą miały:
+\begin{itemize}
+    \item $2i$ liter równych 1
+    \item $2n - 2i$ liter równych 0
+    \item 4 litery równe $\#$
+\end{itemize}
+
+Zauważmy, że wystarczy wziąć $W' = \{ d_{i,1}, \#d_{i,1}\#, d_{n-i, 0}, \# d_{n-i, 0} \# \}$, gdzie $d_i$ jest jak wyżej zdefiniowane.
+
+Pokażmy, że da się prawidłowo utworzyc mieszankę reprezentującą wartościowanie.
+
+\begin{center}
+    $d_{i,1} \ d_{n-i, 0} \ \#d_{i,1}\# \ \# d_{n-i, 0} \#$
+    
+    $ \# d_{i,1} \ d_{n-i, 0} \ d_{i,1}\# \ \# d_{n-i, 0} \#$
+
+    $ \# \# d_{i,1} \ d_{n-i, 0} \ d_{i,1}\# \ d_{n-i, 0} \#$
+
+    $ \# \# d_{i,1} \ d_{n-i, 0} \ d_{i,1} \ d_{n-i, 0} \#\#$
+
+    $\# \# b_1 \ b_2 \ \ldots \ b_n \ d_{i,1} \ d_{n-i, 0} \#\#$
+
+    $\# \# b_1 \ b_2 \ \ldots \ b_n \ b_n \ b_{n-1} \ \ldots \ b_1 \#\#$
+\end{center}
+
+\end{proof}
+
+\end{subsection}
+
+\begin{subsection}{A}
+Zdefiniujmy automat $A$. W będzie akceptował tylko takie $w$, które są poprawnymi wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ 
+oraz spełniają formułę $\phi$.
+
+Automat na początku na stosie będzie miał ciąg symboli reprezentujący formułę $\phi$.
+Mianowicie stos do dosłownie formuła $\phi$ w postaci koniunkcji klauzul, gdzie każda klauzula jest reprezentowana jako ciąg symboli, np:
+
+$ \phi = (x_1 \lor \neg x_2) \land (x_2 \lor x_3)$ będzie na stosie reprezentowane jako:
 
 
-
+gdzie od lewej jest początek stosu, czyli od prawej jego szczyt.
+\end{subsection}
 
 \end{section}
 
