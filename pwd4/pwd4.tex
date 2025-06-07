@@ -1,0 +1,46 @@
+\documentclass{article}
+\setlength{\headheight}{8pt}
+
+\usepackage[a4paper, margin=0.3in]{geometry}
+\usepackage{lmodern}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{hyperref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{physics}
+\usepackage{multicol}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+% Definicje środowisk do twierdzeń, lematów, dowodów itp.
+\newtheorem{theorem}{Twierdzenie}[section]
+\newtheorem{lemma}[theorem]{Lemat}
+\newtheorem{corollary}[theorem]{Wniosek}
+\newtheorem{proposition}[theorem]{Stwierdzenie}
+\theoremstyle{definition}
+\newtheorem{definition}{Definicja}[section]
+\theoremstyle{remark}
+\newtheorem{remark}{Uwaga}[section]
+\newtheorem*{example}{Przykład}
+\newtheorem*{property}{Własność}
+
+\title{Praca domowa 4}
+\author{Marcin Szopa 459531}
+\date{\today}
+
+% Remove padding at the top of subsections
+\titlespacing*{\subsection}{0pt}{*0}{*0}
+
+% Redefine section numbering to use letters
+\renewcommand{\thesection}{\Alph{section}}
+
+% Define a command for singleton sets
+\newcommand{\singleton}[1]{\left\{ #1 \right\}}
+
+\begin{document}
+
+\maketitle
+
+\end{document}
