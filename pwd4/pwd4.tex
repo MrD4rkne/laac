@@ -100,6 +100,7 @@
      \end{definition}
 
      \begin{definition}
+         \label{W_definition}
          $W = \{ T_i \ \$ \ x_i \ \# \ x_i \ T_i^R: i \in \{1, 2, \ldots, n\} \} \cup \{ F_i \ \$ \ \neg x_i \ \# \ \neg x_i \ F_i^R: i \in \{1, 2, \ldots, n\} \}$.
          Również tu rozmiar $W$ jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
      \end{definition}
@@ -189,6 +190,39 @@
      3-CNF-SAT.
 
      Zauważmy jako ciekawostkę, że nie korzystamy ze stosu. Akceptujemy przez stan.
+
+     Udowodnimy, że ten automat akceptuje tylko mieszanki będące poprawnymi
+     wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie
+     3-CNF-SAT.
+
+     \begin{proof}
+            Załóżmy, że istnieje mieszanka $w$, która jest akceptowana przez automat
+            $A$. 
+
+            Z definicji automatu najpierw musi być ciąg liter reprezentujących
+            posortowany po indeksach ciąg wszystkich klauzul, każda występuje conajmniej raz.
+
+            Zatem ta część wartościowania jest poprawna.
+
+            Następnie musi wystąpić ciąg $ \$^n $, który oddziela część z klauzulami
+            od części z wartościowaniami zmiennych. Zapewnia nam to, że słowo jest mieszanką słów 
+            z pewnego podzbioru $W' \subseteq W$, ŻE $ \abs{W'} = n $. Gdyby tak nie było, to liczba
+            wystąpień separatora $ \$ $ byłaby inna niż $n$, więc automat by odrzucił takie słowo.
+
+            Następnie musi wystąpić ciąg liter reprezentujących wartościowania zmiennych
+            $x_1, x_2, \ldots, x_n$. Z definicji wartościowania zmiennych w problemie
+            3-CNF-SAT, każda zmienna może wystąpić tylko w postaci $x_i$ lub $\neg x_i$.
+            Moga być powtórzenia, ale nie mogą wystąpić obie formy tej samej zmiennej.
+            Zatem część z wartościowaniami zmiennych jest poprawna. Czyli wartościowanie jest poprawne w sensie braku sprzeczności.
+            Dodatkowo zapewniamy tu też, że $W'$ zawiera słowo dla każdej zmiennej (patrz: \ref{W_definition}). Gdyby nie zawierało, to opisywany warunek
+            nie był by spełniony, bo by brakowało pewnego $x_i$ lub $\neg x_i$.
+
+            Następnie musi wystąpić ciąg $ \#^n $, który oddziela część z wartościowaniami
+            zmiennych od części z rewersem. Zapewnia ono, że litery potrzebne tylko i wyłącznie do rewersu
+            nie `przeciekły' do części z wartościowaniami zmiennych.
+
+            Zatem istnieje wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które jest reprezentowane przez to słowo $w$.
+     \end{proof}
  \end{subsection}
 
  Pokazaliśmy konstrukcję reprezentacji wartościowań oraz automatu, który
