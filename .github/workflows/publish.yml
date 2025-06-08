@@ -27,6 +27,7 @@ jobs:
           ./pwd1/pwd1.tex
           ./pwd2/pwd2.tex
           ./pwd3/pwd3.tex
+          ./pwd4/pwd4.tex
       
     - name: Bump version and push tag
       id: tag_version
