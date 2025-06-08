@@ -143,192 +143,211 @@
 
  \begin{subsection}{Automat}
 
-     Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w
-     postaci mieszanki, która będzie:
+     \begin{subsection}{Definicja}
 
-     \begin{definition}
-         Automat $A$ akceptuje przez stan. Zaczyna z pustym stosem:
-         \begin{itemize}
+         Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w
+         postaci mieszanki, która będzie:
 
-             \item na początku ciągiem liter, $w_0 w_1 \ldots w_m, m \geq k, w_i \in \{ C_1, C_2,
-                       \ldots, C_k \} \land w_0 = C_1, w_m = C_k, \forall_{i: 0 < i < m} w_i=C_a \land
-                       w_{i+1}=C_b \land 0 \leq b-a \leq 1$. Innymi słowami oczekujemy ciągu liter
-                   reprezentujących klauzule posortowane w sposób niemalejący po indeksach
-                   klauzul, np.: $C_1 C_1 C_2 C_2 C_3 C_3 C_3 C_4 C_5$ dla $k = 5$.
+         \begin{definition}
+             Automat $A$ akceptuje przez stan. Zaczyna z pustym stosem:
+             \begin{itemize}
 
-                   Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór
-                   słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie
-                   pewnej zmiennej, która jest w mieszance za ciągiem $ \$^n $ w postaci $ x_i $
-                   lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
+                 \item na początku ciągiem liter, $w_0 w_1 \ldots w_m, m \geq k, w_i \in \{ C_1, C_2,
+                           \ldots, C_k \} \land w_0 = C_1, w_m = C_k, \forall_{i: 0 < i < m} w_i=C_a \land
+                           w_{i+1}=C_b \land 0 \leq b-a \leq 1$. Innymi słowami oczekujemy ciągu liter
+                       reprezentujących klauzule posortowane w sposób niemalejący po indeksach
+                       klauzul, np.: $C_1 C_1 C_2 C_2 C_3 C_3 C_3 C_4 C_5$ dla $k = 5$.
 
-             \item po ciągu ciąg $C$ to oczekujemy podsłowa $ \$^n $.
+                       Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór
+                       słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie
+                       pewnej zmiennej, która jest w mieszance za ciągiem $ \$^n $ w postaci $ x_i $
+                       lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
 
-             \item Następnie oczekujemy posortowanego ciągu liter reprezentujących niesprzeczne
-                   wartościowania zmiennych. Oczekujemy ich posortowanych po indeksie zmiennych.
-                   Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w
-                   obu. Jeśli wystepuje w obu, to automat odrzuca słowo. Zatem oczekujemy ciągu
-                   liter w postaci:
+                 \item po ciągu ciąg $C$ to oczekujemy podsłowa $ \$^n $.
 
-                   \[ l_1 l_2 \ldots l_h, h \geq n, l_i \in \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n \} \]
-                   gdzie $ l_1 \in \{ x_1, \neg x_1\} \land l_h \in \{ x_n, \neg x_n\} \\ \land
-                       \forall_{i: 1 \leq i < h} (((l_i = x_j \land l_{i+1} = x_j) \lor (l_i = \neg
-                       x_j \land l_{i+1} = \neg x_j)) \\ \lor \\ (((l_i = x_j \land l_{i+1} = x_{j+1})
-                       \lor (l_i = x_j \land l_{i+1} = \neg x_{j+1}) \lor (l_i = \neg x_j \land
-                       l_{i+1} = x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_{j+1})))) $.
+                 \item Następnie oczekujemy posortowanego ciągu liter reprezentujących niesprzeczne
+                       wartościowania zmiennych. Oczekujemy ich posortowanych po indeksie zmiennych.
+                       Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w
+                       obu. Jeśli wystepuje w obu, to automat odrzuca słowo. Zatem oczekujemy ciągu
+                       liter w postaci:
 
-                   Przykładem poprawnego ciągu jest $x_1 x_1 x_2 \neg x_2 x_3 \neg x_3$ dla
-                   wartościowania $x_1 = 1, x_2 = 0, x_3 = 0$ oraz $n = 3$. Jednakże ciąg $x_1 x_2
-                       \neg x_2 x_3 \neg x_3$ nie jest poprawny, ponieważ występuje w nim zarówno
-                   $x_2$ jak i $\neg x_2$, co nie jest poprawnym wartościowaniem zmiennych.
+                       \[ l_1 l_2 \ldots l_h, h \geq n, l_i \in \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n \} \]
+                       gdzie $ l_1 \in \{ x_1, \neg x_1\} \land l_h \in \{ x_n, \neg x_n\} \\ \land
+                           \forall_{i: 1 \leq i < h} (((l_i = x_j \land l_{i+1} = x_j) \lor (l_i = \neg
+                           x_j \land l_{i+1} = \neg x_j)) \\ \lor \\ (((l_i = x_j \land l_{i+1} = x_{j+1})
+                           \lor (l_i = x_j \land l_{i+1} = \neg x_{j+1}) \lor (l_i = \neg x_j \land
+                           l_{i+1} = x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_{j+1})))) $.
 
-             \item Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat
-                   przechodzi do stanu akceptującego i wszystkie następne przejścia nie
-                   wyprowadzają z tego stanu.
+                       Przykładem poprawnego ciągu jest $x_1 x_1 x_2 \neg x_2 x_3 \neg x_3$ dla
+                       wartościowania $x_1 = 1, x_2 = 0, x_3 = 0$ oraz $n = 3$. Jednakże ciąg $x_1 x_2
+                           \neg x_2 x_3 \neg x_3$ nie jest poprawny, ponieważ występuje w nim zarówno
+                       $x_2$ jak i $\neg x_2$, co nie jest poprawnym wartościowaniem zmiennych.
 
-         \end{itemize}
+                 \item Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat
+                       przechodzi do stanu akceptującego i wszystkie następne przejścia nie
+                       wyprowadzają z tego stanu.
 
-         Wszystkie nieoczekiwane litery prowadzą do śmietnika.
+             \end{itemize}
 
-         Zauważmy, że obecność separatorów $ \$^n $ oraz $ \#^n $ w mieszance jest
-         konieczna, aby wymusić rozdzielenie klauzul i wartościowań zmiennych oraz część
-         faktyczną od rewersu, który jest tylko dla palindromowatości. Definicja
-         mieszanki wymaga, aby litery w obrębie słowa z którego pochodzą były
-         uporządkowane jak w słowie, zatem wymuszenie spójnego podciągu separatorów
-         sprawia, że informacje się nie mieszają.
+             Wszystkie nieoczekiwane litery prowadzą do śmietnika.
 
-     \end{definition}
+             Zauważmy, że obecność separatorów $ \$^n $ oraz $ \#^n $ w mieszance jest
+             konieczna, aby wymusić rozdzielenie klauzul i wartościowań zmiennych oraz część
+             faktyczną od rewersu, który jest tylko dla palindromowatości. Definicja
+             mieszanki wymaga, aby litery w obrębie słowa z którego pochodzą były
+             uporządkowane jak w słowie, zatem wymuszenie spójnego podciągu separatorów
+             sprawia, że informacje się nie mieszają.
 
-     \begin{remark}
-         Zdefiniowany automat jest rozmiaru wielomianowego względem rozmiaru problemu
-         3-CNF-SAT.
-     \end{remark}
+         \end{definition}
 
-     \begin{remark}
-         Zauważmy jako ciekawostkę, że nie korzystamy ze stosu. Akceptujemy przez stan.
+         \begin{remark}
+             Zdefiniowany automat jest rozmiaru wielomianowego względem rozmiaru problemu
+             3-CNF-SAT.
+         \end{remark}
 
-     \end{remark}
+         \begin{remark}
+             Zauważmy jako ciekawostkę, że nie korzystamy ze stosu. Akceptujemy przez stan.
+         \end{remark}
 
-     Udowodnimy, że ten automat akceptuje tylko mieszanki będące poprawnymi
-     wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie
-     3-CNF-SAT spełniającym formułę.
+     \end{subsection}
 
-     \begin{proof}
-         Załóżmy, że istnieje mieszanka $w$, która jest akceptowana przez automat
-         $A$.
+     \begin{subsection}{Automat akceptuje tylko poprawne wartościowania spełniające formułę}
 
-         Z definicji automatu najpierw musi być ciąg liter reprezentujących posortowany
-         po indeksach ciąg wszystkich klauzul, każda występuje conajmniej raz. Zatem ta
-         część wartościowania jest poprawna.
+         Udowodnimy, że ten automat akceptuje tylko mieszanki będące poprawnymi
+         wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie
+         3-CNF-SAT spełniającym formułę.
 
-         Następnie musi wystąpić ciąg $ \$^n $, który oddziela część z klauzulami od
-         części z wartościowaniami zmiennych. Zapewnia nam to, że słowo jest mieszanką
-         słów z pewnego podzbioru $W' \subseteq W$, ŻE $ \abs{W'} = n $. Gdyby tak nie
-         było, to liczba wystąpień separatora $ \$ $ byłaby inna niż $n$, więc automat
-         by odrzucił takie słowo.
+         \begin{proof}
+             Załóżmy, że istnieje mieszanka $w$, która jest akceptowana przez automat
+             $A$.
 
-         Następnie musi wystąpić ciąg liter reprezentujących wartościowania zmiennych
-         $x_1, x_2, \ldots, x_n$. Z definicji wartościowania zmiennych w problemie
-         3-CNF-SAT, każda zmienna może wystąpić tylko w postaci $x_i$ lub $\neg x_i$.
-         Moga być powtórzenia, ale nie mogą wystąpić obie formy tej samej zmiennej.
-         Zatem część z wartościowaniami zmiennych jest poprawna. Czyli wartościowanie
-         jest poprawne w sensie braku sprzeczności. Dodatkowo zapewniamy tu też, że $W'$
-         zawiera słowo dla każdej zmiennej (patrz: \ref{W_definition}). Gdyby nie
-         zawierało, to opisywany warunek nie był by spełniony, bo by brakowało pewnego
-         $x_i$ lub $\neg x_i$.
+             Z definicji automatu najpierw musi być ciąg liter reprezentujących posortowany
+             po indeksach ciąg wszystkich klauzul, każda występuje conajmniej raz. Zatem ta
+             część wartościowania jest poprawna.
 
-         Następnie musi wystąpić ciąg $ \#^n $, który oddziela część z wartościowaniami
-         zmiennych od części z rewersem. Zapewnia ono, że litery potrzebne tylko i
-         wyłącznie do rewersu nie `przeciekły' do części z wartościowaniami zmiennych.
+             Następnie musi wystąpić ciąg $ \$^n $, który oddziela część z klauzulami od
+             części z wartościowaniami zmiennych. Zapewnia nam to, że słowo jest mieszanką
+             słów z pewnego podzbioru $W' \subseteq W$, ŻE $ \abs{W'} = n $. Gdyby tak nie
+             było, to liczba wystąpień separatora $ \$ $ byłaby inna niż $n$, więc automat
+             by odrzucił takie słowo.
 
-         Zatem istnieje wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które jest
-         reprezentowane przez to słowo $w$.
+             Następnie musi wystąpić ciąg liter reprezentujących wartościowania zmiennych
+             $x_1, x_2, \ldots, x_n$. Z definicji wartościowania zmiennych w problemie
+             3-CNF-SAT, każda zmienna może wystąpić tylko w postaci $x_i$ lub $\neg x_i$.
+             Moga być powtórzenia, ale nie mogą wystąpić obie formy tej samej zmiennej.
+             Zatem część z wartościowaniami zmiennych jest poprawna. Czyli wartościowanie
+             jest poprawne w sensie braku sprzeczności. Dodatkowo zapewniamy tu też, że $W'$
+             zawiera słowo dla każdej zmiennej (patrz: \ref{W_definition}). Gdyby nie
+             zawierało, to opisywany warunek nie był by spełniony, bo by brakowało pewnego
+             $x_i$ lub $\neg x_i$.
 
-         Skoro istnieje takie wartościowanie, to spełnia ono formułę $C_1 \land C_2
-             \land \ldots \land C_k$. W przeciwnym razie, gdyby nie spełniało, to nie
-         mogłoby powstać z podzbioru $W' \subseteq W$. Z
+             Następnie musi wystąpić ciąg $ \#^n $, który oddziela część z wartościowaniami
+             zmiennych od części z rewersem. Zapewnia ono, że litery potrzebne tylko i
+             wyłącznie do rewersu nie `przeciekły' do części z wartościowaniami zmiennych.
 
-         Zatem automat $A$ akceptuje tylko mieszanki będące poprawnymi wartościowaniami
-         zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie 3-CNF-SAT spełniającym
-         tę formułę.
-     \end{proof}
+             Zatem istnieje wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które jest
+             reprezentowane przez to słowo $w$.
 
-     Pokażmy jeszcze, że automat akceptuje wszystkie mieszanki będące (poprawnymi)
-     wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie
-     3-CNF-SAT spełniającym tę formułę.
+             Skoro istnieje takie wartościowanie, to spełnia ono formułę $C_1 \land C_2
+                 \land \ldots \land C_k$. W przeciwnym razie, gdyby nie spełniało, to nie
+             mogłoby powstać z podzbioru $W' \subseteq W$. Z
 
-     \begin{proof}
-         Weźmy dowolne wartościowanie zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie 3-CNF-SAT.
-         Wiemy, że istnieje taki podzbiór $W' \subseteq W$, który tworzy mieszankę $w$ reprezentującą to wartościowanie (patrz: \ref{evaluation_proof}).
+             Zatem automat $A$ akceptuje tylko mieszanki będące poprawnymi wartościowaniami
+             zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie 3-CNF-SAT spełniającym
+             tę formułę.
+         \end{proof}
 
-         Na początku mieszanka $w$ będzie zawierała ciąg liter reprezentujących
-         posortowany po indeksach ciąg wszystkich klauzul, każda występuje conajmniej
-         raz. Zatem ta faza automatu zaakceptuje to słowo.
+     \end{subsection}
 
-         Następnie musi wystąpić ciąg $ \$^n $, który oddziela część z klauzulami od
-         części z wartościowaniami zmiennych. Z definicji reprezentacji wartościowania
-         tak jest.
+     \begin{subsection}{Automat akceptuje wszystkie poprawne wartościowania spełniające formułę}
+         Pokażmy jeszcze, że automat akceptuje wszystkie mieszanki będące (poprawnymi)
+         wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie
+         3-CNF-SAT spełniającym tę formułę.
 
-         Teraz musi wystąpić ciąg liter reprezentujących wartościowania zmiennych $x_1,
-             x_2, \ldots, x_n$. Z definicji reprezentacji wartościowania tak jest. Dodatkowo
-         zapewniamy tu też, że $W'$ zawiera słowo dla każdej zmiennej (patrz:
-         \ref{evaluation_proof}).
+         \begin{proof}
+             Weźmy dowolne wartościowanie zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie 3-CNF-SAT.
+             Wiemy, że istnieje taki podzbiór $W' \subseteq W$, który tworzy mieszankę $w$ reprezentującą to wartościowanie (patrz: \ref{evaluation_proof}).
 
-         Następnie musi wystąpić ciąg $ \#^n $, który oddziela część z wartościowaniami
-         zmiennych od części z rewersem. Znów, wiemy, że tak jest z definicji.
+             Na początku mieszanka $w$ będzie zawierała ciąg liter reprezentujących
+             posortowany po indeksach ciąg wszystkich klauzul, każda występuje conajmniej
+             raz. Zatem ta faza automatu zaakceptuje to słowo.
 
-         Automat przechodzi do stanu akceptującego i wszystkie następne przejścia nie
-         wyprowadzają z tego stanu. Zatem automat akceptuje to słowo.
+             Następnie musi wystąpić ciąg $ \$^n $, który oddziela część z klauzulami od
+             części z wartościowaniami zmiennych. Z definicji reprezentacji wartościowania
+             tak jest.
 
-     \end{proof}
+             Teraz musi wystąpić ciąg liter reprezentujących wartościowania zmiennych $x_1,
+                 x_2, \ldots, x_n$. Z definicji reprezentacji wartościowania tak jest. Dodatkowo
+             zapewniamy tu też, że $W'$ zawiera słowo dla każdej zmiennej (patrz:
+             \ref{evaluation_proof}).
+
+             Następnie musi wystąpić ciąg $ \#^n $, który oddziela część z wartościowaniami
+             zmiennych od części z rewersem. Znów, wiemy, że tak jest z definicji.
+
+             Automat przechodzi do stanu akceptującego i wszystkie następne przejścia nie
+             wyprowadzają z tego stanu. Zatem automat akceptuje to słowo.
+
+         \end{proof}
+     \end{subsection}
  \end{subsection}
 
- Pokazaliśmy konstrukcję reprezentacji wartościowań oraz automatu, który
- akceptuje tylko poprawne wartościowania.
+ \begin{subsection}{Podsumowanie redukcji}
 
- Udowodnijmy, że redukcja jest poprawna.
+     Pokazaliśmy konstrukcję reprezentacji wartościowań oraz automatu, który
+     akceptuje tylko poprawne wartościowania.
 
- \begin{proof}
+ \end{subsection}
 
-     Weźmy dowolny problem 3-CNF-SAT z formułą $C_1 \land C_2 \land \ldots \land
-         C_k$ używającą zmiennych $x_1, x_2, \ldots, x_n$. Zdefiniowaliśmy reprezentację
-     $W$ oraz automat $A$.
+ \begin{subsection}{Poprawność redukcji}
 
-     Załóżmy, że istnieje wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które
-     spełnia formułę. Z definicji reprezentacji $W$ oraz konstrukcji automatu $A$
-     istnieje podzbiór $W' \subseteq W$, który tworzy mieszankę $w$ reprezentującą
-     to wartościowanie. Ponieważ wartościowanie jest poprawne, to mieszanka $w$ jest
-     palindromem i jest akceptowana przez automat $A$. Zatem odpowiedź na
-     zredukowany problem bedzie "tak".
+     Udowodnijmy, że redukcja jest poprawna.
 
-     Załóżmy teraz, że nie istnieje takie wartościowanie. Wtedy z konstrukcji
-     reprezentacji $W$ oraz automatu $A$ nie istnieje taki podzbiór $W' \subseteq
-         W$, który tworzy mieszankę $w$ reprezentującą to wartościowanie. Wynika to z
-     tego, że niezależnie od tego, jakie wartościowanie weźmiemy, to po ciągu $ \$^n
-     $ znajdziemy pewne zaprzeczenie, tz. pewną parę liter $ x_i $ i $ \neg x_i $,
-     które nie mogą wystąpić w tej samej mieszance. Zatem nie istnieje taka
-     mieszanka $w$, która jest palindromem i jest akceptowana przez automat $A$.
-     Zatem odpowiedź na zredukowany problem będzie "nie".
+     \begin{proof}
 
-     Czyli zachowujemy `wierność` redukcji, czyli dla każdego problemu 3-CNF-SAT
-     istnieje taki podzbiór $W' \subseteq W$, że mieszanka $w$ jest palindromem i
-     jest akceptowana przez automat $A$ wtedy i tylko wtedy, gdy istnieje takie
-     wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które spełnia formułę $C_1
-         \land C_2 \land \ldots \land C_k$.
+         Weźmy dowolny problem 3-CNF-SAT z formułą $C_1 \land C_2 \land \ldots \land
+             C_k$ używającą zmiennych $x_1, x_2, \ldots, x_n$. Zdefiniowaliśmy reprezentację
+         $W$ oraz automat $A$.
 
-     Na każdym kroku naszej redukcji zachowujemy rozmiar wielomianowy względem
-     rozmiaru problemu 3-CNF-SAT. Zatem redukcja jest wielomianowa. Stąd redukcja
-     jest poprawna.
+         Załóżmy, że istnieje wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które
+         spełnia formułę. Z definicji reprezentacji $W$ oraz konstrukcji automatu $A$
+         istnieje podzbiór $W' \subseteq W$, który tworzy mieszankę $w$ reprezentującą
+         to wartościowanie. Ponieważ wartościowanie jest poprawne, to mieszanka $w$ jest
+         palindromem i jest akceptowana przez automat $A$. Zatem odpowiedź na
+         zredukowany problem bedzie "tak".
 
- \end{proof}
+         Załóżmy teraz, że nie istnieje takie wartościowanie. Wtedy z konstrukcji
+         reprezentacji $W$ oraz automatu $A$ nie istnieje taki podzbiór $W' \subseteq
+             W$, który tworzy mieszankę $w$ reprezentującą to wartościowanie. Wynika to z
+         tego, że niezależnie od tego, jakie wartościowanie weźmiemy, to po ciągu $ \$^n
+         $ znajdziemy pewne zaprzeczenie, tz. pewną parę liter $ x_i $ i $ \neg x_i $,
+         które nie mogą wystąpić w tej samej mieszance. Zatem nie istnieje taka
+         mieszanka $w$, która jest palindromem i jest akceptowana przez automat $A$.
+         Zatem odpowiedź na zredukowany problem będzie "nie".
+
+         Czyli zachowujemy `wierność` redukcji, czyli dla każdego problemu 3-CNF-SAT
+         istnieje taki podzbiór $W' \subseteq W$, że mieszanka $w$ jest palindromem i
+         jest akceptowana przez automat $A$ wtedy i tylko wtedy, gdy istnieje takie
+         wartościowanie zmiennych $x_1, x_2, \ldots, x_n$, które spełnia formułę $C_1
+             \land C_2 \land \ldots \land C_k$.
+
+         Na każdym kroku naszej redukcji zachowujemy rozmiar wielomianowy względem
+         rozmiaru problemu 3-CNF-SAT. Zatem redukcja jest wielomianowa. Stąd redukcja
+         jest poprawna.
+
+     \end{proof}
+
+ \end{subsection}
 
  Skoro redukcja jest poprawna, to problem NP-trudny redukuje się do problemu z
  treści zadania w czasie wielomianowym.
 
 \end{section}
 
-Pokazaliźmy, że problem jest w klasie NP oraz jest NP-trudny (bo pewien problem
+\section {Podsumowanie}
+
+Pokazaliśmy, że problem jest w klasie NP oraz jest NP-trudny (bo pewien problem
 NP-trudny redukuje się do niego, a więc wszystkie problemy w NP redukują się do
-niego). 
+niego).
 
 Zatem problem jest NP-zupełny.
 
