@@ -45,82 +45,115 @@
 
 \begin{section}{NP}
 
-Zdefiniujmy maszynę niedeterministyczną, która w czasie wielomianowym rozwiązuje podany problem.
+ Zdefiniujmy maszynę niedeterministyczną, która w czasie wielomianowym
+ rozwiązuje podany problem.
 
-Maszyna na początku niedeterministycznie wybiera podzbiór $W' \subseteq W$ i tworzy mieszankę $w$ zgodnie z definicją.
-Zachowuje przy tym kolejność między literami z tego samego słowa, tz. że dla słowa $W = w_1 w_2 \ldots w_n$, jeśli litera $w_i$ i $w_j$, $ i < j$ pochodzą z tego samego słowa, to
-$w_i$ poprzedza $w_j$ w słowie $v \in W'$.
+ Maszyna na początku niedeterministycznie wybiera podzbiór $W' \subseteq W$ i
+ tworzy mieszankę $w$ zgodnie z definicją. Zachowuje przy tym kolejność między
+ literami z tego samego słowa, tz. że dla słowa $W = w_1 w_2 \ldots w_n$, jeśli
+ litera $w_i$ i $w_j$, $ i < j$ pochodzą z tego samego słowa, to $w_i$ poprzedza
+ $w_j$ w słowie $v \in W'$.
 
-Następnie maszyna sprawdza, czy powstałe słowo jest palindromem. Jeśli nie jest, to odrzuca. Wiemy z ćwiczeń, że maszyna umie zrobić to w czasie wielomianowym.
+ Następnie maszyna sprawdza, czy powstałe słowo jest palindromem. Jeśli nie
+ jest, to odrzuca. Wiemy z ćwiczeń, że maszyna umie zrobić to w czasie
+ wielomianowym.
 
-Jeśli słowo jest palindromem, to maszyna symuluje automat $A$ na słowie $w$. Jeśli automat $A$ zaakceptuje słowo, to maszyna akceptuje, w przeciwnym razie odrzuca.
-Symulacja również jest w czasie wielomianowym, co robiliśmy na ćwiczeniach.
+ Jeśli słowo jest palindromem, to maszyna symuluje automat $A$ na słowie $w$.
+ Jeśli automat $A$ zaakceptuje słowo, to maszyna akceptuje, w przeciwnym razie
+ odrzuca. Symulacja również jest w czasie wielomianowym, co robiliśmy na
+ ćwiczeniach.
 
-Zatem w czasie wielomianowym maszyna niedeterministyczna sprawdza, czy istnieje taki podzbiór $W' \subseteq W$,
-że powstała mieszanka $w$ jest palindromem i jest akceptowane przez automat $A$.
+ Zatem w czasie wielomianowym maszyna niedeterministyczna sprawdza, czy istnieje
+ taki podzbiór $W' \subseteq W$, że powstała mieszanka $w$ jest palindromem i
+ jest akceptowane przez automat $A$.
 
-Zatem ten problem jest w klasie NP.
+ Zatem ten problem jest w klasie NP.
 
 \end{section}
 
 \begin{section}{NP trudność}
 
-By udowodnić NP trudność, pokażemy wielomianową redukcję z problemu 3-CNF-SAT dla $n$ zmiennych do problemu zdefiniowanego w zadaniu.
+ By udowodnić NP trudność, pokażemy wielomianową redukcję z problemu 3-CNF-SAT
+ dla $n$ zmiennych do problemu zdefiniowanego w zadaniu.
 
-Zatem mamy formułę w postaci koniunkcji $k$ klauzul $C_1, C_2, \ldots, C_k$, gdzie każda klauzula jest alternatywą maksymalnie trzech literałów.
-Klauzule numerujemy liczbami od 1 do $k$ od lewej, a literały od 1 do $n$.
-Klauzule w sumie używają $n$ zmiennych $x_1, x_2, \ldots, x_n$ lub ich negacji.
+ Zatem mamy formułę w postaci koniunkcji $k$ klauzul $C_1, C_2, \ldots, C_k$,
+ gdzie każda klauzula jest alternatywą maksymalnie trzech literałów. Klauzule
+ numerujemy liczbami od 1 do $k$ od lewej, a literały od 1 do $n$. Klauzule w
+ sumie używają $n$ zmiennych $x_1, x_2, \ldots, x_n$ lub ich negacji.
 
-\begin{definition}
-    $\Sigma = \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n, C_1, C_2, \ldots, C_k, \#, \$ \}$ to alfabet na którym będziemy pracować. Jak widać, jego
-    rozmiar jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
-\end{definition}
+ \begin{definition}
+     $\Sigma = \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n, C_1, C_2, \ldots, C_k, \#, \$ \}$ to alfabet na którym będziemy pracować. Jak widać, jego
+     rozmiar jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
+ \end{definition}
 
-\begin{subsection}{W}
-    Skonstruujemy w taki sposób $W$, że dla każdego wartościowania zmiennych $x_1, x_2, \ldots, x_{n}$,
+ \begin{subsection}{W}
+     Skonstruujemy w taki sposób $W$, że dla każdego wartościowania zmiennych $x_1, x_2, \ldots, x_{n}$,
      istnieje taki podzbiór $W' \subseteq W$, że istnieje mieszanka $w$ powstała ze słow z $W'$, która jest palindromem reprezentującym to wartościowanie.
 
      \begin{definition}
-        Dla każdej zmiennej $x_i$ zdefiniujmy dwa ciągi: $T_i$ oraz $F_i$.
-        \begin{itemize}
-            \item $T_i = (C_j)$, gdzie klauzula $C_j$ zawiera zmienną $x_i$ w postaci pozytywnej, czyli $x_i$. Dodatkowo wewnątrz ciągu zachowujemy kolejność numeryczną klauzul, tz. $\forall_{j, k: j < k} T_j=C_a \land T_k=C_b \implies a < b$.
-            \item $F_i = (C_j)$, gdzie klauzula $C_j$ zawiera zmienną $x_i$ w postaci negatywnej, czyli $\neg x_i$.
-            Dodatkowo wewnątrz ciągu zachowujemy kolejność numeryczną klauzul, tz. $\forall_{j, k: j < k} F_j=C_a \land F_k=C_b \implies a < b$.
-        \end{itemize}
+         Dla każdej zmiennej $x_i$ zdefiniujmy dwa ciągi: $T_i$ oraz $F_i$.
+         \begin{itemize}
+             \item $T_i = (C_j)$, gdzie klauzula $C_j$ zawiera zmienną $x_i$ w postaci pozytywnej, czyli $x_i$. Dodatkowo wewnątrz ciągu zachowujemy kolejność numeryczną klauzul, tz. $\forall_{j, k: j < k} T_j=C_a \land T_k=C_b \implies a < b$.
+             \item $F_i = (C_j)$, gdzie klauzula $C_j$ zawiera zmienną $x_i$ w postaci negatywnej, czyli $\neg x_i$.
+                   Dodatkowo wewnątrz ciągu zachowujemy kolejność numeryczną klauzul, tz. $\forall_{j, k: j < k} F_j=C_a \land F_k=C_b \implies a < b$.
+         \end{itemize}
      \end{definition}
 
      \begin{definition}
-        $W = \{ T_i \ \$ \ x_i \ \# \ x_i \ T_i^R: i \in \{1, 2, \ldots, n\} \} \cup \{ F_i \ \$ \ \neg x_i \ \# \ \neg x_i \ F_i^R: i \in \{1, 2, \ldots, n\} \}$.
-        Również tu rozmiar $W$ jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
+         $W = \{ T_i \ \$ \ x_i \ \# \ x_i \ T_i^R: i \in \{1, 2, \ldots, n\} \} \cup \{ F_i \ \$ \ \neg x_i \ \# \ \neg x_i \ F_i^R: i \in \{1, 2, \ldots, n\} \}$.
+         Również tu rozmiar $W$ jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
      \end{definition}
 
-     Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w postaci mieszanki, która będzie:
-     na początku ciągiem liter, $w_0, w_1, \ldots, w_m, m \geq k, w_i \in \{ C_1, C_2, \ldots, C_k \} \land w_0 = C_1, w_m = C_k, \forall_{i: 0 < i < m} w_i=C_a \land w_{i+1}=C_b \land 0 \leq b-a \leq 1$.
-     Innymi słowami oczekujemy ciągu liter reprezentujących klauzule posortowane w sposób niemalejący po indeksach klauzul.
+ \end{subsection}
 
-     Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie pewnej zmiennej, która jest w mieszance
-     za ciągiem $ \$^n $ w postaci $ x_i $ lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
+ \begin{subsection}{Automat}
 
-     Gdy wczytamy taki ciąg $C$ to oczekujemy podsłowa $ \$^n $.
+     Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w
+     postaci mieszanki, która będzie:
 
-     Następnie oczekujemy posortowanego ciągu liter reprezentujących zabronione wartościowania zmiennych.
-     Oczekujemy ich posortowanych po indeksie zmiennych. Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w obu. Jeśli wystepuje w obu,
-     to automat odrzuca słowo.
-    Zatem oczekujemy ciągu liter w postaci:
+     \begin{itemize}
 
-    \[ l_1 l_2 \ldots l_h, h \geq n, l_i \in \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n \} \]
-    gdzie
-    $ l_1 \in \{ x_1, \neg x_1\} \land l_h \in \{ x_n, \neg x_n\} \\
-    \land \forall_{i: 1 \leq i < h}
-    (((l_i = x_j \land l_{i+1} = x_j) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_j)) \\
-    \lor \\
-    (((l_i = x_j \land l_{i+1} = x_{j+1}) \lor (l_i = x_j \land l_{i+1} = \neg x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_{j+1}))))
-    $.
+         \item na początku ciągiem liter, $w_0 w_1 \ldots w_m, m \geq k, w_i \in \{ C_1,
+                   C_2, \ldots, C_k \} \land w_0 = C_1, w_m = C_k, \forall_{i: 0 < i < m} w_i=C_a
+                   \land w_{i+1}=C_b \land 0 \leq b-a \leq 1$. Innymi słowami oczekujemy ciągu
+               liter reprezentujących klauzule posortowane w sposób niemalejący po indeksach
+               klauzul.
 
-    Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat przechodzi do stanu akceptującego i wszystkie następne przejścia nie wyprowadzają z tego stanu.
-    
-    Wszystkie nieoczekiwane litery prowadzą do śmietnika.
-\end{subsection} 
+               Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór
+               słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie
+               pewnej zmiennej, która jest w mieszance za ciągiem $ \$^n $ w postaci $ x_i $
+               lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
+
+         \item po ciągu ciąg $C$ to oczekujemy podsłowa $ \$^n $.
+
+         \item Następnie oczekujemy posortowanego ciągu liter reprezentujących niesprzeczne
+               wartościowania zmiennych. Oczekujemy ich posortowanych po indeksie zmiennych.
+               Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w
+               obu. Jeśli wystepuje w obu, to automat odrzuca słowo. Zatem oczekujemy ciągu
+               liter w postaci:
+
+               \[ l_1 l_2 \ldots l_h, h \geq n, l_i \in \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n \} \]
+               gdzie $ l_1 \in \{ x_1, \neg x_1\} \land l_h \in \{ x_n, \neg x_n\} \\ \land
+                   \forall_{i: 1 \leq i < h} (((l_i = x_j \land l_{i+1} = x_j) \lor (l_i = \neg
+                   x_j \land l_{i+1} = \neg x_j)) \\ \lor \\ (((l_i = x_j \land l_{i+1} = x_{j+1})
+                   \lor (l_i = x_j \land l_{i+1} = \neg x_{j+1}) \lor (l_i = \neg x_j \land
+                   l_{i+1} = x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_{j+1})))) $.
+
+         \item Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat
+               przechodzi do stanu akceptującego i wszystkie następne przejścia nie
+               wyprowadzają z tego stanu.
+
+     \end{itemize}
+
+     Wszystkie nieoczekiwane litery prowadzą do śmietnika.
+
+     Zauważmy, że obecność separatorów $ \$^n $ oraz $ \#^n $ w mieszance jest
+     konieczna, aby wymusić rozdzielenie klauzul i wartościowań zmiennych oraz część
+     faktyczną od rewersu, który jest tylko dla palindromowatości. Definicja
+     mieszanki wymaga, aby litery w obrębie słowa z którego pochądzą były
+     uporządkowane jak w słowie, zatem wymuszenie spójnego podciągu separatorów
+     sprawia, że informacje się nie mieszają.
+ \end{subsection}
 
 \end{section}
 
