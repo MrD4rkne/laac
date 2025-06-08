@@ -67,87 +67,60 @@ Zatem ten problem jest w klasie NP.
 
 By udowodnić NP trudność, pokażemy wielomianową redukcję z problemu 3-CNF-SAT dla $n$ zmiennych do problemu zdefiniowanego w zadaniu.
 
-BSO. zakładamy, że $n$ jest parzyste. Jeśli nie jest, wystarczy dodać zmienną $x_{n+1}$ oraz klauzulę $(x_{n+1} \lor \neg x_{n+1})$.
-
-\begin{subsection}{W}
-Zdefiniujmy takie $W$, aby dla każdego wartościowania zmiennych $x_1, x_2, \ldots, x_n$ istniał taki podzbiór $W' \subseteq W$,
- że powstała mieszanka $w$ jest palindromem reprezentującym to wartościowanie.
-
-Wartościowaniem $n$ zmiennych $x_1=b_1, x_2=b_2, \ldots, x_n=b_n, b_i \in \{0,1\}$ będzie słowo $w = b_1 b_2 \ldots b_n \# b_n, b_{n-1}, \ldots, b_1$.
+Zatem mamy formułę w postaci koniunkcji $k$ klauzul $C_1, C_2, \ldots, C_k$, gdzie każda klauzula jest alternatywą maksymalnie trzech literałów.
+Klauzule numerujemy liczbami od 1 do $k$ od lewej, a literały od 1 do $n$.
+Klauzule w sumie używają $n$ zmiennych $x_1, x_2, \ldots, x_n$ lub ich negacji.
 
 \begin{definition}
-Niech $d_{i, b} = b^i, 0 \leq i \leq n \land b \in \{0,1\}$.
-Wtedy $W = \{ d_{i, b} + \# d_{i, b} \#: i = 0, 1, \ldots, n;  b \in \{0,1\} \}$.
-
-\begin{remark}
-$\abs{W} = 4(n+1)$.
-\end{remark}
-
-\begin{remark}
-Każde słowo $d_{i,b}$ jest palindromem, zatem każde postaci $ \# d_{i,b} \#$ również jest palindromem.
-Stąd wszystkie słowa w $W$ są palindromami.
-\end{remark}
-
+    $\Sigma = \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n, C_1, C_2, \ldots, C_k, \#, \$ \}$ to alfabet na którym będziemy pracować. Jak widać, jego
+    rozmiar jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
 \end{definition}
 
-Pokażmy, że dla każdego wartościowania istnieje taki podzbiór $W' \subseteq W$, że można stworzyć mieszankę $w$, która jest palindromem i reprezentuje to wartościowanie.
+\begin{subsection}{W}
+    Skonstruujemy w taki sposób $W$, że dla każdego wartościowania zmiennych $x_1, x_2, \ldots, x_{n}$,
+     istnieje taki podzbiór $W' \subseteq W$, że istnieje mieszanka $w$ powstała ze słow z $W'$, która jest palindromem reprezentującym to wartościowanie.
 
-Dla ciągu zmiennych $x_1, x_2, \ldots, x_n$ z wartościowaniem $b_1, b_2, \ldots, b_n$ zdefiniujmy słowo $v$ jako:
-\[
-v = \# \# b_1 b_2 \ldots b_n b_n b_{n-1} \ldots b_1 \# \#
-\]
-\begin{proof}
-Weźmy dowolne wartościowanie $b_1, b_2, \ldots, b_n$. Ma ono $i$ zmiennych równych $1$ i $n-i$ zmiennych równych $0$.
-Zatem aby otrzymać reprezentację tego wartościowania musimy wybrać takie \(W' \subseteq W\), że w sumie słowa w \(W'\) będą miały:
-\begin{itemize}
-    \item $2i$ liter równych 1
-    \item $2n - 2i$ liter równych 0
-    \item 4 litery równe $\#$
-\end{itemize}
+     \begin{definition}
+        Dla każdej zmiennej $x_i$ zdefiniujmy dwa ciągi: $T_i$ oraz $F_i$.
+        \begin{itemize}
+            \item $T_i = (C_j)$, gdzie klauzula $C_j$ zawiera zmienną $x_i$ w postaci pozytywnej, czyli $x_i$. Dodatkowo wewnątrz ciągu zachowujemy kolejność numeryczną klauzul, tz. $\forall_{j, k: j < k} T_j=C_a \land T_k=C_b \implies a < b$.
+            \item $F_i = (C_j)$, gdzie klauzula $C_j$ zawiera zmienną $x_i$ w postaci negatywnej, czyli $\neg x_i$.
+            Dodatkowo wewnątrz ciągu zachowujemy kolejność numeryczną klauzul, tz. $\forall_{j, k: j < k} F_j=C_a \land F_k=C_b \implies a < b$.
+        \end{itemize}
+     \end{definition}
 
-Zauważmy, że wystarczy wziąć $W' = \{ d_{i,1}, \#d_{i,1}\#, d_{n-i, 0}, \# d_{n-i, 0} \# \}$, gdzie $d_i$ jest jak wyżej zdefiniowane.
+     \begin{definition}
+        $W = \{ T_i \ \$ \ x_i \ \# \ x_i \ T_i^R: i \in \{1, 2, \ldots, n\} \} \cup \{ F_i \ \$ \ \neg x_i \ \# \ \neg x_i \ F_i^R: i \in \{1, 2, \ldots, n\} \}$.
+        Również tu rozmiar $W$ jest wielomianowy względem rozmiaru problemu 3-CNF-SAT.
+     \end{definition}
 
-Pokażmy, że da się prawidłowo utworzyc mieszankę reprezentującą wartościowanie.
+     Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w postaci mieszanki, która będzie:
+     na początku ciągiem liter, $w_0, w_1, \ldots, w_m, m \geq k, w_i \in \{ C_1, C_2, \ldots, C_k \} \land w_0 = C_1, w_m = C_k, \forall_{i: 0 < i < m} w_i=C_a \land w_{i+1}=C_b \land 0 \leq b-a \leq 1$.
+     Innymi słowami oczekujemy ciągu liter reprezentujących klauzule posortowane w sposób niemalejący po indeksach klauzul.
 
-\begin{center}
-    $d_{i,1} \ d_{n-i, 0} \ \#d_{i,1}\# \ \# d_{n-i, 0} \#$
+     Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie pewnej zmiennej, która jest w mieszance
+     za ciągiem $ \$^n $ w postaci $ x_i $ lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
+
+     Gdy wczytamy taki ciąg $C$ to oczekujemy podsłowa $ \$^n $.
+
+     Następnie oczekujemy posortowanego ciągu liter reprezentujących zabronione wartościowania zmiennych.
+     Oczekujemy ich posortowanych po indeksie zmiennych. Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w obu. Jeśli wystepuje w obu,
+     to automat odrzuca słowo.
+    Zatem oczekujemy ciągu liter w postaci:
+
+    \[ l_1 l_2 \ldots l_h, h \geq n, l_i \in \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n \} \]
+    gdzie
+    $ l_1 \in \{ x_1, \neg x_1\} \land l_h \in \{ x_n, \neg x_n\} \\
+    \land \forall_{i: 1 \leq i < h}
+    (((l_i = x_j \land l_{i+1} = x_j) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_j)) \\
+    \lor \\
+    (((l_i = x_j \land l_{i+1} = x_{j+1}) \lor (l_i = x_j \land l_{i+1} = \neg x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_{j+1}))))
+    $.
+
+    Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat przechodzi do stanu akceptującego i wszystkie następne przejścia nie wyprowadzają z tego stanu.
     
-    $ \# d_{i,1} \ d_{n-i, 0} \ d_{i,1}\# \ \# d_{n-i, 0} \#$
-
-    $ \# \# d_{i,1} \ d_{n-i, 0} \ d_{i,1}\# \ d_{n-i, 0} \#$
-
-    $ \# \# d_{i,1} \ d_{n-i, 0} \ d_{i,1} \ d_{n-i, 0} \#\#$
-
-\end{center}
-
-W $d_{i,1}$ mamy $i$ liter równych 1, w $d_{n-i,0}$ mamy $n-i$ liter równych 0.
-Zatem:
-\begin{center}
-    $ \# \# d_{i,1} \ d_{n-i, 0} \ d_{i,1} \ d_{n-i, 0} \#\#$
-
-    $\# \# b_1 \ b_2 \ \ldots \ b_n \ d_{i,1} \ d_{n-i, 0} \#\#$
-
-    $\# \# b_1 \ b_2 \ \ldots \ b_n \ b_n \ b_{n-1} \ \ldots \ b_1 \#\#$
-\end{center}
-
-\end{proof}
-
-Co udowadnia, że dla każdego wartościowania istnieje taki podzbiór $W' \subseteq W$, że istnieje mieszanka $w$ słów z tego zbioru, która jest palindromem i reprezentuje to wartościowanie.
-
-\end{subsection}
-
-\begin{subsection}{A}
-Zdefiniujmy automat $A$. W będzie akceptował tylko takie $w$, które są poprawnymi wartościowaniami zmiennych $x_1, x_2, \ldots, x_n$ 
-oraz spełniają formułę $\phi$.
-
-Automat na początku na stosie będzie miał ciąg symboli reprezentujący formułę $\phi$.
-Mianowicie stos do dosłownie formuła $\phi$ w postaci koniunkcji klauzul, gdzie każda klauzula jest reprezentowana jako ciąg symboli, np:
-
-$ \phi = (x_1 \lor \neg x_2) \land (x_2 \lor x_3)$ będzie na stosie reprezentowane jako:
-
-
-gdzie od lewej jest początek stosu, czyli od prawej jego szczyt.
-\end{subsection}
+    Wszystkie nieoczekiwane litery prowadzą do śmietnika.
+\end{subsection} 
 
 \end{section}
 
