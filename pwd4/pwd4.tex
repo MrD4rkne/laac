@@ -142,74 +142,62 @@
  \end{subsection}
 
  \begin{subsection}{Automat}
+     Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w
+     postaci mieszanki, która będzie:
 
-     \begin{subsection}{Definicja}
+     \begin{definition}
+         Automat $A$ akceptuje przez stan. Zaczyna z pustym stosem:
+         \begin{itemize}
 
-         Idea jest taka, że automat będzie oczekiwał rozwiązania problemu 3-CNF-SAT w
-         postaci mieszanki, która będzie:
+             \item na początku ciągiem liter w postaci
+                   \[ C_1^+ \cdot C_2^+ \cdot \ \cdots \ \cdot C_k^+ \]
+                   np.: $C_1 C_1 C_2 C_2 C_3 C_3 C_3 C_4 C_5$ dla $k = 5$.
 
-         \begin{definition}
-             Automat $A$ akceptuje przez stan. Zaczyna z pustym stosem:
-             \begin{itemize}
+                   Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór
+                   słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie
+                   pewnej zmiennej, która jest w mieszance za ciągiem $ \$^n $ w postaci $ x_i $
+                   lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
 
-                 \item na początku ciągiem liter, $w_0 w_1 \ldots w_m, m \geq k, w_i \in \{ C_1, C_2,
-                           \ldots, C_k \} \land w_0 = C_1, w_m = C_k, \forall_{i: 0 < i < m} w_i=C_a \land
-                           w_{i+1}=C_b \land 0 \leq b-a \leq 1$. Innymi słowami oczekujemy ciągu liter
-                       reprezentujących klauzule posortowane w sposób niemalejący po indeksach
-                       klauzul, np.: $C_1 C_1 C_2 C_2 C_3 C_3 C_3 C_4 C_5$ dla $k = 5$.
+             \item po ciągu ciąg $C$ to oczekujemy podsłowa $ \$^n $.
 
-                       Z powyższej konstrukcji \(W\) wynika to, że do mieszanki wzieliśmy podzbiór
-                       słów taki, że obecność klauzuli $C_j$ jest spełniona przez wartościowanie
-                       pewnej zmiennej, która jest w mieszance za ciągiem $ \$^n $ w postaci $ x_i $
-                       lub $ \neg x_i $, gdzie $ i \in \{1, 2, \ldots, n\} $.
+             \item Następnie oczekujemy posortowanego ciągu liter reprezentujących niesprzeczne
+                   wartościowania zmiennych. Oczekujemy ich posortowanych po indeksie zmiennych.
+                   Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w
+                   obu. Jeśli wystepuje w obu, to automat odrzuca słowo. Zatem oczekujemy ciągu
+                   liter w postaci:
 
-                 \item po ciągu ciąg $C$ to oczekujemy podsłowa $ \$^n $.
+                   \[ (x_1 + \neg x_1)^+ \cdot (x_2 + \neg x_2)^+ \cdot \ \cdots \ \cdot (x_n + \neg x_n)^+ \]
 
-                 \item Następnie oczekujemy posortowanego ciągu liter reprezentujących niesprzeczne
-                       wartościowania zmiennych. Oczekujemy ich posortowanych po indeksie zmiennych.
-                       Każda zmienna może występować tylko w postaci $x_i$ lub $ \neg x_i$. Nie może w
-                       obu. Jeśli wystepuje w obu, to automat odrzuca słowo. Zatem oczekujemy ciągu
-                       liter w postaci:
+                   Przykładem poprawnego ciągu jest $x_1 x_1 x_2 \neg x_2 x_3 \neg x_3$ dla
+                   wartościowania $x_1 = 1, x_2 = 0, x_3 = 0$ oraz $n = 3$. Jednakże ciąg $x_1 x_2
+                       \neg x_2 x_3 \neg x_3$ nie jest poprawny, ponieważ występuje w nim zarówno
+                   $x_2$ jak i $\neg x_2$, co nie jest poprawnym wartościowaniem zmiennych.
 
-                       \[ l_1 l_2 \ldots l_h, h \geq n, l_i \in \{ x_1, x_2, \ldots, x_n, \neg x_1, \neg x_2, \ldots, \neg x_n \} \]
-                       gdzie $ l_1 \in \{ x_1, \neg x_1\} \land l_h \in \{ x_n, \neg x_n\} \\ \land
-                           \forall_{i: 1 \leq i < h} (((l_i = x_j \land l_{i+1} = x_j) \lor (l_i = \neg
-                           x_j \land l_{i+1} = \neg x_j)) \\ \lor \\ (((l_i = x_j \land l_{i+1} = x_{j+1})
-                           \lor (l_i = x_j \land l_{i+1} = \neg x_{j+1}) \lor (l_i = \neg x_j \land
-                           l_{i+1} = x_{j+1}) \lor (l_i = \neg x_j \land l_{i+1} = \neg x_{j+1})))) $.
+             \item Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat
+                   przechodzi do stanu akceptującego i wszystkie następne przejścia nie
+                   wyprowadzają z tego stanu.
 
-                       Przykładem poprawnego ciągu jest $x_1 x_1 x_2 \neg x_2 x_3 \neg x_3$ dla
-                       wartościowania $x_1 = 1, x_2 = 0, x_3 = 0$ oraz $n = 3$. Jednakże ciąg $x_1 x_2
-                           \neg x_2 x_3 \neg x_3$ nie jest poprawny, ponieważ występuje w nim zarówno
-                       $x_2$ jak i $\neg x_2$, co nie jest poprawnym wartościowaniem zmiennych.
+         \end{itemize}
 
-                 \item Następnie oczekujemy ciągu $ \#^n$. Gdy wczytamy taki ciąg, to automat
-                       przechodzi do stanu akceptującego i wszystkie następne przejścia nie
-                       wyprowadzają z tego stanu.
+         Wszystkie nieoczekiwane litery prowadzą do śmietnika.
 
-             \end{itemize}
+         Zauważmy, że obecność separatorów $ \$^n $ oraz $ \#^n $ w mieszance jest
+         konieczna, aby wymusić rozdzielenie klauzul i wartościowań zmiennych oraz część
+         faktyczną od rewersu, który jest tylko dla palindromowatości. Definicja
+         mieszanki wymaga, aby litery w obrębie słowa z którego pochodzą były
+         uporządkowane jak w słowie, zatem wymuszenie spójnego podciągu separatorów
+         sprawia, że informacje się nie mieszają.
 
-             Wszystkie nieoczekiwane litery prowadzą do śmietnika.
+     \end{definition}
 
-             Zauważmy, że obecność separatorów $ \$^n $ oraz $ \#^n $ w mieszance jest
-             konieczna, aby wymusić rozdzielenie klauzul i wartościowań zmiennych oraz część
-             faktyczną od rewersu, który jest tylko dla palindromowatości. Definicja
-             mieszanki wymaga, aby litery w obrębie słowa z którego pochodzą były
-             uporządkowane jak w słowie, zatem wymuszenie spójnego podciągu separatorów
-             sprawia, że informacje się nie mieszają.
+     \begin{remark}
+         Zdefiniowany automat jest rozmiaru wielomianowego względem rozmiaru problemu
+         3-CNF-SAT.
+     \end{remark}
 
-         \end{definition}
-
-         \begin{remark}
-             Zdefiniowany automat jest rozmiaru wielomianowego względem rozmiaru problemu
-             3-CNF-SAT.
-         \end{remark}
-
-         \begin{remark}
-             Zauważmy jako ciekawostkę, że nie korzystamy ze stosu. Akceptujemy przez stan.
-         \end{remark}
-
-     \end{subsection}
+     \begin{remark}
+         Zauważmy jako ciekawostkę, że nie korzystamy ze stosu. Akceptujemy przez stan.
+     \end{remark}
 
      \begin{subsection}{Automat akceptuje tylko poprawne wartościowania spełniające formułę}
 
@@ -265,7 +253,7 @@
          3-CNF-SAT spełniającym tę formułę.
 
          \begin{proof}
-             Weźmy dowolne wartościowanie zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie 3-CNF-SAT.
+             Weźmy dowolne wartościowanie zmiennych $x_1, x_2, \ldots, x_n$ w rozważanym problemie 3-CNF-SAT, które spełnia formułę.
              Wiemy, że istnieje taki podzbiór $W' \subseteq W$, który tworzy mieszankę $w$ reprezentującą to wartościowanie (patrz: \ref{evaluation_proof}).
 
              Na początku mieszanka $w$ będzie zawierała ciąg liter reprezentujących
