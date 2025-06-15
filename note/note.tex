@@ -3,16 +3,16 @@
 
 \usepackage{anyfontsize}
 
-\renewcommand\normalsize{\fontsize{12}{24}\selectfont}
-\renewcommand\small{\fontsize{14}{14}\selectfont}
-\renewcommand\footnotesize{\fontsize{12}{12}\selectfont}
-\renewcommand\scriptsize{\fontsize{10}{10}\selectfont}
-\renewcommand\tiny{\fontsize{8}{8}\selectfont}
-\renewcommand\large{\fontsize{18}{18}\selectfont}
-\renewcommand\Large{\fontsize{20}{20}\selectfont}
-\renewcommand\LARGE{\fontsize{22}{22}\selectfont}
-\renewcommand\huge{\fontsize{24}{24}\selectfont}
-\renewcommand\Huge{\fontsize{26}{26}\selectfont}
+\renewcommand\normalsize{\fontsize{14}{20}\selectfont}
+\renewcommand\small{\fontsize{16}{16}\selectfont}
+\renewcommand\footnotesize{\fontsize{14}{14}\selectfont}
+\renewcommand\scriptsize{\fontsize{12}{12}\selectfont}
+\renewcommand\tiny{\fontsize{10}{10}\selectfont}
+\renewcommand\large{\fontsize{20}{20}\selectfont}
+\renewcommand\Large{\fontsize{22}{22}\selectfont}
+\renewcommand\LARGE{\fontsize{24}{24}\selectfont}
+\renewcommand\huge{\fontsize{26}{26}\selectfont}
+\renewcommand\Huge{\fontsize{28}{28}\selectfont}
 
 \usepackage[
     paperwidth=5.04in,
@@ -73,19 +73,21 @@
     \item \textbf{PCP z ograniczeniem} \\
     ciąg par słów $(w_1, v_1), (w_2, v_2), \ldots, (w_n, n_n)$ i liczba $k$,
      pytanie czy istnieje takie $1 \leq m \leq k$ ciąg indeksów $i_1, i_2, \ldots, i_m$ że $ w_{i_1} \ldots w_{i_m} = v_{i_1} \ldots v_{i_m}$.
-    
+
     \item \textbf{Problem 3-CNF-SAT} \\
     SAT, ale w każdej klauzuli są <= 3 literały (równowaznie dokładnie 3 w każdek kluazuli).
     
     \item \textbf{Nierównośc wyrażeń regularnych bez `*'} \\
     dwa wyrażenia regularne $R$ i $S$. Pytanie, czy $L(R) \neq L(S)$.
 
+    \newpage
     \item \textbf{Trójkolorowanie grafu} \\
     dany graf $G$, pytanie, czy istnieje taki przydział kolorów $\{1,2,3\}$ do wierzchołków $G$, że żadne dwa sąsiadujące wierzchołki nie mają tego samego koloru.
     
     \item \textbf{Programowanie całkowitoliczbowe} \\
     układ równań liniowych $U$ o całkowitych współczynnikach. Pytanie, czy $U$ ma nieujemne całkowite rozwiązanie.
     
+    \newpage
     \item \textbf{Problem stopu po n krokach} \\
     niedeterministyczna maszyna Turinga $M$, słowo wejściowe $w$ i $n$ unarnie. Pytanie czy $M$ akceptuje $w$ conajwyżej $n$ krokach?
 \end{itemize}
@@ -110,6 +112,8 @@
     \item \textbf{Problem jednoznaczności języków bezkontekstowych} \\
     pytanie, czy dany język bezkontekstowy $L$ jest jednoznaczy, tz. dla każdego słowa istnieje tylko 1 drzewo wyprowadzenia.
 
+    \newpage
+
     \item \textbf{Problem niepustości przecięcia języków bezkontekstowych} \\
     pytanie, czy przecięcie dwóch języków bezkontekstowych $L_1$ i $L_2$ jest niepuste.
 
@@ -123,7 +127,8 @@
     \item \textbf{Niepustość języka rozpoznawanego przez maszynę Turinga $M$} \\
     pytanie, $L(M) \neq \emptyset$.
     
-    \item Stop deterministycznego automatu z dwoma licznikami - $A$ - deterministyczny automat z 2 licznikami $c_1, c_2$ bez wejścia. Pytanie, czy $A$ zatrzyma się w konfiguracji $(q_0, c_1 = 0. c_2=0)$.
+    \item \textbf{Stop deterministycznego automatu z dwoma licznikami} \\
+    $A$ - deterministyczny automat z 2 licznikami $c_1, c_2$ bez wejścia. Pytanie, czy $A$ zatrzyma się w konfiguracji $(q_0, c_1 = 0. c_2=0)$.
 \end{itemize}
 
 \newpage
