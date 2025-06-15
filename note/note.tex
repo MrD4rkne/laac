@@ -61,66 +61,66 @@
 \section{NP-zupełne}
 
 \begin{itemize}
-    \item Cykl/Ścieżka Hamiltona \\
+    \item \textbf{Cykl/Ścieżka Hamiltona} \\
     problem polegający na znalezieniu cyklu/ścieżki w grafie, który odwiedza każdy wierzchołek dokładnie raz.
     
-    \item Problem plecakowy (szczególny przypadek) \\
+    \item \textbf{Problem plecakowy (szczególny przypadek)} \\
     zbiór liczb $A=\{n_1,n_2,\ldots,n_k\}$ i liczba $m$ binarnie, pytanie czy $\exists_{A' \subseteq A} \sum_{b \in A'}= m$.
     
-    \item Problem SAT \\
+    \item \textbf{Problem SAT} \\
     formuła zdaniowa $\phi$, pytanie, czy $\phi$ jest spełnialna
 
-    \item PCP z ograniczeniem \\
+    \item \textbf{PCP z ograniczeniem} \\
     ciąg par słów $(w_1, v_1), (w_2, v_2), \ldots, (w_n, n_n)$ i liczba $k$,
      pytanie czy istnieje takie $1 \leq m \leq k$ ciąg indeksów $i_1, i_2, \ldots, i_m$ że $ w_{i_1} \ldots w_{i_m} = v_{i_1} \ldots v_{i_m}$.
     
-    \item Problem 3-CNF-SAT \\
+    \item \textbf{Problem 3-CNF-SAT} \\
     SAT, ale w każdej klauzuli są <= 3 literały (równowaznie dokładnie 3 w każdek kluazuli).
     
-    \item Trójkolorowanie grafu \\
+    \item \textbf{Nierównośc wyrażeń regularnych bez `*'} \\
+    dwa wyrażenia regularne $R$ i $S$. Pytanie, czy $L(R) \neq L(S)$.
+
+    \item \textbf{Trójkolorowanie grafu} \\
     dany graf $G$, pytanie, czy istnieje taki przydział kolorów $\{1,2,3\}$ do wierzchołków $G$, że żadne dwa sąsiadujące wierzchołki nie mają tego samego koloru.
     
-    \item Programowanie całkowitoliczbowe \\
+    \item \textbf{Programowanie całkowitoliczbowe} \\
     układ równań liniowych $U$ o całkowitych współczynnikach. Pytanie, czy $U$ ma nieujemne całkowite rozwiązanie.
     
-    \item Nierównośc wyrażeń regularnych bez `*' \\
-    dwa wyrażenia regularne $R$ i $S$. Pytanie, czy $L(R) \neq L(S)$.
-    
-    \item Problem stopu po n krokach \\
+    \item \textbf{Problem stopu po n krokach} \\
     niedeterministyczna maszyna Turinga $M$, słowo wejściowe $w$ i $n$ unarnie. Pytanie czy $M$ akceptuje $w$ conajwyżej $n$ krokach?
 \end{itemize}
 
 \newpage
 
-\section {Nierozstrzygalne}
+\section{Nierozstrzygalne}
 \subsection{Częściowo rozstrzygalne}
 \begin{itemize}
-    \item $\text{Halt}_w$ \\ 
+    \item \textbf{$\text{Halt}_w$} \\ 
     pytanie, czy dana maszyna Turinga $M$ zatrzyma się na słowie wejściowym $w$. 
     
     \begin{itemize}
-    \item szczególny przypadek, $\text{Halt}_{\epsilon}$ - pytanie, czy maszyna Turinga $M$ zatrzyma się na pustym słowie wejściowym.
+    \item szczególny przypadek, \textbf{$\text{Halt}_{\epsilon}$} - pytanie, czy maszyna Turinga $M$ zatrzyma się na pustym słowie wejściowym.
     \end{itemize}
 
     \newpage
-    
-    \item Problem regularności języków bezkontekstowych \\ 
+
+    \item \textbf{Problem regularności języków bezkontekstowych} \\
     pytanie, czy dany język bezkontekstowy $L$ jest regularny.
-    
-    \item Problem jednoznaczności języków bezkontekstowych \\
+
+    \item \textbf{Problem jednoznaczności języków bezkontekstowych} \\
     pytanie, czy dany język bezkontekstowy $L$ jest jednoznaczy, tz. dla każdego słowa istnieje tylko 1 drzewo wyprowadzenia.
-    
-    \item Problem niepustości przecięcia języków bezkontekstowych \\
+
+    \item \textbf{Problem niepustości przecięcia języków bezkontekstowych} \\
     pytanie, czy przecięcie dwóch języków bezkontekstowych $L_1$ i $L_2$ jest niepuste.
-    
-    \item Problem odpowiedniości Posta\\
+
+    \item \textbf{Problem odpowiedniości Posta} \\
     dla danego ciągu par słów $(w_1, v_1), (w_2, v_2), \ldots, (w_n, n_n)$, pytanie, czy istnieje taki ciąg indeksów $i_1, i_2, \ldots, i_m$ że $ w_{i_1} \ldots w_{i_m} = v_{i_1} \ldots v_{i_m}$.
     
     \begin{itemize}
-        \item ograniczony - szczególny przypadek, gdy wymuszamy, że $i_1=1$.
+        \item \textbf{PCP ograniczony} - szczególny przypadek, gdy wymuszamy, że $i_1=1$.
     \end{itemize}
 
-    \item Niepustość języka rozpoznawanego przez maszynę Turinga $M$ \\
+    \item \textbf{Niepustość języka rozpoznawanego przez maszynę Turinga $M$} \\
     pytanie, $L(M) \neq \emptyset$.
     
     \item Stop deterministycznego automatu z dwoma licznikami - $A$ - deterministyczny automat z 2 licznikami $c_1, c_2$ bez wejścia. Pytanie, czy $A$ zatrzyma się w konfiguracji $(q_0, c_1 = 0. c_2=0)$.
@@ -130,11 +130,16 @@
 
 \subsection{Co-częściowo rozstrzygalne}
 \begin{itemize}
-    \item $\text{Co-Halt}_w$ - pytanie, czy dana maszyna Turinga $M$ nie zatrzyma się na słowie wejściowym $w$.
+    \item \textbf{$\text{Co-Halt}_w$} \\
+    pytanie, czy dana maszyna Turinga $M$ nie zatrzyma się na słowie wejściowym $w$.
+    
     \begin{itemize}
-        \item szczególny przypadek, $\text{Co-Halt}_{\epsilon}$ - pytanie, czy maszyna Turinga $M$ nie zatrzyma się na pustym słowie wejściowym.
+        \item szczególny przypadek, \textbf{$\text{Co-Halt}_{\epsilon}$} \\
+        pytanie, czy maszyna Turinga $M$ nie zatrzyma się na pustym słowie wejściowym.
     \end{itemize}
-    \item Problem uniwersalności/totalności języków bezkontekstowych - pytanie, czy język bezkontekstowy $L = \Sigma^*$.
+
+    \item \textbf{Problem uniwersalności/totalności języków bezkontekstowych} \\
+    pytanie, czy język bezkontekstowy $L = \Sigma^*$.
 \end{itemize}
 
 \end{document}
