@@ -3,16 +3,16 @@
 
 \usepackage{anyfontsize}
 
-\renewcommand\normalsize{\fontsize{14}{20}\selectfont}
-\renewcommand\small{\fontsize{16}{16}\selectfont}
-\renewcommand\footnotesize{\fontsize{14}{14}\selectfont}
-\renewcommand\scriptsize{\fontsize{12}{12}\selectfont}
-\renewcommand\tiny{\fontsize{10}{10}\selectfont}
-\renewcommand\large{\fontsize{20}{20}\selectfont}
-\renewcommand\Large{\fontsize{22}{22}\selectfont}
-\renewcommand\LARGE{\fontsize{24}{24}\selectfont}
-\renewcommand\huge{\fontsize{26}{26}\selectfont}
-\renewcommand\Huge{\fontsize{28}{28}\selectfont}
+% \renewcommand\normalsize{\fontsize{14}{20}\selectfont}
+% \renewcommand\small{\fontsize{16}{16}\selectfont}
+% \renewcommand\footnotesize{\fontsize{14}{14}\selectfont}
+% \renewcommand\scriptsize{\fontsize{12}{12}\selectfont}
+% \renewcommand\tiny{\fontsize{10}{10}\selectfont}
+% \renewcommand\large{\fontsize{20}{20}\selectfont}
+% \renewcommand\Large{\fontsize{22}{22}\selectfont}
+% \renewcommand\LARGE{\fontsize{24}{24}\selectfont}
+% \renewcommand\huge{\fontsize{26}{26}\selectfont}
+% \renewcommand\Huge{\fontsize{28}{28}\selectfont}
 
 \usepackage[
     paperwidth=5.04in,
@@ -58,93 +58,37 @@
 
 \begin{document}
 
-\section{NP-zupełne}
-
-\begin{itemize}
-    \item \textbf{Cykl/Ścieżka Hamiltona} \\
-    problem polegający na znalezieniu cyklu/ścieżki w grafie, który odwiedza każdy wierzchołek dokładnie raz.
-    
-    \item \textbf{Problem plecakowy (szczególny przypadek)} \\
-    zbiór liczb $A=\{n_1,n_2,\ldots,n_k\}$ i liczba $m$ binarnie, pytanie czy $\exists_{A' \subseteq A} \sum_{b \in A'}= m$.
-    
-    \item \textbf{Problem SAT} \\
-    formuła zdaniowa $\phi$, pytanie, czy $\phi$ jest spełnialna
-
-    \item \textbf{PCP z ograniczeniem} \\
-    ciąg par słów $(w_1, v_1), (w_2, v_2), \ldots, (w_n, n_n)$ i liczba $k$,
-     pytanie czy istnieje takie $1 \leq m \leq k$ ciąg indeksów $i_1, i_2, \ldots, i_m$ że $ w_{i_1} \ldots w_{i_m} = v_{i_1} \ldots v_{i_m}$.
-
-    \item \textbf{Problem 3-CNF-SAT} \\
-    SAT, ale w każdej klauzuli są <= 3 literały (równowaznie dokładnie 3 w każdek kluazuli).
-    
-    \item \textbf{Nierównośc wyrażeń regularnych bez `*'} \\
-    dwa wyrażenia regularne $R$ i $S$. Pytanie, czy $L(R) \neq L(S)$.
-
-    \newpage
-    \item \textbf{Trójkolorowanie grafu} \\
-    dany graf $G$, pytanie, czy istnieje taki przydział kolorów $\{1,2,3\}$ do wierzchołków $G$, że żadne dwa sąsiadujące wierzchołki nie mają tego samego koloru.
-    
-    \item \textbf{Programowanie całkowitoliczbowe} \\
-    układ równań liniowych $U$ o całkowitych współczynnikach. Pytanie, czy $U$ ma nieujemne całkowite rozwiązanie.
-    
-    \newpage
-    \item \textbf{Problem stopu po n krokach} \\
-    niedeterministyczna maszyna Turinga $M$, słowo wejściowe $w$ i $n$ unarnie. Pytanie czy $M$ akceptuje $w$ conajwyżej $n$ krokach?
-\end{itemize}
-
-\newpage
-
-\section{Nierozstrzygalne}
-\subsection{Częściowo rozstrzygalne}
-\begin{itemize}
-    \item \textbf{$\text{Halt}_w$} \\ 
-    pytanie, czy dana maszyna Turinga $M$ zatrzyma się na słowie wejściowym $w$. 
-    
-    \begin{itemize}
-    \item szczególny przypadek, \textbf{$\text{Halt}_{\epsilon}$} - pytanie, czy maszyna Turinga $M$ zatrzyma się na pustym słowie wejściowym.
-    \end{itemize}
-
-    \newpage
-
-    \item \textbf{Problem regularności języków bezkontekstowych} \\
-    pytanie, czy dany język bezkontekstowy $L$ jest regularny.
-
-    \item \textbf{Problem jednoznaczności języków bezkontekstowych} \\
-    pytanie, czy dany język bezkontekstowy $L$ jest jednoznaczy, tz. dla każdego słowa istnieje tylko 1 drzewo wyprowadzenia.
-
-    \newpage
-
-    \item \textbf{Problem niepustości przecięcia języków bezkontekstowych} \\
-    pytanie, czy przecięcie dwóch języków bezkontekstowych $L_1$ i $L_2$ jest niepuste.
-
-    \item \textbf{Problem odpowiedniości Posta} \\
-    dla danego ciągu par słów $(w_1, v_1), (w_2, v_2), \ldots, (w_n, n_n)$, pytanie, czy istnieje taki ciąg indeksów $i_1, i_2, \ldots, i_m$ że $ w_{i_1} \ldots w_{i_m} = v_{i_1} \ldots v_{i_m}$.
-    
-    \begin{itemize}
-        \item \textbf{PCP ograniczony} - szczególny przypadek, gdy wymuszamy, że $i_1=1$.
-    \end{itemize}
-
-    \item \textbf{Niepustość języka rozpoznawanego przez maszynę Turinga $M$} \\
-    pytanie, $L(M) \neq \emptyset$.
-    
-    \item \textbf{Stop deterministycznego automatu z dwoma licznikami} \\
-    $A$ - deterministyczny automat z 2 licznikami $c_1, c_2$ bez wejścia. Pytanie, czy $A$ zatrzyma się w konfiguracji $(q_0, c_1 = 0. c_2=0)$.
-\end{itemize}
-
-\newpage
-
-\subsection{Co-częściowo rozstrzygalne}
-\begin{itemize}
-    \item \textbf{$\text{Co-Halt}_w$} \\
-    pytanie, czy dana maszyna Turinga $M$ nie zatrzyma się na słowie wejściowym $w$.
-    
-    \begin{itemize}
-        \item szczególny przypadek, \textbf{$\text{Co-Halt}_{\epsilon}$} \\
-        pytanie, czy maszyna Turinga $M$ nie zatrzyma się na pustym słowie wejściowym.
-    \end{itemize}
-
-    \item \textbf{Problem uniwersalności/totalności języków bezkontekstowych} \\
-    pytanie, czy język bezkontekstowy $L = \Sigma^*$.
-\end{itemize}
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Algorytm}       & \textbf{Zastosowanie}    & \textbf{Typ}             & \textbf{Rekomendowana długość klucza}  \\
+        \hline
+        AES                     & Szyfrowanie              & Symetryczny blokowy      & 128, 192, 256 bitów                    \\
+        3DES                    & Szyfrowanie              & Symetryczny blokowy      & 112, 168 bitów (wycofywany)            \\
+        Blowfish                & Szyfrowanie              & Symetryczny blokowy      & do 448 bitów                           \\
+        IDEA                    & Szyfrowanie              & Symetryczny blokowy      & 128 bitów                              \\
+        CAST-128/256            & Szyfrowanie              & Symetryczny blokowy      & 128/256 bitów                          \\
+        RC4                     & Szyfrowanie strumieniowe & Symetryczny strumieniowy & do 256 bitów (niezalecany)             \\
+        RC5/RC6                 & Szyfrowanie              & Symetryczny blokowy      & do 2040 bitów (RC5), 128/192/256 (RC6) \\
+        ChaCha20                & Szyfrowanie strumieniowe & Symetryczny strumieniowy & 256 bitów                              \\
+        \hline
+        RSA                     & Szyfrowanie, podpisy     & Asymetryczny             & min. 2048 bitów (zalecane 3072+)       \\
+        ElGamal                 & Szyfrowanie, podpisy     & Asymetryczny             & min. 2048 bitów                        \\
+        DSA                     & Podpisy cyfrowe          & Asymetryczny             & min. 2048 bitów                        \\
+        Diffie-Hellman          & Wymiana kluczy           & Asymetryczny             & min. 2048 bitów                        \\
+        ECDSA                   & Podpisy cyfrowe          & Asymetryczny (ECC)       & 256, 384, 521 bitów                    \\
+        ECDH                    & Wymiana kluczy           & Asymetryczny (ECC)       & 256, 384, 521 bitów                    \\
+        Ed25519                 & Podpisy cyfrowe          & Asymetryczny (ECC)       & 256 bitów                              \\
+        Curve25519              & Wymiana kluczy           & Asymetryczny (ECC)       & 256 bitów                              \\
+        \hline
+        SHA-2 (SHA-256/384/512) & Funkcja skrótu           & Hash                     & 256/384/512 bitów (długość skrótu)     \\
+        SHA-3                   & Funkcja skrótu           & Hash                     & 224/256/384/512 bitów (długość skrótu) \\
+        RIPEMD-160              & Funkcja skrótu           & Hash                     & 160 bitów (długość skrótu)             \\
+        HMAC                    & MAC                      & Hash                     & zależna od funkcji hash (np. 256)      \\
+        \hline
+    \end{tabular}
+    \caption{Nowoczesne algorytmy kryptograficzne, ich przeznaczenie i rekomendowana długość klucza}
+\end{table}
 
 \end{document}
